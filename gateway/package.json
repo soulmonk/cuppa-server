@@ -1,0 +1,18 @@
+{
+  "name": "gateway",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "fastify start -l info app.js",
+    "dev": "fastify start -l info -P app.js",
+    "apm": "NODE_OPTIONS=\"-r elastic-apm-node/start\" fastify start -l info app.js"
+  },
+  "keywords": [],
+  "author": "Vitalii Melnykov <fsoulmonk@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^2.10.0",
+    "fastify-http-proxy": "^2.3.0"
+  }
+}
