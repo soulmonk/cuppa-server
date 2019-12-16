@@ -7,11 +7,11 @@ async function meService (fastify, opts) {
     method: 'GET',
     path: '/info',
     handler: onInfo,
-    onRequest: fastify.basicAuth,
+    onRequest: fastify.authenticate,
     schema: {
       response: {
         200: S.object()
-          .prop('name', S.string())
+          .prop('username', S.string())
       }
     }
   })

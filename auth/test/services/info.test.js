@@ -9,12 +9,12 @@ test('200 response', async t => {
     method: 'GET',
     url: '/info',
     headers: {
-      Authorization: 'Basic c291bG1vbms6c3Rhcms='
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvdWxtb25rIiwiaWF0IjoxNTc2NTEzMjQ4fQ.oj0R44dTgrV-Jv2JmPwzY4dPg6HNbL2saxjUxfeX_Wc'
     }
   })
 
   t.strictEqual(response.statusCode, 200)
   t.deepEqual(JSON.parse(response.payload), {
-    name: 'soulmonk'
+    username: 'soulmonk'
   })
 })
