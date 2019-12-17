@@ -2,11 +2,11 @@
 
 const S = require('fluent-schema')
 
-async function signUpService (fastify, opts) {
+async function getTokenService (fastify/*, opts */) {
   fastify.route({
     method: 'POST',
-    path: '/signup',
-    handler: onSignUp,
+    path: '/token',
+    handler: onGetToken,
     schema: {
       body: S.object()
         .prop('username', S.string()
@@ -27,17 +27,16 @@ async function signUpService (fastify, opts) {
     }
   })
 
-  async function onSignUp (req, reply) {
+  async function onGetToken (req, reply) {
+    req.log.info('onGetToken')
     const { username/*, password */ } = req.body
 
     const token = await reply.jwtSign({ username }, {
       expiresIn: 300 // 5 minute
     })
 
-    // todo store in redis
-
     return { token }
   }
 }
 
-module.exports = signUpService
+module.exports = getTokenService

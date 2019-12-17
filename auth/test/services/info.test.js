@@ -18,3 +18,16 @@ test('200 response', async t => {
     username: 'soulmonk'
   })
 })
+
+test('401', async t => {
+  const app = await build(t)
+  const response = await app.inject({
+    method: 'GET',
+    url: '/info',
+    headers: {
+      Authorization: 'Bearer none'
+    }
+  })
+
+  t.strictEqual(response.statusCode, 401)
+})

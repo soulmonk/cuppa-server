@@ -11,4 +11,5 @@ RUN npm install --production
 COPY . .
 
 EXPOSE 3032
+ENV FASTIFY_PORT=3032
 CMD [ "npm", "run", "dev" ]
