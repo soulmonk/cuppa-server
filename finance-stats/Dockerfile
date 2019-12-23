@@ -10,6 +10,6 @@ RUN npm install --production
 # Bundle app source
 COPY . .
 
-EXPOSE 3030
-ENV FASTIFY_PORT=3030
+EXPOSE 3031
+ENV FASTIFY_PORT=3031
 CMD [ "npm", "run", "dev" ]
