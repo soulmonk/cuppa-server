@@ -18,7 +18,6 @@ async function basicAuthPlugin (fastify, opts) {
   // If username or password are not valid, we'll throw
   // an expection, and the user will get a 401.
   async function validate (username, password, req, reply) {
-
     // TODO check via grpc from auth service
     req.user = { name: 'Not implemented' }
   }

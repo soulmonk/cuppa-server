@@ -25,6 +25,7 @@
     "fastify-postgres": "^2.0.0",
     "fluent-schema": "^0.9.0",
     "graphql": "^14.5.8",
+    "graphql-tools": "^4.0.6",
     "hyperid": "^2.0.2",
     "mqemitter-redis": "^3.0.0",
     "pg": "^7.15.1"

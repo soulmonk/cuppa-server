@@ -24,20 +24,3 @@ module.exports = function (fastify, opts, next) {
   // Make sure to call next when done
   next()
 }
-
-/*
-
-if (require.main === module) {
-  const fastify = build({
-    logger: {
-      level: 'info'
-    }
-  })
-  fastify.listen(3000, err => {
-    if (err) throw err
-    console.log(`Server listening at http://localhost:${fastify.server.address().port}`)
-  })
-}
-
-module.exports = build
-*/
