@@ -15,6 +15,8 @@ function config () {
 
 // automatically build and tear down our instance
 function build (t) {
+  // todo clear db
+
   const app = Fastify()
 
   // fastify-plugin ensures that all decorators

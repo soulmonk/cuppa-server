@@ -2,6 +2,7 @@
 
 const resolvers = {
   Query: {
+    status: async () => 'OK',
     transactions: async (obj, args, ctx) => {
       const client = await ctx.pg.connect()
       // tod optimise query
@@ -9,6 +10,9 @@ const resolvers = {
       client.release()
 
       return rows
+    },
+    total: async (obj, args, ctx) => {
+      return []
     }
   }
 }

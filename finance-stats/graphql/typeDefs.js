@@ -1,11 +1,6 @@
 'use strict'
 
 module.exports = `
-  type SimpleTransaction {
-    id: ID!
-    date: Int
-    title: String
-  }
   type Transaction {
     id: ID!
     date: Int
@@ -71,7 +66,9 @@ module.exports = `
   }
 
   type Query {
+    status: String
     transactions: [Transaction]
+    total(dateFrom: String, dateTo: String): [Stats]
   }
 
 `

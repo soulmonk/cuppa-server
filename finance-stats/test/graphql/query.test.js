@@ -3,7 +3,7 @@
 const { test } = require('tap')
 const { build } = require('../helper')
 
-// TODO timeout
+// TODO
 test('200 response', async t => {
   const app = await build(t)
   const response = await app.inject({
@@ -11,7 +11,7 @@ test('200 response', async t => {
     url: '/graphql',
     payload: {
       query: `{
-  transactions(filter: {}) {
+  transactions {
     id
   }
 }`
@@ -19,5 +19,7 @@ test('200 response', async t => {
   })
 
   t.strictEqual(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), { data: { transactions: [] } })
+
+  const payload = JSON.parse(response.payload)
+  t.type(payload.data.transactions, 'array')
 })

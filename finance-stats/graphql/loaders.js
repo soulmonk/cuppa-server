@@ -19,6 +19,18 @@ module.exports = {
       return []
     }
   },
+  TransactionType: {
+    async userOptions () {
+      console.log('TransactionType.userOptions')
+      return []
+    }
+  },
+  Stats: {
+    async type () {
+      console.log('Stats.type')
+      return []
+    }
+  },
   Card: {
     async currency () {
       console.log('Card.currency')

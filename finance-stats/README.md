@@ -7,6 +7,7 @@
 - testing web sockets
 
 - fastify log level (errors)
+- tap tests asserts
 
 ## Graphql questions
 
