@@ -2,14 +2,6 @@
 
 const fp = require('fastify-plugin')
 
-// TODO
-const redis = require('mqemitter-redis')
-// TODO move to fastify plugin
-const emitter = redis({
-  port: 6379,
-  host: '127.0.0.1'
-})
-
 // Import external dependancies
 const gql = require('fastify-gql')
 
@@ -24,7 +16,7 @@ async function fastifyGql (fastify/*, opts */) {
     graphiql: true,
     routes: true,
     subscription: {
-      emitter,
+      emitter: fastify.redis,
       verifyClient: (info, next) => {
         // todo fastyfy connection validation
         if (info.req.headers['x-fastify-header'] !== 'fastify is awesome !') {
@@ -36,5 +28,6 @@ async function fastifyGql (fastify/*, opts */) {
   })
 }
 
-module.exports = fp(fastifyGql)
-//   dependencies: ['fastifyRedis']
+module.exports = fp(fastifyGql, {
+  dependencies: ['fastifyRedis']
+})
