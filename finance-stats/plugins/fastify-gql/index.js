@@ -6,7 +6,7 @@ const fp = require('fastify-plugin')
 const gql = require('fastify-gql')
 
 // Import GraphQL Schema
-const { typeDefs, resolvers } = require('./../../graphql')
+const { typeDefs, resolvers, loaders } = require('./../../graphql')
 const { makeExecutableSchema } = require('graphql-tools')
 
 async function fastifyGql (fastify/*, opts */) {
@@ -15,6 +15,14 @@ async function fastifyGql (fastify/*, opts */) {
     schema: makeExecutableSchema({ typeDefs, resolvers }),
     graphiql: true,
     routes: true,
+    loaders,
+    context: function (request, reply) {
+      // Return an object that will be available in your GraphQL resolvers
+      // todo DI, how to work wtih dependecy
+      return {
+        pg: fastify.pg
+      }
+    },
     subscription: {
       emitter: fastify.redis,
       verifyClient: (info, next) => {
@@ -29,5 +37,5 @@ async function fastifyGql (fastify/*, opts */) {
 }
 
 module.exports = fp(fastifyGql, {
-  dependencies: ['fastifyRedis']
+  dependencies: ['fastifyPostgres', 'fastifyRedis']
 })

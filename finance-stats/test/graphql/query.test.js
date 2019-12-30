@@ -11,16 +11,13 @@ test('200 response', async t => {
     url: '/graphql',
     payload: {
       query: `{
-  votes {
+  transactions(filter: {}) {
     id
-    title
   }
 }`
     }
   })
 
   t.strictEqual(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), { data: { votes: [] } })
-
-  return true
+  t.deepEqual(JSON.parse(response.payload), { data: { transactions: [] } })
 })

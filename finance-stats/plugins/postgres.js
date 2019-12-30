@@ -6,9 +6,9 @@ const postgres = require('fastify-postgres')
 // todo move auth to configuration
 async function fastifyPostgres (fastify/*, opts */) {
   fastify.register(postgres, {
-    connectionString: 'postgres://localhost/cuppa-authentication',
-    user: 'cuppa-authentication',
-    password: 'toor-authentication-cuppa'
+    connectionString: 'postgres://localhost/cuppa-finance-stats',
+    user: 'cuppa',
+    password: 'toor-cuppa'
   })
 }
 

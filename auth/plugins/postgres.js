@@ -7,8 +7,8 @@ const postgres = require('fastify-postgres')
 async function fastifyPostgres (fastify/*, opts */) {
   fastify.register(postgres, {
     connectionString: 'postgres://localhost/cuppa-authentication',
-    user: 'cuppa-authentication',
-    password: 'toor-authentication-cuppa'
+    user: 'cuppa',
+    password: 'toor-cuppa'
   })
 }
 
