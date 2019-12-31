@@ -1,10 +1,12 @@
 'use strict'
 
 module.exports = `
+  scalar Date
+
   type Transaction {
     id: ID!
-    date: Int
-    amount: Int
+    date: Date
+    amount: Float
     currency: Currency
     type: TransactionType
     title: String
@@ -15,8 +17,8 @@ module.exports = `
   
   type TransactionInfo {
     id: ID!
-    blockedAmount: Int
-    fixedAmount: Int
+    blockedAmount: Float
+    fixedAmount: Float
     currencyExchange: Int
   }
   
@@ -27,7 +29,7 @@ module.exports = `
     validTo: Int
     currency: Currency
     bank: Bank
-    type: String
+    description: String
   }
   
   type Currency {
@@ -60,8 +62,8 @@ module.exports = `
   }
 
   type Filter {
-    dateFrom: Int
-    dateTo: Int
+    dateFrom: Date
+    dateTo: Date
     limits: Int
   }
 
@@ -71,4 +73,11 @@ module.exports = `
     total(dateFrom: String, dateTo: String): [Stats]
   }
 
+  type Mutation {
+    addTransaction(title: String): Transaction
+  }
+
+  type Subscription {
+    transactionAdded: Transaction
+  }
 `

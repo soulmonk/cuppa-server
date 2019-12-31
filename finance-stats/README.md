@@ -27,7 +27,7 @@
     - currency of transaction
     - type (typeId)
     - description
-    - card or cache (word cache)
+    - card or cash
         - card info
         - blocked amount
         - fixed amount
@@ -42,3 +42,4 @@
    - type (mastercard / visa)
 
 - saves
+- user options
