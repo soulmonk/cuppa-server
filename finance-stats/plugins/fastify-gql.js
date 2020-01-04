@@ -17,24 +17,19 @@ async function fastifyGql (fastify/*, opts */) {
     routes: true,
     errorHandler,
     loaders,
-    context,
+    // context,
     subscription: {
       emitter: fastify.redis,
       verifyClient
     }
   })
 
-  function context (request, reply) {
-    // Return an object that will be available in your GraphQL resolvers
-    // todo DI, how to work with dependency
+  async function errorHandler (err, request, replay) {
+    replay.log.error(err)
+    replay.log.error(JSON.stringify(err))
     return {
-      pg: fastify.pg
+      errors: err.errors
     }
-  }
-
-  function errorHandler (err, request, replay) {
-    replay.log.error('fastify-gql.js::errorHandler::19 >>>', err)
-    throw err
   }
 
   function verifyClient (info, next) {

@@ -62,8 +62,7 @@ module.exports = `
   }
 
   type Query {
-    status: String
-    transactions: [Transaction]
+    transactions(dateFrom: Date, datTo: Date, limit: Int = 20, offset: Int): [Transaction]
     transaction(id: Int): Transaction
     total(dateFrom: String, dateTo: String): [Stats]
   }
