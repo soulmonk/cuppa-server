@@ -27,7 +27,7 @@ module.exports = `
     name: String
     validFrom: Date
     validTo: Date
-    currency: Currency
+    currencyCode: String
     bank: Bank
     description: String
   }
@@ -48,11 +48,6 @@ module.exports = `
     id: ID!
     name: String
     description: String
-    userOptions: UserOptions
-  }
-  
-  type UserOptions {
-    color: String
   }
   
   type Stats {
@@ -69,6 +64,7 @@ module.exports = `
   type Query {
     status: String
     transactions: [Transaction]
+    transaction(id: Int): Transaction
     total(dateFrom: String, dateTo: String): [Stats]
   }
 
@@ -76,7 +72,4 @@ module.exports = `
     addTransaction(title: String): Transaction
   }
 
-  type Subscription {
-    transactionAdded: Transaction
-  }
 `

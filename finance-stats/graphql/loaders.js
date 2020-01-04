@@ -1,15 +1,24 @@
 'use strict'
 
+const transactionTypeRepository = require('../repository/transaction-type')
+
+function uniqueIds (arr, key) {
+  return Object.keys(arr.reduce((acc, { obj }) => (acc[obj[key]] = 1, acc), {}))
+}
+
+async function type (parent, { app }) {
+  const ids = uniqueIds(parent, 'type_id')
+  const data = await transactionTypeRepository.byIds(app.pg, ids)
+  if (!data) {
+    return data
+  }
+  const mapped = data.reduce((acc, row) => (acc[row.id] = row, acc), {})
+  return parent.map(({obj}) => mapped[obj.type_id])
+}
+
 module.exports = {
   Transaction: {
-    async currency () {
-      console.log('Transaction.currency')
-      return []
-    },
-    async type () {
-      console.log('Transaction.type')
-      return []
-    },
+    type,
     async card () {
       console.log('Transaction.card')
       return []
@@ -19,23 +28,10 @@ module.exports = {
       return []
     }
   },
-  TransactionType: {
-    async userOptions () {
-      console.log('TransactionType.userOptions')
-      return []
-    }
-  },
   Stats: {
-    async type () {
-      console.log('Stats.type')
-      return []
-    }
+    type
   },
   Card: {
-    async currency () {
-      console.log('Card.currency')
-      return []
-    },
     async bank () {
       console.log('Card.bank')
       return []

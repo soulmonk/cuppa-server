@@ -19,7 +19,7 @@ async function basicAuthPlugin (fastify, opts) {
   // an expection, and the user will get a 401.
   async function validate (username, password, req, reply) {
     // TODO check via grpc from auth service
-    req.user = { name: 'Not implemented' }
+    req.user = { name: 'Not implemented', id: 1 }
   }
 }
 
