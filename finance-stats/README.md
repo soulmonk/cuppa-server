@@ -9,6 +9,10 @@
 - fastify log level (errors)
 - tap tests asserts
 
+- decimal vs float
+- jsonb vs json
+- data type length 32 vs 31
+
 ## Graphql questions
 
 - how to create and use pagination

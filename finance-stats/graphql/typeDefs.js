@@ -6,11 +6,11 @@ module.exports = `
   type Transaction {
     id: ID!
     date: Date
-    amount: Float
-    currency: Currency
-    type: TransactionType
-    title: String
     description: String
+    amount: Float
+    type: TransactionType
+    note: String
+    currencyCode: String
     card: Card
     info: TransactionInfo
   }
@@ -19,14 +19,14 @@ module.exports = `
     id: ID!
     blockedAmount: Float
     fixedAmount: Float
-    currencyExchange: Int
+    currencyExchange: Float
   }
   
   type Card {
     id: ID!
-    alias: String
-    validFrom: Int
-    validTo: Int
+    name: String
+    validFrom: Date
+    validTo: Date
     currency: Currency
     bank: Bank
     description: String
@@ -40,7 +40,6 @@ module.exports = `
   
   type Bank {
     id: ID!
-    alias: String
     name: String
     url: String
   }

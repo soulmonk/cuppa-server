@@ -1,0 +1,89 @@
+create table transaction_type
+(
+    id          serial  not null
+        constraint transaction_type_pk
+            primary key,
+    name        varchar(31) not null,
+    description varchar(127),
+    user_id     integer not null
+);
+
+create index transaction_type_user_id_index
+    on transaction_type (user_id);
+
+create table bank
+(
+    id      serial  not null
+        constraint bank_pk
+            primary key,
+    name    varchar(63) not null,
+    url     varchar(255),
+    user_id integer not null
+);
+
+create index bank_user_id_index
+    on bank (user_id);
+
+create table card
+(
+    id            serial                      not null
+        constraint card_pk
+            primary key,
+    name          varchar(63) not null,
+    valid_from    timestamp without time zone not null,
+    valid_to      timestamp without time zone not null,
+
+    currency_code varchar(3),
+    bank_id       integer not null
+        constraint card_bank_id_fkey
+            references bank
+            on update cascade,
+    description   varchar(255),
+    user_id       integer                     not null
+);
+
+create index card_user_id_index
+    on card (user_id);
+
+create table transaction_info
+(
+    id                serial           not null
+        constraint transaction_info_pk
+            primary key,
+    blocked_amount    double precision not null,
+    fixed_amount      double precision not null,
+    currency_exchange double precision not null
+);
+
+create table transaction
+(
+    id            serial                      not null
+        constraint transaction_pk
+            primary key,
+    date          timestamp without time zone not null default now(),
+    description   varchar(63) not null,
+    amount        double precision            not null,
+
+    type_id       integer not null
+        constraint transaction_type_id_fkey
+            references transaction_type
+            on update cascade,
+    note          varchar(127),
+
+    currency_code varchar(3)                  not null,
+
+    card_id       integer
+        constraint transaction_card_id_fkey
+            references card
+            on update cascade,
+
+    info_id       integer
+        constraint transaction_info_id_fkey
+            references transaction_info
+            on update cascade,
+
+    user_id       integer                     not null
+);
+
+create index transaction_user_id_index
+    on transaction (user_id);
