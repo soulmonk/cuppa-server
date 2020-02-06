@@ -27,11 +27,14 @@ function buildLoader (repository, field) {
     if (!data) {
       return data
     }
-    const mapped = data.reduce((acc, row) => (acc[row.id] = row, acc), {})
+    const mapped = data.reduce((acc, row) => {
+      acc[row.id] = row
+      return acc
+    }, {})
     return parent.map(({ obj }) => mapped[obj[field]])
   }
 }
-
+/*
 function buildLoaderMany (repository, findMethod, field, onField) {
   return async (parent, { app }) => {
     const ids = uniqueIds(parent, field)
@@ -52,6 +55,7 @@ function buildLoaderMany (repository, findMethod, field, onField) {
     return parent.map(({ obj }) => mapped[obj[field]])
   }
 }
+*/
 
 function buildLoaderBelongsTo (repository, findMethod, field, onField) {
   return async (parent, { app }) => {

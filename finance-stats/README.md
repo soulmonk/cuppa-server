@@ -16,6 +16,8 @@
     - replace multiple ids `id in ($1)` "TODO posgresql task1"
     - varchar 32 vs 31 `init.sql` `transaction.note`
 
+- JS es6 static field vs non static extends
+
 ## TODO v2
 
 - default options per user (first hardcode)

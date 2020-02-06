@@ -3,6 +3,26 @@
 const path = require('path')
 const AutoLoad = require('fastify-autoload')
 
+const S = require('fluent-schema')
+
+// todo move to global package
+function statusService (fastify, opts) {
+  fastify.route({
+    method: 'GET',
+    path: '/status',
+    handler: onStatus,
+    schema: {
+      response: {
+        200: S.object().prop('status', S.string())
+      }
+    }
+  })
+
+  async function onStatus (req, reply) {
+    return { status: 'ok' }
+  }
+}
+
 module.exports = function (fastify, opts, next) {
   // Do not touch the following lines
 
@@ -14,12 +34,7 @@ module.exports = function (fastify, opts, next) {
     options: Object.assign({}, opts)
   })
 
-  // This loads all plugins defined in services
-  // define your routes in one of these
-  fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'services'),
-    options: Object.assign({}, opts)
-  })
+  statusService(fastify, opts)
 
   // Make sure to call next when done
   next()

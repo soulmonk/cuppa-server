@@ -21,15 +21,10 @@ class TransactionInfoRepository extends BaseRepository {
       ids = [ids]
     }
     // TODO posgresql task1
-    let where = ids.length === 1 ? 'transaction_id=$1' : `transaction_id in (${ids.join(',')})`
-    // todo multiple ids as parameter
+    const where = ids.length === 1 ? 'transaction_id=$1' : `transaction_id in (${ids.join(',')})`
     const params = ids.length === 1 ? ids : []
-    // todo optimise query (instead "*" specific fields from request)
-    const query = `SELECT * FROM "${this.tableName}" WHERE ${where}`;
 
-    // TODO add logger
-    console.log('query: ', query, '\nparams: ', params)
-    const { rows } = await client.query(query, params)
+    const { rows } = await this._select(client, {where, params})
     client.release()
 
     let res = rows

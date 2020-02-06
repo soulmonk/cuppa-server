@@ -19,27 +19,7 @@ test('200 response', async t => {
   })
 
   t.strictEqual(response.statusCode, 200)
-
+  console.log('query.test.js::::22 >>>',response.payload)
   const payload = JSON.parse(response.payload)
-  t.type(payload.data.transactions, 'array')
-})
-
-test('200 create transaction', async t => {
-  const app = await build(t)
-  const response = await app.inject({
-    method: 'POST',
-    url: '/graphql',
-    payload: {
-      query: `{
-  transactions {
-    id
-  }
-}`
-    }
-  })
-
-  t.strictEqual(response.statusCode, 200)
-
-  const payload = JSON.parse(response.payload)
-  t.type(payload.data.transactions, 'array')
+  t.type(payload.data.transactions.length, 'number')
 })

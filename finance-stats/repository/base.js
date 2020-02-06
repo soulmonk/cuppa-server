@@ -1,7 +1,27 @@
 'use strict'
 
 class BaseRepository {
-  static tableName = ''
+  static tableName = '';
+
+  static async _select(client, {where = '', params = [], fields = []}) {
+    let query = 'SELECT '
+    if (fields.length) {
+      query += `"${fields.join('", "')}"`
+    } else {
+      query += '*'
+    }
+
+    query += ` FROM "${this.tableName}"`
+
+    if (where.length) {
+      query += ` WHERE ${where}`
+    }
+
+    // TODO add logger
+    console.log('query: ', query, '\nparams: ', params)
+
+    return client.query(query, params);
+  }
 
   static async byIds (pg, ids) {
     // todo duplicate lines
@@ -14,14 +34,11 @@ class BaseRepository {
     }
     // TODO posgresql task1
     let where = ids.length === 1 ? 'id=$1' : `id in (${ids.join(',')})`
-    // todo optimise query (instead "*" specific fields from request)
-    const query = `SELECT * FROM "${this.tableName}" WHERE ${where}`;
     // todo multiple ids as parameter
     const params = ids.length === 1 ? ids : []
 
-    // TODO add logger
-    console.log('query: ', query, '\nparams: ', params)
-    const { rows } = await client.query(query, params)
+    // todo optimise query (instead "*" specific fields from request)
+    const { rows } = await this._select(client, {where, params})
     client.release()
 
     let res = rows

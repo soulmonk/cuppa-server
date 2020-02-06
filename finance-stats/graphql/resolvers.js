@@ -38,7 +38,6 @@ const Query = {
 
 const Mutation = {
   addTransaction: async (obj, { transaction }, { app, pubsub }) => {
-
     console.log('resolvers.js::addTransaction::42 >>>', transaction)
     // todo TZ
     // todo fetch Exchange rate for date
@@ -56,22 +55,22 @@ const Mutation = {
       user_id: 1 // TODO USER ID
     }
 
-    const result = await transactionRepository.create(app.pg, data);
+    const result = await transactionRepository.create(app.pg, data)
     // no need
     // const result = await transactionRepository.byIds(app.pg, transactionId);
 
     if (transaction.info) {
-      const infoData =  {
+      const infoData = {
         blockedAmount: transaction.info.blockedAmount,
         fixedAmount: transaction.info.fixedAmount === undefined ? 0 : transaction.info.fixedAmount,
-        transactionId: result.id,
+        transactionId: result.id
       }
       await transactionInfoRepository.create(app.pg, infoData)
     }
 
     await pubsub.publish(
       {
-        topic: `transactionAdded`,
+        topic: 'transactionAdded',
         payload: {
           transaction: result
         }
@@ -84,7 +83,7 @@ const Mutation = {
 const Subscription = {
   transactionAdded: {
     subscribe: async (obj, args, { pubsub }) => {
-      return pubsub.subscribe(`transactionAdded`)
+      return pubsub.subscribe('transactionAdded')
     },
     resolve: payload => payload.transaction
   }
