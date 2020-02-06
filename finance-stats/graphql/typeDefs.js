@@ -64,11 +64,34 @@ module.exports = `
   type Query {
     transactions(dateFrom: Date, datTo: Date, limit: Int = 20, offset: Int): [Transaction]
     transaction(id: Int): Transaction
+    transactionTypes: [TransactionType]
+    cards: [Card]
+    banks: [Bank]
     total(dateFrom: String, dateTo: String): [Stats]
+  }
+  
+  input TransactionCreate {
+    date: Date
+    description: String!
+    amount: Float!
+    type: ID!
+    note: String
+    currencyCode: String
+    card: ID
+    info: TransactionInfoCreate
+  }
+  
+  input TransactionInfoCreate {
+    blockedAmount: Float
+    fixedAmount: Float
+    currencyExchange: Float
   }
 
   type Mutation {
-    addTransaction(title: String): Transaction
+    addTransaction(transaction: TransactionCreate): Transaction
   }
 
+  type Subscription {
+    transactionAdded: Transaction
+  }
 `

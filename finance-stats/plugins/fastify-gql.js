@@ -13,7 +13,7 @@ async function fastifyGql (fastify/*, opts */) {
   // Register Fastify GraphQL
   fastify.register(gql, {
     schema: makeExecutableSchema({ typeDefs, resolvers }),
-    graphiql: true, // todo debug
+    graphiql: false,
     routes: true,
     errorHandler,
     loaders,
@@ -25,6 +25,7 @@ async function fastifyGql (fastify/*, opts */) {
   })
 
   async function errorHandler (err, request, replay) {
+    // todo make user friendly
     replay.log.error(err)
     replay.log.error(JSON.stringify(err))
     return {

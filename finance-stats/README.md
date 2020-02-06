@@ -13,6 +13,12 @@
 - jsonb vs json
 - data type length 32 vs 31
 
+- postgresql replace multiple ids `id in ($1)` "TODO posgresql task1"
+
+## TODO v2
+
+- default options per user (first hardcode)
+
 ## Graphql questions
 
 - how to create and use pagination

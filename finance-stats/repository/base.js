@@ -12,11 +12,16 @@ class BaseRepository {
       single = true
       ids = [ids]
     }
-    let where = ids.length === 1 ? 'id=$1' : 'id in ($1)'
+    // TODO posgresql task1
+    let where = ids.length === 1 ? 'id=$1' : `id in (${ids.join(',')})`
     // tod optimise query
-    const { rows } = await client.query(`SELECT * FROM "${TABLE_NAME}" WHERE ${where}`, [
-      ids.join(',')
-    ])
+    const query = `SELECT * FROM "${this.tableName}" WHERE ${where}`;
+    // todo multiple ids as parameter
+    const params = ids.length === 1 ? ids : []
+
+    // TODO add logger
+    console.log('query: ', query, '\nparams: ', params)
+    const { rows } = await client.query(query, params)
     client.release()
 
     let res = rows
@@ -53,7 +58,8 @@ class BaseRepository {
       query += ' Skip $' + params.length
     }
 
-    console.log('query', query)
+    console.log('query: ', query)
+    console.log('params: ', params)
 
     // tod optimise query
     const { rows } = await client.query(query, params)
