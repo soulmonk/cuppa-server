@@ -9,11 +9,12 @@
 - fastify log level (errors)
 - tap tests asserts
 
-- decimal vs float
-- jsonb vs json
-- data type length 32 vs 31
 
-- postgresql replace multiple ids `id in ($1)` "TODO posgresql task1"
+- posgresql
+    - decimal vs float
+    - jsonb vs json
+    - replace multiple ids `id in ($1)` "TODO posgresql task1"
+    - varchar 32 vs 31 `init.sql` `transaction.note`
 
 ## TODO v2
 

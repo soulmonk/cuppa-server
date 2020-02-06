@@ -14,7 +14,7 @@ class BaseRepository {
     }
     // TODO posgresql task1
     let where = ids.length === 1 ? 'id=$1' : `id in (${ids.join(',')})`
-    // tod optimise query
+    // todo optimise query (instead "*" specific fields from request)
     const query = `SELECT * FROM "${this.tableName}" WHERE ${where}`;
     // todo multiple ids as parameter
     const params = ids.length === 1 ? ids : []

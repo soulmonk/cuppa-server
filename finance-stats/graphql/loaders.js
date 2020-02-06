@@ -8,9 +8,9 @@ const bankRepository = require('../repository/bank')
 function uniqueIds (arr, key) {
   // todo optimize
   return Object.keys(arr.reduce((acc, { obj }) => {
-    // todo some id can be string
-    if (!isNaN(Number(obj[key]))) {
-      acc[obj[key]] = 1;
+    // todo some id can be string or int
+    if (obj[key]) {
+      acc[obj[key]] = 1
     }
     return acc
   }, {}))
@@ -21,7 +21,7 @@ function buildLoader (repository, field) {
   return async (parent, { app }) => {
     const ids = uniqueIds(parent, field)
     if (!ids || !ids.length) {
-      return [];
+      return []
     }
     const data = await repository.byIds(app.pg, ids)
     if (!data) {
@@ -32,13 +32,54 @@ function buildLoader (repository, field) {
   }
 }
 
+function buildLoaderMany (repository, findMethod, field, onField) {
+  return async (parent, { app }) => {
+    const ids = uniqueIds(parent, field)
+    if (!ids || !ids.length) {
+      return []
+    }
+    const data = await repository[findMethod](app.pg, ids)
+    if (!data) {
+      return data
+    }
+    const mapped = data.reduce((acc, row) => {
+      if (!acc[row[onField]]) {
+        acc[row[onField]] = []
+      }
+      acc[row[onField]].push(row)
+      return acc
+    }, {})
+    return parent.map(({ obj }) => mapped[obj[field]])
+  }
+}
+
+function buildLoaderBelongsTo (repository, findMethod, field, onField) {
+  return async (parent, { app }) => {
+    const ids = uniqueIds(parent, field)
+    if (!ids || !ids.length) {
+      return []
+    }
+    const data = await repository[findMethod](app.pg, ids)
+    if (!data) {
+      return data
+    }
+    const mapped = data.reduce((acc, row) => {
+      if (!acc[row[onField]]) {
+        acc[row[onField]] = row
+      }
+      return acc
+    }, {})
+    return parent.map(({ obj }) => mapped[obj[field]])
+  }
+}
+
 const typeLoader = buildLoader(transactionTypeRepository, 'type_id')
 
 module.exports = {
   Transaction: {
     type: typeLoader,
     card: buildLoader(cardRepository, 'card_id'),
-    info: buildLoader(transactionInfoRepository, 'info_id')
+    info: buildLoaderBelongsTo(transactionInfoRepository, 'byTransactionIds', 'id', 'transaction_id')
   },
   Stats: {
     type: typeLoader

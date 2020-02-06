@@ -62,7 +62,7 @@ module.exports = `
   }
 
   type Query {
-    transactions(dateFrom: Date, datTo: Date, limit: Int = 20, offset: Int): [Transaction]
+    transactions(dateFrom: Date, dateTo: Date, limit: Int = 20, offset: Int): [Transaction]
     transaction(id: Int): Transaction
     transactionTypes: [TransactionType]
     cards: [Card]
@@ -82,9 +82,8 @@ module.exports = `
   }
   
   input TransactionInfoCreate {
-    blockedAmount: Float
+    blockedAmount: Float!
     fixedAmount: Float
-    currencyExchange: Float
   }
 
   type Mutation {
