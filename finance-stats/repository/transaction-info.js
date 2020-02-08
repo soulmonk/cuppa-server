@@ -12,7 +12,7 @@ class TransactionInfoRepository extends BaseRepository {
     }
   }
 
-  static async byTransactionIds(pg, ids) {
+  static async byTransactionIds (pg, ids) {
     const client = await pg.connect()
 
     let single = false
@@ -20,11 +20,15 @@ class TransactionInfoRepository extends BaseRepository {
       single = true
       ids = [ids]
     }
-    // TODO posgresql task1
-    const where = ids.length === 1 ? 'transaction_id=$1' : `transaction_id in (${ids.join(',')})`
-    const params = ids.length === 1 ? ids : []
 
-    const { rows } = await this._select(client, {where, params})
+    let where = 'transaction_id = $1'
+    if (ids.length > 1) {
+      // TODO test `id in (...$i)` vs (string_to_array($1, ','))
+      const queryParams = ids.map((_, i) => `$${i + 1}`)
+      where = `transaction_id in (${queryParams.join(',')})`
+    }
+
+    const { rows } = await this._select(client, { where, params: ids })
     client.release()
 
     let res = rows
@@ -35,13 +39,13 @@ class TransactionInfoRepository extends BaseRepository {
     return single ? res[0] : res
   }
 
-  static async create(pg, info) {
-    const query = 'INSERT INTO "transaction_info" ("blocked_amount", "fixed_amount", "transaction_id") VALUES ($1, $2, $3) RETURNING id';
+  static async create (pg, info) {
+    const query = 'INSERT INTO "transaction_info" ("blocked_amount", "fixed_amount", "transaction_id") VALUES ($1, $2, $3) RETURNING id'
 
     const params = [
       info.blockedAmount,
       info.fixedAmount,
-      info.transactionId,
+      info.transactionId
     ]
 
     console.log('transaction.js::create::24 >>>', '\nquery: ', query, '\nparams: ', params, '\nEND')

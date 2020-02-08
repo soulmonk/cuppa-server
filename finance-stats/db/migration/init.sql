@@ -3,8 +3,8 @@ create table transaction_type
     id          serial      not null
         constraint transaction_type_pk
             primary key,
-    name        varchar(31) not null,
-    description varchar(127),
+    name        varchar(32) not null,
+    description varchar(128),
     user_id     integer     not null
 );
 
@@ -16,8 +16,8 @@ create table bank
     id      serial      not null
         constraint bank_pk
             primary key,
-    name    varchar(63) not null,
-    url     varchar(255),
+    name    varchar(64) not null,
+    url     varchar(256),
     user_id integer     not null
 );
 
@@ -29,7 +29,7 @@ create table card
     id            serial                      not null
         constraint card_pk
             primary key,
-    name          varchar(63)                 not null,
+    name          varchar(64)                 not null,
     valid_from    timestamp without time zone not null,
     valid_to      timestamp without time zone not null,
 
@@ -38,7 +38,7 @@ create table card
         constraint card_bank_id_fkey
             references bank
             on update cascade,
-    description   varchar(255),
+    description   varchar(256),
     user_id       integer                     not null
 );
 
@@ -51,14 +51,14 @@ create table transaction
         constraint transaction_pk
             primary key,
     date          timestamp without time zone not null default now(),
-    description   varchar(63)                 not null,
+    description   varchar(64)                 not null,
     amount        double precision            not null,
 
     type_id       integer                     not null
         constraint transaction_type_id_fkey
             references transaction_type
             on update cascade,
-    note          varchar(127)                not null default '',
+    note          varchar(128)                not null default '',
 
     currency_code varchar(3)                  not null,
 

@@ -1,9 +1,9 @@
 'use strict'
 
 class BaseRepository {
-  static tableName = '';
+  static tableName = ''
 
-  static async _select(client, {where = '', params = [], fields = []}) {
+  static async _select (client, { where = '', params = [], fields = [] }) {
     let query = 'SELECT '
     if (fields.length) {
       query += `"${fields.join('", "')}"`
@@ -20,7 +20,7 @@ class BaseRepository {
     // TODO add logger
     console.log('query: ', query, '\nparams: ', params)
 
-    return client.query(query, params);
+    return client.query(query, params)
   }
 
   static async byIds (pg, ids) {
@@ -32,14 +32,37 @@ class BaseRepository {
       single = true
       ids = [ids]
     }
-    // TODO posgresql task1
-    let where = ids.length === 1 ? 'id=$1' : `id in (${ids.join(',')})`
-    // todo multiple ids as parameter
-    const params = ids.length === 1 ? ids : []
+
+    let where = 'id = $1'
+    if (ids.length > 1) {
+      // TODO test `id in (...$i)` vs (string_to_array($1, ','))
+      const queryParams = ids.map((_, i) => `$${i + 1}`)
+      where = `id in (${queryParams.join(',')})`
+    }
+    // const where = ids.length === 1 ? 'id = $1' : `id in (${queryParams.join(',')})`
 
     // todo optimise query (instead "*" specific fields from request)
-    const { rows } = await this._select(client, {where, params})
+    const { rows } = await this._select(client, { where, params: ids })
+
+    /*
+
+    let single = true
+    let where = 'id = $1'
+    let params = [ids]
+    if (Array.isArray(ids)) {
+      single = false
+      params = [ids[0]]
+    }
+
+    if (ids.length > 1) {
+      where = 'id in ($1)'
+      params = [ids.map(Number)]
+    }
+
+    // todo optimise query (instead "*" specific fields from request)
+    const { rows } = await this._select(client, { where, params })
     client.release()
+*/
 
     let res = rows
     if (!rows || !rows.length) {
@@ -84,7 +107,6 @@ class BaseRepository {
 
     return rows && rows.length ? rows : []
   }
-
 }
 
 module.exports = BaseRepository

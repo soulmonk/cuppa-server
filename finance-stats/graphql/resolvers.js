@@ -19,7 +19,6 @@ const Query = {
     return transactionRepository.byIds(app.pg, id)
   },
   transactions: async (obj, args, { app }) => {
-    console.log('resolvers.js::transactions::16 >>>', args)
     return transactionRepository.all(app.pg, args)
   },
   transactionTypes: async (obj, args, { app }) => {
