@@ -39,30 +39,9 @@ class BaseRepository {
       const queryParams = ids.map((_, i) => `$${i + 1}`)
       where = `id in (${queryParams.join(',')})`
     }
-    // const where = ids.length === 1 ? 'id = $1' : `id in (${queryParams.join(',')})`
 
     // todo optimise query (instead "*" specific fields from request)
     const { rows } = await this._select(client, { where, params: ids })
-
-    /*
-
-    let single = true
-    let where = 'id = $1'
-    let params = [ids]
-    if (Array.isArray(ids)) {
-      single = false
-      params = [ids[0]]
-    }
-
-    if (ids.length > 1) {
-      where = 'id in ($1)'
-      params = [ids.map(Number)]
-    }
-
-    // todo optimise query (instead "*" specific fields from request)
-    const { rows } = await this._select(client, { where, params })
-    client.release()
-*/
 
     let res = rows
     if (!rows || !rows.length) {
