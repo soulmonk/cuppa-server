@@ -5,6 +5,12 @@ const BaseRepository = require('./base')
 class TransactionInfoRepository extends BaseRepository {
   static tableName = 'transaction_info'
 
+  static mapFields = {
+    blocked_amount: 'blockedAmount',
+    fixed_amount: 'fixedAmount',
+    currency_exchange: 'currencyExchange'
+  }
+
   static buildWhere () {
     return {
       where: [],
@@ -43,9 +49,9 @@ class TransactionInfoRepository extends BaseRepository {
     const query = 'INSERT INTO "transaction_info" ("blocked_amount", "fixed_amount", "transaction_id") VALUES ($1, $2, $3) RETURNING id'
 
     const params = [
-      info.blockedAmount,
-      info.fixedAmount,
-      info.transactionId
+      info.blocked_amount,
+      info.fixed_amount,
+      info.transaction_id
     ]
 
     console.log('transaction.js::create::24 >>>', '\nquery: ', query, '\nparams: ', params, '\nEND')

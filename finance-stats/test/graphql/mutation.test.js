@@ -1,73 +1,55 @@
 'use strict'
 
-// const { test } = require('tap')
-// const { build } = require('../helper')
-/*
+const { test } = require('tap')
+const { build } = require('../helper')
 
-test('200 add vote', async t => {
+const transactionRepository = require('../../repository/transaction')
+const transactionInfoRepository = require('../../repository/transaction-info')
+
+const sinon = require('sinon')
+
+test('add transaction', async t => {
   const app = await build(t)
+
+  const date = new Date()
+
+  const transactionCreateStub = sinon.stub(transactionRepository, 'create')
+  transactionCreateStub.resolves({ id: 1, date })
+  const transactionInfoCreateStub = sinon.stub(transactionInfoRepository, 'create')
+  transactionInfoCreateStub.resolves({ id: 1 })
+
+  const gqlQuery = `mutation createTransaction {
+  addTransaction(transaction: {
+    description: "transaction ${date.toISOString()}"
+    amount: 10.5
+    type: 2
+    card: 1
+    info: {blockedAmount: 0.1}
+  }) {
+    id
+    date
+  }
+}`
   const response = await app.inject({
     method: 'POST',
     url: '/graphql',
     payload: {
-      query: `mutation {
-  addVote(title: "test") {
-    id
-    title
-  }
-}`
+      query: gqlQuery
     }
   })
 
   t.strictEqual(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), { data: { addVote: { id: 1, title: 'test' } } })
-
-  return true
-})
-
-test('200 vote yes', async t => {
-  const app = await build(t)
-  const response = await app.inject({
-    method: 'POST',
-    url: '/graphql',
-    payload: {
-      query: `mutation {
-    voteAye(voteId: 1) {
-    id
-    title
-    ayes
-    noes
-  }
-}`
+  t.deepEqual(JSON.parse(response.payload), {
+    data: {
+      addTransaction: {
+        id: '1',
+        date: date.getTime()
+      }
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), { data: { voteAye: { id: 1, title: 'test', ayes: 1, noes: 0 } } })
+  // todo should called with
 
-  return true
+  transactionCreateStub.restore()
+  transactionInfoCreateStub.restore()
 })
-
-test('200 vote no', async t => {
-  const app = await build(t)
-  const response = await app.inject({
-    method: 'POST',
-    url: '/graphql',
-    payload: {
-      query: `mutation {
-    voteNo(voteId: 1) {
-    id
-    title
-    ayes
-    noes
-  }
-}`
-    }
-  })
-
-  t.strictEqual(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), { data: { voteNo: { id: 1, title: 'test', ayes: 1, noes: 1 } } })
-
-  return true
-})
-*/

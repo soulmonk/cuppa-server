@@ -2,6 +2,7 @@
 
 class BaseRepository {
   static tableName = ''
+  static mapFields = null
 
   static async _select (client, { where = '', params = [], fields = [] }) {
     let query = 'SELECT '
@@ -103,6 +104,23 @@ class BaseRepository {
     client.release()
 
     return rows && rows.length ? rows : []
+  }
+
+  static toJson (data) {
+    if (!this.mapFields || !data) {
+      return data
+    }
+    const res = { ...data }
+
+    // todo mark1
+    for (const key of Object.keys(this.mapFields)) {
+      if (res[key] !== undefined) {
+        res[this.mapFields[key]] = res[key]
+        delete res[key]
+      }
+    }
+
+    return res
   }
 }
 

@@ -5,6 +5,8 @@ const BaseRepository = require('./base')
 class TransactionRepository extends BaseRepository {
   static tableName = 'transaction'
 
+  static mapFields = { currency_code: 'currencyCode' }
+
   static async create (pg, transaction) {
     const query = 'INSERT INTO "transaction" ("date", "description", "amount", "type_id", "note", "currency_code", "card_id", "user_id")' +
       ' VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, date'
@@ -54,5 +56,7 @@ class TransactionRepository extends BaseRepository {
     }
   }
 }
+
+TransactionRepository.toJson.bind(TransactionRepository)
 
 module.exports = TransactionRepository

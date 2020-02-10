@@ -27,13 +27,17 @@ function buildLoader (repository, field) {
     if (!data) {
       return data
     }
-    const mapped = data.reduce((acc, row) => {
-      acc[row.id] = row
-      return acc
-    }, {})
+
+    const mapped = data
+      .map(repository.toJson.bind(repository))
+      .reduce((acc, row) => {
+        acc[row.id] = row
+        return acc
+      }, {})
     return parent.map(({ obj }) => mapped[obj[field]])
   }
 }
+
 /*
 function buildLoaderMany (repository, findMethod, field, onField) {
   return async (parent, { app }) => {
@@ -67,12 +71,14 @@ function buildLoaderBelongsTo (repository, findMethod, field, onField) {
     if (!data) {
       return data
     }
-    const mapped = data.reduce((acc, row) => {
-      if (!acc[row[onField]]) {
-        acc[row[onField]] = row
-      }
-      return acc
-    }, {})
+    const mapped = data
+      .map(repository.toJson.bind(repository))
+      .reduce((acc, row) => {
+        if (!acc[row[onField]]) {
+          acc[row[onField]] = row
+        }
+        return acc
+      }, {})
     return parent.map(({ obj }) => mapped[obj[field]])
   }
 }

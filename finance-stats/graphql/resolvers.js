@@ -16,16 +16,19 @@ const config = {
 // todo per user (app.req.user.id)
 const Query = {
   transaction: async (obj, { id }, { app }) => {
-    return transactionRepository.byIds(app.pg, id)
+    return transactionRepository.byId(app.pg, id)
+      .then(transactionRepository.toJson.bind(transactionRepository))
   },
   transactions: async (obj, args, { app }) => {
     return transactionRepository.all(app.pg, args)
+      .then(res => res.map(transactionRepository.toJson.bind(transactionRepository)))
   },
   transactionTypes: async (obj, args, { app }) => {
     return transactionTypeRepository.all(app.pg)
   },
   cards: async (obj, args, { app }) => {
     return cardRepository.all(app.pg)
+      .then(res => res.map(cardRepository.toJson.bind(cardRepository)))
   },
   banks: async (obj, args, { app }) => {
     return bankRepository.all(app.pg)
@@ -54,7 +57,7 @@ const Mutation = {
       user_id: 1 // TODO USER ID
     }
 
-    const result = await transactionRepository.create(app.pg, data)
+    let result = await transactionRepository.create(app.pg, data)
     // no need
     // const result = await transactionRepository.byIds(app.pg, transactionId);
 
@@ -66,6 +69,8 @@ const Mutation = {
       }
       await transactionInfoRepository.create(app.pg, infoData)
     }
+
+    result = transactionRepository.toJson(result)
 
     await pubsub.publish(
       {

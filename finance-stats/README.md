@@ -13,6 +13,9 @@
     - decimal vs float
     - jsonb vs json
     - replace multiple ids `id in ($1)` "TODO posgresql task1"
+    
+- camelCase in gql vs lower_case in db
+- mark1: object keys vs for in 
 
 ## TODO v2
 
