@@ -29,7 +29,16 @@ class TransactionRepository extends BaseRepository {
     return { ...transaction, ...rows[0] }
   }
 
-  static buildWhere (options, params = [], where = []) {
+  /**
+   *
+   * @param {Object} [options={}]
+   * @param {Date} [options.dateFrom]
+   * @param {Date} [options.dateTo]
+   * @param params
+   * @param where
+   * @returns {{where: *[], params: *[]}}
+   */
+  static buildWhere (options = {}, params = [], where = []) {
     if (options.dateFrom) {
       params.push(options.dateFrom)
       where.push('date > $' + params.length)

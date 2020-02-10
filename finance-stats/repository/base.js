@@ -23,16 +23,27 @@ class BaseRepository {
     return client.query(query, params)
   }
 
+  static async byId (pg, id) {
+    if (undefined === id) {
+      return null
+    }
+    const result = await this.byIds(pg, [id])
+    return undefined === result[0] ? null : result[0]
+  }
+
   static async byIds (pg, ids) {
+    if (!ids || !ids.length) {
+      return []
+    }
+
+    if (!Array.isArray(ids)) {
+      throw new Error('expected "ids" to be an array')
+    }
+
     // todo duplicate lines
     const client = await pg.connect()
 
-    let single = false
-    if (!Array.isArray(ids)) {
-      single = true
-      ids = [ids]
-    }
-
+    // todo ??? split to functions
     let where = 'id = $1'
     if (ids.length > 1) {
       // TODO test `id in (...$i)` vs (string_to_array($1, ','))
@@ -47,14 +58,21 @@ class BaseRepository {
     if (!rows || !rows.length) {
       res = []
     }
-
-    return single ? res[0] : res
+    return res
   }
 
   static buildWhere (options, params = [], where = []) {
     throw new Error('Not implemented')
   }
 
+  /**
+   *
+   * @param pg
+   * @param {Object} [options={}]
+   * @param {Number} [options.limit]
+   * @param {Number} [options.offset]
+   * @returns {Promise<*>}
+   */
   static async all (pg, options = {}) {
     // todo duplicate lines
     const client = await pg.connect()
@@ -69,12 +87,12 @@ class BaseRepository {
 
     if (options.limit) {
       params.push(options.limit)
-      query += ' Limit $' + params.length
+      query += ' LIMIT $' + params.length
     }
 
     if (options.offset) {
       params.push(options.offset)
-      query += ' Skip $' + params.length
+      query += ' OFFSET $' + params.length
     }
 
     console.log('query: ', query)
