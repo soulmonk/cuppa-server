@@ -4,6 +4,7 @@ const path = require('path')
 const AutoLoad = require('fastify-autoload')
 
 const S = require('fluent-schema')
+const loadConfig = require('./config')
 
 // todo move to global package
 function statusService (fastify, opts) {
@@ -22,8 +23,8 @@ function statusService (fastify, opts) {
     return { status: 'ok' }
   }
 }
-
-module.exports = function (fastify, opts, next) {
+function setup(fastify, opts, next) {
+  opts = {...opts, ...loadConfig()}
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
@@ -39,3 +40,17 @@ module.exports = function (fastify, opts, next) {
   // Make sure to call next when done
   next()
 }
+
+if (require.main === module) {
+  const fastify = require('fastify')({
+    logger: {
+      level: 'info'
+    },
+  })
+  fastify.listen(process.env.FASTIFY_PORT || 3000, err => {
+    if (err) throw err
+    console.log(`Server listening at http://localhost:${fastify.server.address().port}`)
+  })
+}
+
+module.exports = setup

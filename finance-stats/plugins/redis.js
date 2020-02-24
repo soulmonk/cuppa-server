@@ -4,12 +4,9 @@ const fp = require('fastify-plugin')
 
 const redis = require('mqemitter-redis')
 
-async function fastifyRedis (fastify) {
+async function fastifyRedis (fastify, opts) {
 // TODO move to fastify plugin
-  const emitter = redis({
-    port: 6379,
-    host: '127.0.0.1'
-  })
+  const emitter = redis(opts.redis)
   fastify.decorate('redis', {})
 
   fastify.redis = emitter

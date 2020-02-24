@@ -1,6 +1,7 @@
 'use strict'
 
 const S = require('fluent-schema')
+const UserRepository = require('../repository/user')
 
 async function meService (fastify, opts) {
   fastify.route({
@@ -17,7 +18,7 @@ async function meService (fastify, opts) {
   })
 
   async function onInfo (req, reply) {
-    return req.user
+    return UserRepository.getUserById(this.pg, req.user.id)
   }
 }
 
