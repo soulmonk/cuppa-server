@@ -3,16 +3,24 @@
 const fp = require('fastify-plugin')
 const jwt = require('fastify-jwt')
 
-// todo move to configuration
+const UserRepository = require('./../repository/user')
+
 async function fastifyJWT (fastify, opts) {
+
+  // TODO may be move to single plugin for initialization of all repository
+  UserRepository.init(opts.user)
+
   fastify.register(jwt, {
-    secret: 'n7GzgBPYMAgppYiEP8lMp6rQiphbeWYquIG5xTvl8Z6hcey6eqNYT7UQrh6IexR2'
+    secret: opts.jwt.secret
   })
 
   fastify.decorate('authenticate', async function (request, reply) {
     try {
       await request.jwtVerify()
+
+      // todo expire
     } catch (err) {
+      reply.log.error(err);
       reply.send(err)
     }
   })

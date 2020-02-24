@@ -2,8 +2,10 @@
 
 const path = require('path')
 const AutoLoad = require('fastify-autoload')
+const loadConfig = require('./config')
 
-module.exports = function (fastify, opts, next) {
+function setup(fastify, opts, next) {
+  opts = {...opts, ...loadConfig()}
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
@@ -21,23 +23,21 @@ module.exports = function (fastify, opts, next) {
     options: Object.assign({}, opts)
   })
 
-  // Make sure to call next when done
+  // // Make sure to call next when done
   next()
 }
 
-/*
 
 if (require.main === module) {
-  const fastify = build({
+  const fastify = require('fastify')({
     logger: {
       level: 'info'
-    }
+    },
   })
-  fastify.listen(3000, err => {
+  fastify.listen(process.env.FASTIFY_PORT || 3000, err => {
     if (err) throw err
     console.log(`Server listening at http://localhost:${fastify.server.address().port}`)
   })
 }
 
-module.exports = build
-*/
+module.exports = setup

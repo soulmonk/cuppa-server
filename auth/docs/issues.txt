@@ -1,0 +1,2 @@
+- JWT sessionStorage and localStorage Security
+- web auth vs service auth

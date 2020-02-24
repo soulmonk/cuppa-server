@@ -31,14 +31,13 @@ fastify.register(proxy, {
 // TODO using old server, before migrate
 fastify.register(proxy, {
   upstream: 'http://localhost:4540',
-  prefix: '/api',
-  rewritePrefix: '/api'
+  prefix: '/ndfsm-flea-market',
 })
 
 // TODO web app
-// fastify.register(proxy, {
-//   upstream: 'http://localhost:3500',
-//   prefix: '/'
-// })
+fastify.register(proxy, {
+  upstream: 'http://localhost:3500',
+  prefix: '/'
+})
 
 fastify.listen(3000)

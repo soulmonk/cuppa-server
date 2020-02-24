@@ -1,9 +1,9 @@
 'use strict'
 
 const S = require('fluent-schema')
-const { getUserByName } = require('../repository/user')
+const UserRepository = require('../repository/user')
 
-async function getTokenService (fastify/*, opts */) {
+async function getTokenService (fastify, opts) {
   const tokenSchema = {
     body: S.object()
       .prop('username', S.string()
@@ -11,7 +11,6 @@ async function getTokenService (fastify/*, opts */) {
         .maxLength(128)
         .required()
       )
-      // todo additional password validation
       .prop('password', S.string()
         .minLength(8)
         .maxLength(128)
@@ -33,28 +32,29 @@ async function getTokenService (fastify/*, opts */) {
 
   async function onGetToken (req, reply) {
     req.log.info('onGetToken')
-    const { username/*, password */ } = req.body
+    const { username, password  } = req.body
 
-    const user = await getUserByName(this.pg, username)
+    const error = () => reply.code(400).send({
+      type: 'error',
+      message: 'wrong username or password'
+    })
 
-    /*
-    * TODO
-    * 1) user not found
-    * 2) wrong password
-    * 3) user - disabled
-    * */
-
-    if (!user || !user.enabled) {
-      return reply.code(400).send({
-        type: 'error',
-        message: 'wrong username or password'
-      })
+    const user = await UserRepository.getUserByName(this.pg, username)
+    if (!user) {
+      return error()
     }
 
-    // req.log.info(rows.length, rows[0], 'fetched user')
+    const validPwd = await UserRepository.checkPassword(password, user.password)
+    if (!validPwd) {
+      return error()
+    }
 
-    const token = await reply.jwtSign({ username }, {
-      expiresIn: 300 // 5 minute
+    if (!user || !user.enabled) {
+      return error()
+    }
+
+    const token = await reply.jwtSign({ id: user.id }, {
+      expiresIn: opts.jwt.expiresIn
     })
 
     return { token }
