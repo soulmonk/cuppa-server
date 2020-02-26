@@ -20,7 +20,7 @@ async function logoutService (fastify, opts) {
   async function onLogout (req, reply) {
     await UserRepository.storeRefreshToken(this.pg, req.user.id, null)
     reply.clearCookie(opts.jwt.refreshCookie)
-    return {status: 'ok'}
+    return { status: 'ok' }
   }
 }
 

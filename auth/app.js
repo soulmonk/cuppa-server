@@ -4,8 +4,8 @@ const path = require('path')
 const AutoLoad = require('fastify-autoload')
 const loadConfig = require('./config')
 
-function setup(fastify, opts, next) {
-  opts = {...opts, ...loadConfig()}
+function setup (fastify, opts, next) {
+  opts = { ...opts, ...loadConfig() }
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
@@ -27,12 +27,11 @@ function setup(fastify, opts, next) {
   next()
 }
 
-
 if (require.main === module) {
   const fastify = require('fastify')({
     logger: {
       level: 'info'
-    },
+    }
   })
   fastify.listen(process.env.FASTIFY_PORT || 3000, err => {
     if (err) throw err

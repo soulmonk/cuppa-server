@@ -101,9 +101,9 @@ async function tokenService (fastify, opts) {
       message: 'could not verify'
     })
 
-    const refresh_token = req.cookies[opts.jwt.refreshCookie]
+    const refreshToken = req.cookies[opts.jwt.refreshCookie]
 
-    const user = await UserRepository.getUserByRefreshToken(this.pg, refresh_token)
+    const user = await UserRepository.getUserByRefreshToken(this.pg, refreshToken)
 
     try {
       return generateTokenAndMakeResponse(reply, this.pg, this.jwt, opts.jwt, user, error)

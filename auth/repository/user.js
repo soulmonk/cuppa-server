@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt')
 const hyperid = require('hyperid')
 
 class UserRepository {
-
   static async getUserById (pg, id) {
     const client = await pg.connect()
     // todo optimise query
@@ -31,7 +30,7 @@ class UserRepository {
   static async storeRefreshToken (pg, id, token) {
     const client = await pg.connect()
     // todo optimise query
-    const {rowCount} = await client.query('UPDATE "user" SET refresh_token=$2 WHERE id=$1', [
+    const { rowCount } = await client.query('UPDATE "user" SET refresh_token=$2 WHERE id=$1', [
       id,
       token
     ])
@@ -42,7 +41,7 @@ class UserRepository {
 
   static async getUserByRefreshToken (pg, token) {
     if (!token) {
-      return;
+      return
     }
 
     const client = await pg.connect()
@@ -52,9 +51,7 @@ class UserRepository {
     ])
     client.release()
 
-    return rows && rows.length && rows[0];
-
-
+    return rows && rows.length && rows[0]
   }
 
   static crypt (password) {
@@ -65,7 +62,7 @@ class UserRepository {
     if (!plain || !stored) {
       return false
     }
-    return await bcrypt.compare(plain, stored)
+    return bcrypt.compare(plain, stored)
   }
 
   static init (opts) {
@@ -77,7 +74,7 @@ class UserRepository {
 
   static async generateToken (pg, jwt, jwtOpts, user) {
     if (!user || !user.enabled) {
-      return {success: false}
+      return { success: false }
     }
 
     const token = await jwt.sign({ id: user.id }, {
@@ -90,7 +87,7 @@ class UserRepository {
 
     await this.storeRefreshToken(pg, user.id, refreshToken)
 
-    return {success: true, token, refreshToken, expiresIn: jwtOpts.expiresIn}
+    return { success: true, token, refreshToken, expiresIn: jwtOpts.expiresIn }
   }
 }
 

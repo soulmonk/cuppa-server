@@ -19,7 +19,7 @@ async function fastifyJWT (fastify, opts) {
       }
     } catch (err) {
       reply.log.error(err);
-      reply.send(err)
+      reply.send("Could not authenticate")
     }
   })
 }
