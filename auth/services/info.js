@@ -18,7 +18,10 @@ async function meService (fastify, opts) {
   })
 
   async function onInfo (req, reply) {
-    return UserRepository.getUserById(this.pg, req.user.id)
+    const user = await UserRepository.getUserById(this.pg, req.user.id);
+    return {
+      username: user.name
+    }
   }
 }
 

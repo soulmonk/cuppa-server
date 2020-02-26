@@ -4,7 +4,8 @@ function loadConfig() {
   return {
     jwt: require('./jwt'),
     user: require('./user'),
-    pg: require('./pg')
+    pg: require('./pg'),
+    cookie: require('./cookie'),
   }
 }
 
