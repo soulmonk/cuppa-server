@@ -1,7 +1,0 @@
-- JWT sessionStorage and localStorage Security
-- web auth vs service auth
-
-- signed cookie
-
-- uuid collision -> https://www.quora.com/Has-there-ever-been-a-UUID-collision
-  UUIDs have 122 bits of entropy so the chance of two random UUIDs colliding is about 10^-37.

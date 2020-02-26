@@ -3,13 +3,20 @@
   "version": "1.0.0",
   "description": "",
   "main": "none",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
-    "test": "standard"
+    "pretest": "standard",
+    "test": "tap test/*.test.js",
+    "lint": "standard --fix"
   },
   "author": "Vitalii Melnykov <fsoulmonk@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "standard": "^14.3.1"
+    "sinon": "^9.0.0",
+    "standard": "^14.3.1",
+    "tap": "^14.10.6"
   },
   "dependencies": {
     "@grpc/proto-loader": "^0.5.3",

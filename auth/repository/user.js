@@ -30,7 +30,7 @@ class UserRepository {
   static async storeRefreshToken (pg, id, token) {
     const client = await pg.connect()
     // todo optimise query
-    const { rowCount } = await client.query('UPDATE "user" SET refresh_token=$2 WHERE id=$1', [
+    const { rowCount } = await client.query('UPDATE "user" SET refresh_token=$2 and updated_at = now() WHERE id=$1', [
       id,
       token
     ])
