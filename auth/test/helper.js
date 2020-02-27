@@ -14,7 +14,7 @@ function config () {
 }
 
 // automatically build and tear down our instance
-function build (t) {
+async function build (t) {
   const app = Fastify()
 
   // fastify-plugin ensures that all decorators

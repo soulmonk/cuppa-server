@@ -4,8 +4,17 @@ const bcrypt = require('bcrypt')
 const hyperid = require('hyperid')
 
 class UserRepository {
-  static async getUserById (pg, id) {
-    const client = await pg.connect()
+  constructor (pg, jwt, jwtOpts) {
+    this.pg = pg
+    this.jwt = jwt
+    this.jwtOpts = jwtOpts
+  }
+
+  async getUserById (id) {
+    if (id === null || isNaN(Number(id))) {
+      throw new Error('invalid arguments: id is required')
+    }
+    const client = await this.pg.connect()
     // todo optimise query
     const { rows } = await client.query('SELECT * FROM "user" WHERE id=$1 limit 1', [
       id
@@ -16,8 +25,11 @@ class UserRepository {
   }
 
   // todo jsdoc
-  static async getUserByName (pg, username) {
-    const client = await pg.connect()
+  async getUserByName (username) {
+    if (username === null || typeof username !== 'string') {
+      throw new Error('invalid arguments: username is required')
+    }
+    const client = await this.pg.connect()
     // todo optimise query
     const { rows } = await client.query('SELECT * FROM "user" WHERE name=$1 limit 1', [
       username
@@ -27,9 +39,11 @@ class UserRepository {
     return rows && rows.length && rows[0]
   }
 
-  static async storeRefreshToken (pg, id, token) {
-    const client = await pg.connect()
-    // todo optimise query
+  async storeRefreshToken (id, token) {
+    if (id === null || isNaN(Number(id)) || token === null || typeof token !== 'string') {
+      throw new Error('invalid arguments: "id" and "token" are required')
+    }
+    const client = await this.pg.connect()
     const { rowCount } = await client.query('UPDATE "user" SET refresh_token=$2 and updated_at = now() WHERE id=$1', [
       id,
       token
@@ -39,12 +53,12 @@ class UserRepository {
     return rowCount === 1
   }
 
-  static async getUserByRefreshToken (pg, token) {
-    if (!token) {
-      return
+  async getUserByRefreshToken (token) {
+    if (token === null || typeof token !== 'string') {
+      throw new Error('invalid arguments: "token" is required')
     }
 
-    const client = await pg.connect()
+    const client = await this.pg.connect()
     // todo optimise query
     const { rows } = await client.query('SELECT id, enabled FROM "user" WHERE refresh_token=$1 limit 1', [
       token
@@ -54,40 +68,28 @@ class UserRepository {
     return rows && rows.length && rows[0]
   }
 
-  static crypt (password) {
-    return bcrypt.hash(password, this.opts.rounds)
-  }
-
-  static async checkPassword (plain, stored) {
+  async checkPassword (plain, stored) {
     if (!plain || !stored) {
       return false
     }
     return bcrypt.compare(plain, stored)
   }
 
-  static init (opts) {
-    if (this.opts) {
-      throw new Error('UserRepository is already initialized')
-    }
-    this.opts = opts
-  }
-
-  static async generateToken (pg, jwt, jwtOpts, user) {
+  async generateToken (user) {
     if (!user || !user.enabled) {
       return { success: false }
     }
+    const expiresIn = this.jwtOpts.expiresIn
 
-    const token = await jwt.sign({ id: user.id }, {
-      expiresIn: jwtOpts.expiresIn
+    const token = await this.jwt.sign({ id: user.id }, {
+      expiresIn
     })
 
-    // todo change key ???
-    // jwt.sign
     const refreshToken = hyperid().uuid
 
-    await this.storeRefreshToken(pg, user.id, refreshToken)
+    await this.storeRefreshToken(user.id, refreshToken)
 
-    return { success: true, token, refreshToken, expiresIn: jwtOpts.expiresIn }
+    return { success: true, token, refreshToken, expiresIn }
   }
 }
 

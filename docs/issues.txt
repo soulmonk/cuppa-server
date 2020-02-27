@@ -2,7 +2,7 @@ Getaway:
   - prefixes, if all will be "root" ("/")
 
 Finance stats:
-  -
+  - working with floats )
 
 Auth:
   - JWT sessionStorage and localStorage Security

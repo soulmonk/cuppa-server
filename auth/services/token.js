@@ -1,7 +1,6 @@
 'use strict'
 
 const S = require('fluent-schema')
-const UserRepository = require('../repository/user')
 
 async function tokenService (fastify, opts) {
   const responseSchema = {
@@ -34,23 +33,18 @@ async function tokenService (fastify, opts) {
   })
 
   /**
-   *
-   * @param reply
-   * @param pg
-   * @param {JWT} jwt
-   * @param jwtOpts
-   * @param user
-   * @param error
-   * @returns {Promise<{expiresIn: *, token: *}|*>}
+   * @type {UserRepository}
    */
-  async function generateTokenAndMakeResponse (reply, pg, jwt, jwtOpts, user, error) {
-    const { success, token, refreshToken, expiresIn } = await UserRepository.generateToken(pg, jwt, jwtOpts, user)
+  const { user: userRepository } = fastify.repositories
+
+  async function generateTokenAndMakeResponse (reply, user, error) {
+    const { success, token, refreshToken, expiresIn } = await userRepository.generateToken(user)
 
     if (!success) {
       return error()
     }
 
-    reply.setCookie(jwtOpts.refreshCookie, refreshToken, {
+    reply.setCookie(opts.jwt.refreshCookie, refreshToken, {
       httpOnly: true,
       sameSite: 'strict'
       // signed ?
@@ -68,17 +62,17 @@ async function tokenService (fastify, opts) {
       message: 'wrong username or password'
     })
 
-    const user = await UserRepository.getUserByName(this.pg, username)
+    const user = await userRepository.getUserByName(username)
     if (!user) {
       return error()
     }
 
-    const validPwd = await UserRepository.checkPassword(password, user.password)
+    const validPwd = await userRepository.checkPassword(password, user.password)
     if (!validPwd) {
       return error()
     }
 
-    return generateTokenAndMakeResponse(reply, this.pg, this.jwt, opts.jwt, user, error)
+    return generateTokenAndMakeResponse(reply, user, error)
   }
 
   const refreshTokenSchema = {
@@ -103,10 +97,10 @@ async function tokenService (fastify, opts) {
 
     const refreshToken = req.cookies[opts.jwt.refreshCookie]
 
-    const user = await UserRepository.getUserByRefreshToken(this.pg, refreshToken)
+    const user = await userRepository.getUserByRefreshToken(refreshToken)
 
     try {
-      return generateTokenAndMakeResponse(reply, this.pg, this.jwt, opts.jwt, user, error)
+      return generateTokenAndMakeResponse(reply, user, error)
     } catch (e) {
       console.error(e)
       return error()

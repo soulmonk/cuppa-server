@@ -1,0 +1,3 @@
+- grpc library is simple wrapper, do we need so simple tests?
+  - as for me no
+  - useful if grpc server is not ready, then a wrapper should have more validations, "catches" and useful errors

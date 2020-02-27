@@ -3,23 +3,23 @@
 const { test } = require('tap')
 const { build } = require('../helper')
 
-test('200 response', async t => {
+test('get user info', async t => {
   const app = await build(t)
   const response = await app.inject({
     method: 'GET',
     url: '/info',
     headers: {
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvdWxtb25rIiwiaWF0IjoxNTc2NTEzMjQ4fQ.oj0R44dTgrV-Jv2JmPwzY4dPg6HNbL2saxjUxfeX_Wc'
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNTgyNzg3Nzk5fQ.SKy2WyJbMM1MKD6MIA8rO0BQHUox6X23exuNFYIXQK0'
     }
   })
 
   t.strictEqual(response.statusCode, 200)
   t.deepEqual(JSON.parse(response.payload), {
-    username: 'soulmonk'
+    username: 'admin'
   })
 })
 
-test('401', async t => {
+test('401 access deny to get user info', async t => {
   const app = await build(t)
   const response = await app.inject({
     method: 'GET',

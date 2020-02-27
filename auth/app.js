@@ -5,6 +5,10 @@ const AutoLoad = require('fastify-autoload')
 const loadConfig = require('./config')
 
 function setup (fastify, opts, next) {
+  // TODO error handler
+  // TODO error handler
+  // TODO error handler
+
   opts = { ...opts, ...loadConfig() }
   // Do not touch the following lines
 
