@@ -32,6 +32,18 @@ async function tokenService (fastify, opts) {
     schema: tokenSchema
   })
 
+  const refreshTokenSchema = {
+    response: responseSchema
+  }
+
+  // route configuration
+  fastify.route({
+    method: 'POST',
+    path: '/refresh-token',
+    handler: onRefreshToken,
+    schema: refreshTokenSchema
+  })
+
   /**
    * @type {UserRepository}
    */
@@ -74,18 +86,6 @@ async function tokenService (fastify, opts) {
 
     return generateTokenAndMakeResponse(reply, user, error)
   }
-
-  const refreshTokenSchema = {
-    response: responseSchema
-  }
-
-  // route configuration
-  fastify.route({
-    method: 'POST',
-    path: '/refresh-token',
-    handler: onRefreshToken,
-    schema: refreshTokenSchema
-  })
 
   async function onRefreshToken (req, reply) {
     req.log.info('onRefreshToken')

@@ -44,7 +44,7 @@ class UserRepository {
       throw new Error('invalid arguments: "id" and "token" are required')
     }
     const client = await this.pg.connect()
-    const { rowCount } = await client.query('UPDATE "user" SET refresh_token=$2 and updated_at = now() WHERE id=$1', [
+    const { rowCount } = await client.query('UPDATE "user" SET refresh_token=$2, updated_at = now() WHERE id=$1', [
       id,
       token
     ])
