@@ -3,6 +3,7 @@
 const grpc = require('grpc')
 const protoLoader = require('@grpc/proto-loader')
 
+// TODO security
 // /Users/vitaliimelnykov/MainFolder/projects/SoulMonk/cuppa/cuppa-workers/authentication/api/proto/v1/authenctication-service.proto
 class AuthGrpcClient {
   constructor (protoPath, grpcServerUri, options = {}) {
@@ -29,6 +30,23 @@ class AuthGrpcClient {
     const v1 = grpc.loadPackageDefinition(packageDefinition).v1
     this.client = new v1.AuthenticationService(grpcServerUri,
       grpc.credentials.createInsecure())
+  }
+
+  async signup (username, password, email) {
+    const payload = {
+      api: this.apiVersion,
+      username,
+      email,
+      password
+    }
+    return new Promise((resolve, reject) => {
+      this.client.SignUp(payload, function (err, result) {
+        if (err) {
+          return reject(err)
+        }
+        resolve(result)
+      })
+    })
   }
 
   async login (username, password) {

@@ -11,18 +11,31 @@ const { makeExecutableSchema } = require('graphql-tools')
 
 async function fastifyGql (fastify/*, opts */) {
   // Register Fastify GraphQL
+  // TODO security, if authorized
   fastify.register(gql, {
     schema: makeExecutableSchema({ typeDefs, resolvers }),
     graphiql: false,
     routes: true,
     errorHandler,
     loaders,
-    // context,
+    context,
     subscription: {
       emitter: fastify.redis,
       verifyClient
     }
   })
+
+  async function context (request, reply) {
+    // const authenticated = await fastify.authenticate(request, reply)
+    // if (!authenticated) {
+    //   throw new Error('TODO not authorized, handler at line 44 "TBD"')
+    // }
+    // // todo reply
+
+    return {
+      user: request.user
+    }
+  }
 
   async function errorHandler (err, request, replay) {
     // todo make user friendly
@@ -46,5 +59,5 @@ async function fastifyGql (fastify/*, opts */) {
 }
 
 module.exports = fp(fastifyGql, {
-  dependencies: ['fastifyPostgres', 'fastifyRedis']
+  dependencies: ['fastifyPostgres', 'fastifyRedis', 'fastifyJWT']
 })

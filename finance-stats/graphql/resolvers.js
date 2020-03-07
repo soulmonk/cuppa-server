@@ -15,12 +15,13 @@ const config = {
 
 // todo per user (app.req.user.id)
 const Query = {
-  transaction: async (obj, { id }, { app }) => {
+  transaction: async (obj, { id }, args) => {
+    const { app } = args
     return transactionRepository.byId(app.pg, id)
       .then(transactionRepository.toJson.bind(transactionRepository))
   },
-  transactions: async (obj, args, { app }) => {
-    return transactionRepository.all(app.pg, args)
+  transactions: async (obj, inputs, { app, user }) => {
+    return transactionRepository.all(app.pg, user.id, inputs)
       .then(res => res.map(transactionRepository.toJson.bind(transactionRepository)))
   },
   transactionTypes: async (obj, args, { app }) => {
@@ -39,8 +40,7 @@ const Query = {
 }
 
 const Mutation = {
-  addTransaction: async (obj, { transaction }, { app, pubsub }) => {
-    console.log('resolvers.js::addTransaction::42 >>>', transaction)
+  addTransaction: async (obj, { transaction }, { app, pubsub, user }) => {
     // todo TZ
     // todo fetch Exchange rate for date
 
@@ -54,7 +54,7 @@ const Mutation = {
       note: typeof transaction.note !== 'string' ? '' : transaction.note,
       currency_code: transaction.currencyCode === undefined ? config.currencyCode : transaction.currencyCode,
       card_id: transaction.card === undefined ? null : transaction.card,
-      user_id: 1 // TODO USER ID
+      user_id: user.id
     }
 
     let result = await transactionRepository.create(app.pg, data)

@@ -1,7 +1,7 @@
 'use strict'
 
 const { test } = require('tap')
-const { build } = require('../helper')
+const { build, TOKEN } = require('../helper')
 
 const transactionRepository = require('../../repository/transaction')
 const transactionTypeRepository = require('../../repository/transaction-type')
@@ -27,10 +27,11 @@ test('get all transactions', async t => {
     id
   }
 }`
+    },
+    headers: {
+      Authorization: 'Bearer ' + TOKEN
     }
   })
-
-  console.log('query.test.js::::33 >>>', response.payload)
 
   t.strictEqual(response.statusCode, 200)
   const payload = JSON.parse(response.payload)
@@ -147,6 +148,9 @@ test('get all transactions full', async t => {
     url: '/graphql',
     payload: {
       query: gqlQuery
+    },
+    headers: {
+      Authorization: 'Bearer ' + TOKEN
     }
   })
 
@@ -212,6 +216,9 @@ test('get transaction types', async t => {
     description
   }
 }`
+    },
+    headers: {
+      Authorization: 'Bearer ' + TOKEN
     }
   })
 

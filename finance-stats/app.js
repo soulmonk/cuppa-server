@@ -23,8 +23,9 @@ function statusService (fastify, opts) {
     return { status: 'ok' }
   }
 }
-function setup(fastify, opts, next) {
-  opts = {...opts, ...loadConfig()}
+
+async function setup (fastify, opts) {
+  opts = { ...opts, ...loadConfig() }
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
@@ -36,21 +37,19 @@ function setup(fastify, opts, next) {
   })
 
   statusService(fastify, opts)
-
-  // Make sure to call next when done
-  next()
 }
 
 if (require.main === module) {
   const fastify = require('fastify')({
     logger: {
       level: 'info'
-    },
+    }
   })
-  fastify.listen(process.env.FASTIFY_PORT || 3000, err => {
-    if (err) throw err
-    console.log(`Server listening at http://localhost:${fastify.server.address().port}`)
-  })
+  setup(fastify)
+    .then(() => fastify.listen(process.env.FASTIFY_PORT || 3000))
+    .then(() => {
+      console.log(`Server listening at http://localhost:${fastify.server.address().port}`)
+    })
 }
 
 module.exports = setup

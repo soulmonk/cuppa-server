@@ -3,15 +3,26 @@ Getaway:
 
 Finance stats:
   - working with floats )
+  - tests "fastify not found, proceeding anyway"
+  - clear console.log
+  - search/insert all with user ID
+  - from redis to rabbitMq
+  - rewrite repositories as instance inside plugin
 
 Auth:
-  - JWT sessionStorage and localStorage Security
+  - [done] JWT sessionStorage and localStorage Security
   - web auth vs service auth
+  - invalidate refresh token based on last logged-in
+  - logout on all devices
+  - Asymmetric JWT signatures
+  - create session table, to allow login on few devices
 
   - signed cookie
 
   - uuid collision -> https://www.quora.com/Has-there-ever-been-a-UUID-collision
     UUIDs have 122 bits of entropy so the chance of two random UUIDs colliding is about 10^-37.
 
-  - rewrite user repository as instance inside plugins
+  - [done] rewrite user repository as instance inside plugins
   - user create trigger for update_at, can be started with simple trigger inside PostgreSQL
+
+  - difficult to mock db: migrations inside "cuppa-workers-authentication"

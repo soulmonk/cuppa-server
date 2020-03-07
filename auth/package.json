@@ -32,7 +32,8 @@
     "pg": "^7.15.1"
   },
   "devDependencies": {
-    "tap": "^14.10.5",
-    "standard": "*"
+    "sinon": "^9.0.0",
+    "standard": "*",
+    "tap": "^14.10.5"
   }
 }

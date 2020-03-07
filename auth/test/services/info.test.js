@@ -2,14 +2,21 @@
 
 const { test } = require('tap')
 const { build } = require('../helper')
+const sinon = require('sinon')
 
 test('get user info', async t => {
   const app = await build(t)
+
+  const stubFindUser = sinon.stub(app.repositories.user, 'getUserById')
+  stubFindUser.resolves({ name: 'admin' })
+
+  const token = await app.jwt.sign({ id: 2 })
+
   const response = await app.inject({
     method: 'GET',
     url: '/info',
     headers: {
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNTgyNzg3Nzk5fQ.SKy2WyJbMM1MKD6MIA8rO0BQHUox6X23exuNFYIXQK0'
+      Authorization: 'Bearer ' + token
     }
   })
 

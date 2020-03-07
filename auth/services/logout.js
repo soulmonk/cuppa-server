@@ -1,7 +1,6 @@
 'use strict'
 
 const S = require('fluent-schema')
-const UserRepository = require('../repository/user')
 
 async function logoutService (fastify, opts) {
   fastify.route({
@@ -16,9 +15,13 @@ async function logoutService (fastify, opts) {
       }
     }
   })
+  /**
+   * @type {UserRepository}
+   */
+  const { user: userRepository } = fastify.repositories
 
   async function onLogout (req, reply) {
-    await UserRepository.storeRefreshToken(this.pg, req.user.id, null)
+    await userRepository.storeRefreshToken(req.user.id, null)
     reply.clearCookie(opts.jwt.refreshCookie)
     return { status: 'ok' }
   }

@@ -1,6 +1,6 @@
 'use strict'
 
-function loadConfig() {
+function loadConfig () {
   return {
     jwt: require('./jwt'),
     pg: require('./pg'),

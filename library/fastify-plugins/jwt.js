@@ -3,6 +3,7 @@
 const fp = require('fastify-plugin')
 const jwt = require('fastify-jwt')
 
+// todo with config set up on request
 async function fastifyJWT (fastify, opts) {
 
   fastify.decorateRequest('user', null)
@@ -11,10 +12,11 @@ async function fastifyJWT (fastify, opts) {
     secret: opts.jwt.secret
   })
 
-  fastify.decorate('authenticate', async function (request, reply) {
+  async function authenticate (request, reply) {
     const error = (err) => {
-      reply.log.error(err);
-      reply.send("Could not authenticate")
+      reply.log.error(err)
+      reply.code(401).send({ message: 'Could not authenticate' })
+      return false
     }
     try {
       const data = await request.jwtVerify()
@@ -25,9 +27,17 @@ async function fastifyJWT (fastify, opts) {
         id: data.id
       }
     } catch (err) {
-      error(err)
+      return error(err)
     }
-  })
+    return true
+  }
+
+  fastify.decorate('authenticate', authenticate)
+
+  // TODO find better way
+  if (opts.jwt.addHook) {
+    fastify.addHook('onRequest', authenticate)
+  }
 }
 
 module.exports = fp(fastifyJWT)

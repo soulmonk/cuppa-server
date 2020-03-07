@@ -14,7 +14,7 @@ function config () {
 }
 
 // automatically build and tear down our instance
-function build (t) {
+async function build (t) {
   // todo clear db
 
   const app = Fastify()
@@ -27,10 +27,13 @@ function build (t) {
   // tear down our app after we are done
   t.tearDown(app.close.bind(app))
 
+  await app.ready()
+
   return app
 }
 
 module.exports = {
+  TOKEN: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNTgyNzg3Nzk5fQ.SKy2WyJbMM1MKD6MIA8rO0BQHUox6X23exuNFYIXQK0',
   config,
   build
 }

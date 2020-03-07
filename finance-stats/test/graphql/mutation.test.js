@@ -1,7 +1,7 @@
 'use strict'
 
 const { test } = require('tap')
-const { build } = require('../helper')
+const { build, TOKEN } = require('../helper')
 
 const transactionRepository = require('../../repository/transaction')
 const transactionInfoRepository = require('../../repository/transaction-info')
@@ -17,6 +17,12 @@ test('add transaction', async t => {
   transactionCreateStub.resolves({ id: 1, date })
   const transactionInfoCreateStub = sinon.stub(transactionInfoRepository, 'create')
   transactionInfoCreateStub.resolves({ id: 1 })
+
+  // TODO no internet "Cannot stub non-existent own property "
+  // TODO no access to the decorate
+  // const authStub = sinon.stub(app, 'authenticate')
+  // authStub.fakeFn(req => { req.user = { id: 1 } })
+  // authStub.resolves()
 
   const gqlQuery = `mutation createTransaction {
   addTransaction(transaction: {
@@ -35,6 +41,9 @@ test('add transaction', async t => {
     url: '/graphql',
     payload: {
       query: gqlQuery
+    },
+    headers: {
+      Authorization: 'Bearer ' + TOKEN
     }
   })
 
@@ -50,6 +59,7 @@ test('add transaction', async t => {
 
   // todo should called with
 
+  // authStub.restore()
   transactionCreateStub.restore()
   transactionInfoCreateStub.restore()
 })

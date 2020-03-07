@@ -1,5 +1,6 @@
 'use strict'
 
+// TODO rewrite from static
 class BaseRepository {
   static tableName = ''
   static mapFields = null
@@ -69,18 +70,19 @@ class BaseRepository {
   /**
    *
    * @param pg
+   * @param {Number} userId
    * @param {Object} [options={}]
    * @param {Number} [options.limit]
    * @param {Number} [options.offset]
    * @returns {Promise<*>}
    */
-  static async all (pg, options = {}) {
+  static async all (pg, userId, options = {}) {
     // todo duplicate lines
     const client = await pg.connect()
 
     let query = `SELECT * FROM "${this.tableName}"`
 
-    const { where, params } = this.buildWhere(options)
+    const { where, params } = this.buildWhere(options, [userId], ['user_id = $1'])
 
     if (where.length) {
       query += ' WHERE ' + where.join(' and ')

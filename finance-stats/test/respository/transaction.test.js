@@ -65,13 +65,13 @@ test('find all transaction with filters', async t => {
     offset: 5
   }
 
-  const result = await transactionRepository.all(pg, options)
+  const result = await transactionRepository.all(pg, 1, options)
   t.deepEqual(result, [{ id: 1 }])
 
   t.ok(pg.connect.calledOnce)
 
-  const query = 'SELECT * FROM "transaction" WHERE date > $1 and date < $2 LIMIT $3 OFFSET $4'
-  const params = [date, date, 10, 5]
+  const query = 'SELECT * FROM "transaction" WHERE user_id = $1 and date > $2 and date < $3 LIMIT $4 OFFSET $5'
+  const params = [1, date, date, 10, 5]
   t.ok(client.query.calledWithExactly(query, params))
 })
 
@@ -105,13 +105,13 @@ test('find by id', async t => {
     connect: sinon.stub().resolves(client)
   }
 
-  const result = await transactionRepository.byId(pg, 1)
+  const result = await transactionRepository.byId(pg, 1, 1)
   t.deepEqual(result, { id: 1 })
 
   t.ok(pg.connect.calledOnce)
 
-  const query = 'SELECT * FROM "transaction" WHERE id = $1'
-  const params = [1]
+  const query = 'SELECT * FROM "transaction" WHERE id = $1 and user_id = $2'
+  const params = [1, 2]
   t.ok(client.query.calledWithExactly(query, params))
 })
 

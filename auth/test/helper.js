@@ -10,7 +10,14 @@ const App = require('../app')
 // Fill in this config with all the configurations
 // needed for testing the application
 function config () {
-  return {}
+  return {
+    jwt: {
+      secret: 'some secret',
+      expiresIn: 100,
+      refreshExpiresIn: 86400,
+      refreshCookie: 'my_refresh_token'
+    }
+  }
 }
 
 // automatically build and tear down our instance
@@ -24,6 +31,8 @@ async function build (t) {
 
   // tear down our app after we are done
   t.tearDown(app.close.bind(app))
+
+  await app.ready()
 
   return app
 }

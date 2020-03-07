@@ -2,6 +2,7 @@
 
 const BaseRepository = require('./base')
 
+// TODO rewrite from static
 class TransactionRepository extends BaseRepository {
   static tableName = 'transaction'
 
