@@ -41,19 +41,20 @@ const Query = {
 
 const Mutation = {
   addTransaction: async (obj, { transaction }, { app, pubsub, user }) => {
+    // todo validate input
     // todo TZ
     // todo fetch Exchange rate for date
 
     // db transaction
 
     const data = {
-      date: typeof transaction.date === 'undefined' ? 'now()' : transaction.date,
+      date: typeof transaction.date === 'undefined' || !transaction.date ? 'now()' : transaction.date,
       description: transaction.description,
       amount: transaction.amount,
-      type_id: transaction.type, // todo rename?
+      type_id: transaction.type, // todo rename? ###++++### insert or update on table \"transaction\" violates foreign key constraint
       note: typeof transaction.note !== 'string' ? '' : transaction.note,
       currency_code: transaction.currencyCode === undefined ? config.currencyCode : transaction.currencyCode,
-      card_id: transaction.card === undefined ? null : transaction.card,
+      card_id: transaction.card && !isNaN(Number(transaction.card)) && Number(transaction.card) > 0 ? transaction.card : null, // todo insert or update on table \"transaction\" violates foreign key constraint
       user_id: user.id
     }
 
@@ -81,6 +82,9 @@ const Mutation = {
       }
     )
     return result
+  },
+  updateTransaction: async (obj, { transaction }, { app, pubsub, user }) => {
+    throw new Error('Not implemented')
   }
 }
 

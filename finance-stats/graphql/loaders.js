@@ -18,12 +18,12 @@ function uniqueIds (arr, key) {
 
 // TODO tbd
 function buildLoader (repository, field) {
-  return async (parent, { app }) => {
+  return async (parent, { app, req: { user } }) => {
     const ids = uniqueIds(parent, field)
     if (!ids || !ids.length) {
       return []
     }
-    const data = await repository.byIds(app.pg, ids)
+    const data = await repository.byIds(app.pg, user.id, ids)
     if (!data) {
       return data
     }

@@ -43,7 +43,7 @@ module.exports = `
     name: String
     url: String
   }
-  
+  """ Category """
   type TransactionType {
     id: ID!
     name: String
@@ -81,6 +81,17 @@ module.exports = `
     info: TransactionInfoCreate
   }
   
+  input TransactionUpdate {
+    date: Date
+    description: String
+    amount: Float
+    type: ID
+    note: String
+    currencyCode: String
+    card: ID
+    info: TransactionInfoCreate
+  }
+  
   input TransactionInfoCreate {
     blockedAmount: Float!
     fixedAmount: Float
@@ -88,6 +99,7 @@ module.exports = `
 
   type Mutation {
     addTransaction(transaction: TransactionCreate): Transaction
+    updateTransaction(transaction: TransactionUpdate): Transaction
   }
 
   type Subscription {

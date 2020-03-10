@@ -25,15 +25,15 @@ class BaseRepository {
     return client.query(query, params)
   }
 
-  static async byId (pg, id) {
+  static async byId (pg, userId, id) {
     if (undefined === id) {
       return null
     }
-    const result = await this.byIds(pg, [id])
+    const result = await this.byIds(pg, userId, [id])
     return undefined === result[0] ? null : result[0]
   }
 
-  static async byIds (pg, ids) {
+  static async byIds (pg, userId, ids) {
     if (!ids || !ids.length) {
       return []
     }
@@ -53,8 +53,10 @@ class BaseRepository {
       where = `id in (${queryParams.join(',')})`
     }
 
+    where += ' and user_id = $' + (ids.length + 1)
+
     // todo optimise query (instead "*" specific fields from request)
-    const { rows } = await this._select(client, { where, params: ids })
+    const { rows } = await this._select(client, { where, params: ids.concat(userId) })
 
     let res = rows
     if (!rows || !rows.length) {

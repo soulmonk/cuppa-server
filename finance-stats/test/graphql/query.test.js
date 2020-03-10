@@ -191,6 +191,9 @@ test('get all transactions full', async t => {
     }])
 
   t.ok(infoStub.calledWithExactly(app.pg, ['1']))
+  t.ok(bankStub.calledWithExactly(app.pg, 8, ['1']))
+  t.ok(cardStub.calledWithExactly(app.pg, 8, ['1']))
+  t.ok(typeStub.calledWithExactly(app.pg, 8, ['2']))
 
   transactionStub.restore()
   infoStub.restore()
@@ -226,4 +229,106 @@ test('get transaction types', async t => {
   const payload = JSON.parse(response.payload)
 
   t.deepEqual(payload.data.transactionTypes, [{ id: '1', name: 'Other', description: null }])
+  allStub.restore()
+})
+
+test('get transaction types', async t => {
+  const app = await build(t)
+
+  const allStub = sinon.stub(transactionTypeRepository, 'all')
+  allStub.resolves([{ id: 1, name: 'Other', description: null }])
+
+  const response = await app.inject({
+    method: 'POST',
+    url: '/graphql',
+    payload: {
+      query: `{
+  transactionTypes {
+    id
+    name
+    description
+  }
+}`
+    },
+    headers: {
+      Authorization: 'Bearer ' + TOKEN
+    }
+  })
+
+  t.strictEqual(response.statusCode, 200)
+  const payload = JSON.parse(response.payload)
+
+  t.deepEqual(payload.data.transactionTypes, [{ id: '1', name: 'Other', description: null }])
+  allStub.restore()
+})
+
+test('get transaction types', async t => {
+  const app = await build(t)
+
+  const allStub = sinon.stub(cardRepository, 'all')
+  allStub.resolves(
+    [
+      {
+        id: 1,
+        name: 'USD',
+        valid_from: new Date(1500000000000),
+        valid_to: new Date(1500036000000),
+        currency_code: 'USD',
+        bank_id: 1
+      }
+    ]
+  )
+
+  const bankStub = sinon.stub(bankRepository, 'byIds')
+  bankStub.resolves(
+    [
+      {
+        id: 1,
+        name: 'my bank',
+        url: 'https://example.com'
+      }
+    ]
+  )
+
+  const response = await app.inject({
+    method: 'POST',
+    url: '/graphql',
+    payload: {
+      query: `{
+  cards {
+    id
+    name
+    validFrom
+    validTo
+    description
+    currencyCode
+    bank {
+      name
+    }
+  }
+}`
+    },
+    headers: {
+      Authorization: 'Bearer ' + TOKEN
+    }
+  })
+
+  t.strictEqual(response.statusCode, 200)
+  const payload = JSON.parse(response.payload)
+
+  t.deepEqual(payload.data.cards, [
+    {
+      id: '1',
+      name: 'USD',
+      validFrom: 1500000000000,
+      validTo: 1500036000000,
+      description: null,
+      currencyCode: 'USD',
+      bank: {
+        name: 'my bank'
+      }
+    }
+  ])
+  allStub.restore()
+  bankStub.restore()
 })

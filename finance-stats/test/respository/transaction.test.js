@@ -86,13 +86,13 @@ test('find by ids', async t => {
 
   const ids = [1, 2]
 
-  const result = await transactionRepository.byIds(pg, ids)
+  const result = await transactionRepository.byIds(pg, 1, ids)
   t.deepEqual(result, [{ id: 1 }])
 
   t.ok(pg.connect.calledOnce)
 
-  const query = 'SELECT * FROM "transaction" WHERE id in ($1,$2)'
-  const params = [1, 2]
+  const query = 'SELECT * FROM "transaction" WHERE id in ($1,$2) and user_id = $3'
+  const params = [1, 2, 1]
   t.ok(client.query.calledWithExactly(query, params))
 })
 
@@ -111,7 +111,7 @@ test('find by id', async t => {
   t.ok(pg.connect.calledOnce)
 
   const query = 'SELECT * FROM "transaction" WHERE id = $1 and user_id = $2'
-  const params = [1, 2]
+  const params = [1, 1]
   t.ok(client.query.calledWithExactly(query, params))
 })
 
