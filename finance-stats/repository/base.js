@@ -58,6 +58,8 @@ class BaseRepository {
     // todo optimise query (instead "*" specific fields from request)
     const { rows } = await this._select(client, { where, params: ids.concat(userId) })
 
+    client.release()
+
     let res = rows
     if (!rows || !rows.length) {
       res = []

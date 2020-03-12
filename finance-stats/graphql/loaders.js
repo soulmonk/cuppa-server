@@ -9,8 +9,8 @@ function uniqueIds (arr, key) {
   // todo optimize
   return Object.keys(arr.reduce((acc, { obj }) => {
     // todo some id can be string or int
-    if (obj[key]) {
-      acc[obj[key]] = 1
+    if (Number(obj[key]) && Number(obj[key]) > 0) {
+      acc[Number(obj[key])] = 1
     }
     return acc
   }, {}))

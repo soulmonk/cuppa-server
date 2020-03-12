@@ -47,14 +47,21 @@ const Mutation = {
 
     // db transaction
 
+    const currency_code = typeof transaction.currencyCode === 'string' && transaction.currencyCode.length === 3
+      ? config.currencyCode
+      : transaction.currencyCode
+
+    // todo insert or update on table \"transaction\" violates foreign key constraint
+    const catd_id = transaction.card && !isNaN(Number(transaction.card)) && Number(transaction.card) > 0 ? transaction.card : null
+
     const data = {
       date: typeof transaction.date === 'undefined' || !transaction.date ? 'now()' : transaction.date,
       description: transaction.description,
       amount: transaction.amount,
       type_id: transaction.type, // todo rename? ###++++### insert or update on table \"transaction\" violates foreign key constraint
       note: typeof transaction.note !== 'string' ? '' : transaction.note,
-      currency_code: transaction.currencyCode === undefined ? config.currencyCode : transaction.currencyCode,
-      card_id: transaction.card && !isNaN(Number(transaction.card)) && Number(transaction.card) > 0 ? transaction.card : null, // todo insert or update on table \"transaction\" violates foreign key constraint
+      currency_code,
+      card_id,
       user_id: user.id
     }
 

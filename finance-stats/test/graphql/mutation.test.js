@@ -87,6 +87,7 @@ test('add transaction with date', async t => {
     type: 2
     card: 0
     date: null
+    currencyCode: ""
   }) {
     id
     date
