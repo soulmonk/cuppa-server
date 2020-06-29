@@ -109,28 +109,24 @@ async function fetchData() {
   const auth = await authorize(credentials);
   const sheetsApi = google.sheets({version: 'v4', auth});
 
-  if (process.argv[2] === 'one') {
-    console.log(`Fetching data for ${process.argv[3]}`)
-    await fetchAndSaveRange(sheetsApi, title);
-    return;
-  }
-
   if (process.argv[2] === 'dump') {
     const sheets = await getAllSheets(sheetsApi);
     console.log('Sheets: ', sheets.join(','))
     return;
   }
 
-  const skip = (process.argv[2] || '').split(',');
+  let sheets;
+  if (process.argv[2] === 'only') {
+    console.log(`Fetching data for ${process.argv[3]}`)
+    const sheets = process.argv[3].split(',')
+  }
 
-  const sheets = await getAllSheets(sheetsApi);
+  if (!sheets) {
+    sheets = await getAllSheets(sheetsApi);
+  }
 
   for (let title of sheets) {
     console.log(`Sheat name ${title}`);
-    if (skip.includes(title)) {
-      console.log('Skipped')
-      continue;
-    }
     await fetchAndSaveRange(sheetsApi, title)
   }
 }
