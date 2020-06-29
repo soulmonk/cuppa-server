@@ -12,6 +12,7 @@ const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
 const TOKEN_PATH = process.env.TOKEN_PATH || 'token.json';
 const CREDENTIALS_PATH = process.env.CREDENTIALS_PATH || 'credentials.json';
 const DATA_PATH = process.env.DATA_PATH || path.join(__dirname, 'data');
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 
 async function getCredentials() {
   try {
@@ -85,7 +86,7 @@ function getNewToken(oAuth2Client) {
 
 async function getAllSheets(sheetsApi) {
   const { data: {sheets } } = await sheetsApi.spreadsheets.get({
-    spreadsheetId,
+    spreadsheetId: SPREADSHEET_ID,
   })
 
   return sheets.map(sheet => sheet.properties.title);
@@ -93,7 +94,7 @@ async function getAllSheets(sheetsApi) {
 
 async function fetchAndSaveRange(sheetsApi, title) {
   const {data: {values: rows }} = await sheets.spreadsheets.values.get({
-    spreadsheetId,
+    spreadsheetId: SPREADSHEET_ID,
     range: title,
   });
 
@@ -101,15 +102,17 @@ async function fetchAndSaveRange(sheetsApi, title) {
 }
 
 async function fetchData() {
+  if (!SPREADSHEET_ID) {
+    throw new Error('SPREADSHEET_ID required')
+  }
   const credentials = await getCredentials();
   const auth = await authorize(credentials);
-  const spreadsheetId = process.env.SPREADSHEET_ID;
   const sheetsApi = google.sheets({version: 'v4', auth});
-
 
   if (process.argv[2] === 'one') {
     console.log(`Fetching data for ${process.argv[3]}`)
     await fetchAndSaveRange(sheetsApi, title);
+    return;
   }
 
   if (process.argv[2] === 'dump') {
