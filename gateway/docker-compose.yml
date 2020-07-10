@@ -1,0 +1,47 @@
+version: '3.2'
+
+services:
+  gateway:
+    build: .
+    image: dev-cuppa-gateway
+    command: ["npm", "run", "start"]
+    ports:
+      - "3000:3000"
+    environment:
+      - FASTIFY_PORT=3000
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  auth:
+    image: cuppa-auth:latest
+    command: ["npm", "run", "start"]
+    ports:
+      - "3030:3030"
+    environment:
+      - FASTIFY_PORT=3030
+    volumes:
+      - ./auth/:/usr/src/app
+      - /usr/src/app/node_modules
+
+  finance-stats:
+    image: cuppa-finance-stats:latest
+    command: ["npm", "run", "start"]
+    ports:
+      - "3031:3031"
+    environment:
+      - FASTIFY_PORT=3031
+    volumes:
+      - ./finance-stats/:/usr/src/app
+      - /usr/src/app/node_modules
+
+  time-tracker:
+    image: cuppa-time-tracker:latest
+    command: ["npm", "run", "apm"]
+    ports:
+      - "3035:3035"
+    environment:
+      - FASTIFY_PORT=3035
+    volumes:
+      - ./time-tracker/:/usr/src/app
+      - /usr/src/app/node_modules

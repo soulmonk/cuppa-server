@@ -4,7 +4,8 @@ FROM node:12
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package*.json .
+COPY package.json .
+COPY package-lock.json .
 RUN npm install --production
 
 # Bundle app source

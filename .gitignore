@@ -64,6 +64,4 @@ typings/
 
 .idea
 
-
-# TODO package-lock
-package-lock.json
+/volumes
