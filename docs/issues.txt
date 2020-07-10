@@ -6,7 +6,7 @@ Finance stats:
   - tests "fastify not found, proceeding anyway"
   - clear console.log
   - search/insert all with user ID
-  - from redis to rabbitMq
+  - from redis to rabbitMq ?
   - rewrite repositories as instance inside plugin
 
 Auth:

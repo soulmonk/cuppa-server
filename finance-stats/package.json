@@ -7,37 +7,50 @@
     "test": "test"
   },
   "scripts": {
-    "test": "standard && tap test/**/*.test.js",
+    "pretest": "standard",
+    "fix": "standard --fix",
+    "test": "node test/load-db.js && tap",
     "start": "fastify start -l info app.js",
     "dev": "fastify start -l info -P app.js"
   },
-  "keywords": [],
+  "keywords": [
+    "api",
+    "graphql",
+    "finance"
+  ],
   "author": "Vitalii Melnykov <fsoulmonk@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "fastify": "^2.12.0",
-    "fastify-autoload": "^1.2.0",
+    "@zeit/ncc": "^0.22.3",
+    "fastify": "^2.15.1",
+    "fastify-autoload": "^1.2.2",
     "fastify-basic-auth": "^0.5.0",
-    "fastify-cli": "^1.4.0",
-    "fastify-gql": "^3.0.3",
-    "fastify-jwt": "^1.2.1",
-    "fastify-multipart": "^1.0.4",
-    "fastify-plugin": "^1.6.0",
+    "fastify-cli": "^1.5.0",
+    "fastify-gql": "^4.2.0",
+    "fastify-jwt": "^1.4.0",
+    "fastify-multipart": "^1.0.6",
+    "fastify-plugin": "^1.6.1",
     "fastify-postgres": "^2.0.0",
-    "fluent-schema": "^0.10.0",
-    "graphql": "^14.6.0",
-    "graphql-tools": "^4.0.6",
-    "hyperid": "^2.0.3",
-    "mqemitter-redis": "^3.0.0",
-    "pg": "^7.18.1"
+    "fluent-schema": "^1.0.4",
+    "googleapis": "^52.1.0",
+    "graphql": "^15.2.0",
+    "graphql-tools": "^6.0.12",
+    "hyperid": "^2.0.5",
+    "lodash": "^4.17.15",
+    "mqemitter-redis": "^4.0.3",
+    "pg": "^8.2.1"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.3",
-    "sinon": "^8.1.1",
+    "babel-eslint": "^10.1.0",
+    "sinon": "^9.0.2",
     "standard": "*",
-    "tap": "^14.10.6"
+    "tap": "^14.10.7"
   },
   "standard": {
-    "parser": "babel-eslint"
+    "parser": "babel-eslint",
+    "ignore": [
+      "dist",
+      "temp"
+    ]
   }
 }
