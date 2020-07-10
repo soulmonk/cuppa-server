@@ -2,7 +2,7 @@
 
 const { test } = require('tap')
 const sinon = require('sinon')
-const transactionRepository = require('../../repository/transaction')
+const transactionRepository = require('../../../repository/transaction')
 
 test('should create transaction', async t => {
   const date = Date.now()

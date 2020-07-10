@@ -80,13 +80,3 @@ test('validate error', async t => {
   }
   stub.restore()
 })
-
-// required server
-test('integration', async t => {
-  const client = createClient()
-
-  const { token } = await client.login('admin', 'q1w2e3r4')
-  const { id } = await client.validate(token)
-
-  t.equal(id, '8')
-})

@@ -1,5 +1,6 @@
 'use strict'
 
+process.env.POSTGRESQL_CONNECTION_STRING = process.env.POSTGRESQL_CONNECTION_STRING || 'postgres://cuppa:toor@localhost/cuppa-finance-stats-test'
 // This file contains code that we reuse
 // between our tests.
 
@@ -15,8 +16,6 @@ function config () {
 
 // automatically build and tear down our instance
 async function build (t) {
-  // todo clear db
-
   const app = Fastify()
 
   // fastify-plugin ensures that all decorators
