@@ -5,6 +5,10 @@ class BaseRepository {
   static tableName = ''
   static mapFields = null
 
+  constructor (client) {
+    this.client = client
+  }
+
   static async _select (client, { where = '', params = [], fields = [] }) {
     let query = 'SELECT '
     if (fields.length) {
