@@ -9,6 +9,7 @@
   "scripts": {
     "pretest": "standard",
     "fix": "standard --fix",
+    "cover": "tap --cov --coverage-report=lcov",
     "test": "node test/load-db.js && tap",
     "start": "fastify start -l info app.js",
     "dev": "fastify start -l info -P app.js"
@@ -22,29 +23,29 @@
   "license": "MIT",
   "dependencies": {
     "@zeit/ncc": "^0.22.3",
-    "fastify": "^2.15.1",
-    "fastify-autoload": "^1.2.2",
-    "fastify-basic-auth": "^0.5.0",
-    "fastify-cli": "^1.5.0",
-    "fastify-gql": "^4.2.0",
-    "fastify-jwt": "^1.4.0",
-    "fastify-multipart": "^1.0.6",
-    "fastify-plugin": "^1.6.1",
-    "fastify-postgres": "^2.0.0",
+    "fastify": "^3.1.1",
+    "fastify-autoload": "^3.0.5",
+    "fastify-basic-auth": "^1.0.1",
+    "fastify-cli": "^2.0.2",
+    "fastify-gql": "^5.1.1",
+    "fastify-jwt": "^2.1.2",
+    "fastify-multipart": "^2.0.3",
+    "fastify-plugin": "^2.0.1",
+    "fastify-postgres": "^3.0.1",
     "fluent-schema": "^1.0.4",
-    "googleapis": "^52.1.0",
-    "graphql": "^15.2.0",
-    "graphql-tools": "^6.0.12",
+    "googleapis": "^55.0.0",
+    "graphql": "^15.3.0",
+    "graphql-tools": "^6.0.14",
     "hyperid": "^2.0.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mqemitter-redis": "^4.0.3",
-    "pg": "^8.2.1"
+    "pg": "^8.3.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "sinon": "^9.0.2",
     "standard": "*",
-    "tap": "^14.10.7"
+    "tap": "^14.10.8"
   },
   "standard": {
     "parser": "babel-eslint",
