@@ -21,10 +21,10 @@ async function setup (fastify, opts) {
     options: Object.assign({}, opts)
   })
 
-  // This loads all plugins defined in services
+  // This loads all plugins defined in rest
   // define your routes in one of these
   fastify.register(AutoLoad, {
-    dir: path.join(__dirname, 'services'),
+    dir: path.join(__dirname, 'rest'),
     options: Object.assign({}, opts)
   })
 }
