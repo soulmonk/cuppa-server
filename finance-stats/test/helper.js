@@ -1,8 +1,14 @@
 'use strict'
 
-process.env.POSTGRESQL_CONNECTION_STRING = process.env.POSTGRESQL_CONNECTION_STRING || 'postgres://cuppa:toor@localhost/cuppa-finance-stats-test'
+process.env.POSTGRESQL_CONNECTION_STRING = process.env.POSTGRESQL_CONNECTION_STRING ||
+  'postgres://cuppa:toor@localhost/cuppa-finance-stats-test'
 // This file contains code that we reuse
 // between our tests.
+
+const { promisify } = require('util')
+const wait = promisify(setTimeout)
+
+const fetch = require('node-fetch')
 
 const Fastify = require('fastify')
 const fp = require('fastify-plugin')
@@ -31,8 +37,33 @@ async function build (t) {
   return app
 }
 
+async function createAndAuthorizeUser (username = 'test') {
+  await wait(100)
+  username += Date.now()
+  // todo SERVICE RESOLVER
+  const res = await fetch('http://127.0.0.1:3030/signup', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ username, email: `${username}@example.com`, password: '1234567890' })
+  })
+  if (res.status !== 201) {
+    return
+  }
+  const { token } = await fetch('http://127.0.0.1:3030/token', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ username, password: '1234567890' })
+  }).then(res => res.json())
+
+  return token
+}
+
 module.exports = {
-  TOKEN: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiaWF0IjoxNTgyNzg3Nzk5fQ.SKy2WyJbMM1MKD6MIA8rO0BQHUox6X23exuNFYIXQK0',
+  createAndAuthorizeUser,
   config,
   build
 }

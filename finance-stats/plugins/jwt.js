@@ -33,9 +33,7 @@ async function fastifyJWT (fastify, opts) {
 
   fastify.decorate('authenticate', authenticate)
 
-  if (opts.jwt.addHook) {
-    fastify.addHook('onRequest', authenticate)
-  }
+  fastify.addHook('onRequest', authenticate)
 }
 
 module.exports = fp(fastifyJWT)
