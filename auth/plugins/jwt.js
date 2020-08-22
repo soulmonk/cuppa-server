@@ -32,8 +32,6 @@ async function fastifyJWT (fastify, opts) {
   }
 
   fastify.decorate('authenticate', authenticate)
-
-  fastify.addHook('onRequest', authenticate)
 }
 
 module.exports = fp(fastifyJWT)
