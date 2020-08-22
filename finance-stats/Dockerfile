@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:14
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -9,8 +9,6 @@ RUN npm install --production
 
 # Bundle app source
 COPY . .
-# temporary
-COPY ../library/fastify-plugins/jwt.js /usr/src/
 
 EXPOSE 3031
 ENV FASTIFY_PORT=3031

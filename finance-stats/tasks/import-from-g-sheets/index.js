@@ -135,7 +135,6 @@ async function fetchData () {
 }
 
 async function loadRawData () {
-
   const files = await fs.readdir(DATA_PATH)
   const dataExt = '.json'
 
@@ -154,13 +153,13 @@ async function convert () {
 
   const data = []
 
-  for (let title in rawData) {
+  for (const title in rawData) {
     const mapper = mapping[title] || mapping.default
 
     console.log(`Converting "${title}"`)
     rawData[title].shift() // skip title row
 
-    for (let rawRow of rawData[title]) {
+    for (const rawRow of rawData[title]) {
       const row = mapper(rawRow)
       data.push(row)
     }

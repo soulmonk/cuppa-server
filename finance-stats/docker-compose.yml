@@ -3,6 +3,7 @@ version: '3.2'
 services:
   cuppa-auth:
     image: cuppa-auth:latest
+    container_name: fin-cuppa-auth
     environment:
       - FASTIFY_PORT=3030
     networks:
@@ -15,12 +16,16 @@ services:
   finance-stats:
     build: .
     image: dev-finance-stats
+    container_name: dev-finance-stats
     command: ["npm", "run", "dev"]
     networks:
       - cuppa-network
     environment:
       - FASTIFY_PORT=3031
       - POSTGRESQL_CONNECTION_STRING=postgres://postgresql/cuppa-finance-stats
+      - REDIS_HOST=redis
+    expose:
+      - 3031
     ports:
       - 3031:3031
     volumes:

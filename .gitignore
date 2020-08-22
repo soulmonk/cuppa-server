@@ -65,3 +65,5 @@ typings/
 .idea
 
 /volumes
+
+posgress-server.env
