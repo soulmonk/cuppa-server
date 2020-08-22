@@ -76,11 +76,13 @@ async function tokenService (fastify, opts) {
 
     const user = await userRepository.getUserByName(username)
     if (!user) {
+      console.log('token.js::onGetToken::79 >>>', '')
       return error()
     }
 
     const validPwd = await userRepository.checkPassword(password, user.password)
     if (!validPwd) {
+      console.log('token.js::onGetToken::84 >>>', '')
       return error()
     }
 
