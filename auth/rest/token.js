@@ -6,7 +6,10 @@ async function tokenService (fastify, opts) {
   const responseSchema = {
     200: S.object()
       .prop('token', S.string())
-      .prop('expiresIn', S.number())
+      .prop('expiresIn', S.number()),
+    400: S.object()
+      .prop('type', S.string())
+      .prop('message', S.string())
   }
 
   const tokenSchema = {
@@ -66,8 +69,9 @@ async function tokenService (fastify, opts) {
   }
 
   async function onGetToken (req, reply) {
-    req.log.info('onGetToken')
-    const { username, password } = req.body
+    const { log, body } = req
+    log.info('onGetToken')
+    const { username, password } = body
 
     const error = () => reply.code(400).send({
       type: 'error',

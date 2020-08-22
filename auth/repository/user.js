@@ -4,10 +4,11 @@ const bcrypt = require('bcrypt')
 const hyperid = require('hyperid')
 
 class UserRepository {
-  constructor (pg, jwt, jwtOpts) {
+  constructor (pg, jwt, jwtOpts, userOpts) {
     this.pg = pg
     this.jwt = jwt
     this.jwtOpts = jwtOpts
+    this.userOpts = userOpts
   }
 
   async getUserById (id) {
@@ -73,6 +74,28 @@ class UserRepository {
       return false
     }
     return bcrypt.compare(plain, stored)
+  }
+
+  async signup (username, password, email, enabled = false) {
+    const userModel = await this.getUserByName(username)
+    if (userModel) {
+      const error = new Error(`user "${username}" exists`)
+      error.code = 'duplicate'
+      throw error;
+    }
+    const hashedPass = await bcrypt.hash(password, this.userOpts.rounds);
+    const client = await this.pg.connect()
+    const { rows } = await client.query(`INSERT INTO "user" (name, email, password, enabled, created_at, updated_at)
+    VALUES ($1, $2, $3, $4, now(), now())
+        RETURNING id, enabled, created_at, updated_at`, [
+      username,
+      email,
+      hashedPass,
+      enabled
+    ])
+    client.release()
+
+    return rows && rows.length &&rows[0]
   }
 
   async generateToken (user) {
