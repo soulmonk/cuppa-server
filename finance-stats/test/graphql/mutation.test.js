@@ -1,28 +1,13 @@
 'use strict'
 
 const { test } = require('tap')
-const { build, TOKEN } = require('../helper')
-
-const transactionRepository = require('../../repository/transaction')
-const transactionInfoRepository = require('../../repository/transaction-info')
-
-const sinon = require('sinon')
+const { build, createAndAuthorizeUser } = require('../helper')
 
 test('add transaction', async t => {
   const app = await build(t)
+  const token = await createAndAuthorizeUser()
 
   const date = new Date()
-
-  const transactionCreateStub = sinon.stub(transactionRepository, 'create')
-  transactionCreateStub.resolves({ id: 1, date })
-  const transactionInfoCreateStub = sinon.stub(transactionInfoRepository, 'create')
-  transactionInfoCreateStub.resolves({ id: 1 })
-
-  // TODO no internet "Cannot stub non-existent own property "
-  // TODO no access to the decorate
-  // const authStub = sinon.stub(app, 'authenticate')
-  // authStub.fakeFn(req => { req.user = { id: 1 } })
-  // authStub.resolves()
 
   const gqlQuery = `mutation createTransaction {
   addTransaction(transaction: {
@@ -43,7 +28,7 @@ test('add transaction', async t => {
       query: gqlQuery
     },
     headers: {
-      Authorization: 'Bearer ' + TOKEN
+      Authorization: 'Bearer ' + token
     }
   })
 
@@ -56,29 +41,13 @@ test('add transaction', async t => {
       }
     }
   })
-
-  // todo should called with
-
-  // authStub.restore()
-  transactionCreateStub.restore()
-  transactionInfoCreateStub.restore()
 })
 
 test('add transaction with date', async t => {
   const app = await build(t)
+  const token = await createAndAuthorizeUser()
 
   const date = new Date()
-
-  const transactionCreateStub = sinon.stub(transactionRepository, 'create')
-  transactionCreateStub.resolves({ id: 1, date })
-  const transactionInfoCreateStub = sinon.stub(transactionInfoRepository, 'create')
-  transactionInfoCreateStub.resolves({ id: 1 })
-
-  // TODO no internet "Cannot stub non-existent own property "
-  // TODO no access to the decorate
-  // const authStub = sinon.stub(app, 'authenticate')
-  // authStub.fakeFn(req => { req.user = { id: 1 } })
-  // authStub.resolves()
 
   const gqlQuery = `mutation createTransaction {
   addTransaction(transaction: {
@@ -100,7 +69,7 @@ test('add transaction with date', async t => {
       query: gqlQuery
     },
     headers: {
-      Authorization: 'Bearer ' + TOKEN
+      Authorization: 'Bearer ' + token
     }
   })
 
@@ -113,21 +82,4 @@ test('add transaction with date', async t => {
       }
     }
   })
-
-  t.deepEqual(transactionCreateStub.getCall(0).args[1], {
-    date: 'now()',
-    description: `transaction ${date.toISOString()}`,
-    amount: 10.5,
-    type_id: 2,
-    note: '',
-    currency_code: 'UAH', // DEFAULT
-    card_id: null,
-    user_id: 8
-  })
-
-  // todo should called with
-
-  // authStub.restore()
-  transactionCreateStub.restore()
-  transactionInfoCreateStub.restore()
 })
