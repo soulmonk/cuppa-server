@@ -6,7 +6,7 @@ const UserRepository = require('./../repository/user')
 
 async function repositories (fastify, opts) {
   fastify.decorate('repositories', {
-    user: new UserRepository(fastify.pg, fastify.jwt, opts.jwt)
+    user: new UserRepository(fastify.pg, fastify.jwt, opts.jwt, opts.user)
   })
 }
 
