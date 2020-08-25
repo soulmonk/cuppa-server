@@ -13,7 +13,7 @@ async function run () {
 }
 
 run()
-  .catch(err => (console.error(err), -1))
+  .catch(err => (console.error(err), -1)) // eslint-disable-line
   .then((code) => {
     console.log('Done', new Date())
     process.exit(code)

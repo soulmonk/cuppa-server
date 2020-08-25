@@ -41,9 +41,10 @@ async function loadMigration (db, count) {
 async function getMigrationList (storedMigrations) {
   const dir = await fs.readdir(__dirname)
 
+  // eslint-disable-next-line
   const storedMigrationsMap = storedMigrations.reduce((acc, name) => (acc[name] = 1, acc), {})
   const result = []
-  for (let file of dir) {
+  for (const file of dir) {
     if (file === 'index.js' || storedMigrationsMap[file]) {
       continue
     }
@@ -57,7 +58,7 @@ async function getMigrationList (storedMigrations) {
 }
 
 async function applyMigration (db, migrationFiles) {
-  for (let file of migrationFiles) {
+  for (const file of migrationFiles) {
     console.log('Start process data:', file.name)
     console.log('Run query:\n', file.data)
     await db.query(file.data)
@@ -80,11 +81,13 @@ async function migration (db) {
   return applyMigration(db, migrationData)
 }
 
-async function create(db, name) {
-    const query  = `INSERT INTO migrations (name, created_at) VALUES ($1, now()) RETURNING id`
+async function create (db, name) {
+  const query = `INSERT INTO migrations (name, created_at)
+                 VALUES ($1, now())
+                 RETURNING id`
 
-    const result = await db.query(query, [name]);
-    console.log('Created new record:', result.rows[0].id);
+  const result = await db.query(query, [name])
+  console.log('Created new record:', result.rows[0].id)
 }
 
 module.exports = {
