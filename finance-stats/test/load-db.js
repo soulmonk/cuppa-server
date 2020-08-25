@@ -14,7 +14,7 @@ async function run () {
 
   const pool = new pg.Pool(loadConfig().pg)
 
-  // todo error: must be owner of schema public
+  // must be owner of schema public
   await pool.query('DROP SCHEMA public CASCADE;')
   await pool.query('CREATE SCHEMA public;')
 
