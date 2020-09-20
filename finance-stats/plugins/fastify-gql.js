@@ -26,12 +26,6 @@ async function fastifyGql (fastify/*, opts */) {
   })
 
   async function context (request, reply) {
-    // const authenticated = await fastify.authenticate(request, reply)
-    // if (!authenticated) {
-    //   throw new Error('TODO not authorized, handler at line 44 "TBD"')
-    // }
-    // // todo reply
-
     return {
       user: request.user
     }
@@ -59,5 +53,6 @@ async function fastifyGql (fastify/*, opts */) {
 }
 
 module.exports = fp(fastifyGql, {
+  fastify: '3.x',
   dependencies: ['fastifyPostgres', 'fastifyRedis', 'fastifyJWT']
 })
