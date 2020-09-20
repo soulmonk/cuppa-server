@@ -214,8 +214,7 @@ async function store (data) {
     console.log('categories:', categories)
     await fs.writeFile(path.join(DATA_PATH, '_convertedData.json'), JSON.stringify(_.sortBy(data, 'date')))
     const additional = data.reduce((acc, data) => {
-      if (data.additional.length)
-        acc.push(data)
+      if (data.additional.length) acc.push(data)
       return acc
     }, [])
     console.log('additional', additional.length)
@@ -236,10 +235,8 @@ async function store (data) {
 
     let values = []
     const v = batch
-      // eslint-disable-next-line
-      .map(({ date, description, amount, type_id, note, card_id, currency_code, user_id }, idx) => {
-        // eslint-disable-next-line
-        values = values.concat([date, description, amount, type_id, note, card_id, currency_code, user_id])
+      .map(({ date, description, amount, typeId, note, cardId, currencyCode, userId }, idx) => {
+        values = values.concat([date.toISOString(), description, amount, typeId, note, cardId, currencyCode, userId])
         return `($${(8 * idx) + 1}, $${(8 * idx) + 2}, $${(8 * idx) + 3}, $${(8 * idx) + 4}, $${(8 * idx) + 5}, $${(8 * idx) +
         6}, $${(8 * idx) + 7}, $${(8 * idx) + 8})`
       })
@@ -284,10 +281,10 @@ VALUES ${v.join(',')};`
       description: row.description,
       amount: row.amount,
       note: row.note ?? '',
-      type_id: storedCategories[row.category],
-      card_id: isCash ? null : cardId,
-      currency_code: currencyCode ?? defaultCurrencyCode,
-      user_id: mapping.userId
+      typeId: storedCategories[row.category],
+      cardId: isCash ? null : cardId,
+      currencyCode: currencyCode ?? defaultCurrencyCode,
+      userId: mapping.userId
     }
     batch.push(record)
   }
