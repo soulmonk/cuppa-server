@@ -52,7 +52,7 @@ create table transaction
             primary key,
     date          timestamp without time zone not null default now(),
     description   varchar(64)                 not null,
-    amount        double precision            not null,
+    amount        decimal(10, 4)            not null,
 
     type_id       integer                     not null
         constraint transaction_type_id_fkey
@@ -79,8 +79,8 @@ create table transaction_info
     id             serial           not null
         constraint transaction_info_pk
             primary key,
-    blocked_amount double precision not null,
-    fixed_amount   double precision not null,
+    blocked_amount decimal(10, 4) not null,
+    fixed_amount   decimal(10, 4) not null,
 
     transaction_id       integer
         constraint transaction_id_fkey
