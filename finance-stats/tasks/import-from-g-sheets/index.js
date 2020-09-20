@@ -1,19 +1,29 @@
 const fs = require('fs').promises
 const path = require('path')
+const pg = require('pg')
+const loadConfig = require('../../config')
 const readline = require('readline')
 const { google } = require('googleapis')
+const _ = require('lodash')
+
+const argv = require('minimist')(process.argv.slice(2))
 
 const loadMapping = require('./mapSheet')
+const { baseParse } = require('./mapSheet/base')
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-const TOKEN_PATH = process.env.TOKEN_PATH || 'token.json'
-const CREDENTIALS_PATH = process.env.CREDENTIALS_PATH || 'credentials.json'
-const DATA_PATH = process.env.DATA_PATH || path.join(__dirname, 'data')
-const SPREADSHEET_ID = process.env.SPREADSHEET_ID
+
+const {
+  SPREADSHEET_ID,
+  TOKEN_PATH = 'token.json',
+  CREDENTIALS_PATH = 'CREDENTIALS_PATH',
+  DATA_PATH = path.join(__dirname, 'data'),
+  MAPPING = path.join(__dirname, 'mapping/data.js')
+} = process.env
 
 async function getCredentials () {
   try {
@@ -140,7 +150,7 @@ async function loadRawData () {
 
   const rawData = {}
   for (const filename of files) {
-    if (path.extname(filename) !== dataExt || filename === 'convertedData.json') { continue }
+    if (path.extname(filename) !== dataExt || filename.startsWith('_')) { continue }
 
     rawData[path.basename(filename, dataExt)] = require(path.join(DATA_PATH, filename))
   }
@@ -152,27 +162,138 @@ async function convert () {
   const rawData = await loadRawData()
 
   const data = []
-
+  let categories = []
   for (const title in rawData) {
     const mapper = mapping[title] || mapping.default
 
     console.log(`Converting "${title}"`)
     rawData[title].shift() // skip title row
+    categories = _.uniq(rawData[title].map(row => row[3]).concat(categories))
 
+    let idx = 0
     for (const rawRow of rawData[title]) {
-      const row = mapper(rawRow)
+      const parsed = baseParse(rawRow, title, ++idx)
+      const row = mapper(parsed, rawRow)
       data.push(row)
     }
   }
-
-  // todo temporary
-  await fs.writeFile(path.join(DATA_PATH, 'convertedData.json'), JSON.stringify(data))
+  console.log('Raw categories:', categories.sort())
 
   return data
 }
 
-async function store (data) {
+async function saveTransactionTypes (pool, mapping, categories) {
+  async function getAllTransactionTypes () {
+    const { rows: storedCategories } = await pool.query(`SELECT id, name
+                                                         FROM transaction_type
+                                                         WHERE user_id = $1;`, [mapping.userId])
+    return storedCategories.reduce((acc, { id, name }) => (acc[name] = id, acc), {}) // eslint-disable-line
+  }
 
+  async function saveTransactionTypes () {
+    const v = categories.filter(name => !storedCategories[name])
+      .map(name => `('${name}', ${mapping.userId})`)
+    if (!v.length) {
+      return
+    }
+    const query = `INSERT INTO transaction_type(name, user_id) VALUES ${v.join(',')};`
+    return pool.query(query)
+  }
+
+  let storedCategories = await getAllTransactionTypes()
+  await saveTransactionTypes()
+  storedCategories = await getAllTransactionTypes()
+  return storedCategories
+}
+
+async function store (data) {
+  const mapping = require(MAPPING)
+  const categories = _.uniqBy(data, row => row.category).map(row => row.category)
+
+  if (argv.dumpTemp) {
+    console.log('categories:', categories)
+    await fs.writeFile(path.join(DATA_PATH, '_convertedData.json'), JSON.stringify(_.sortBy(data, 'date')))
+    const additional = data.reduce((acc, data) => {
+      if (data.additional.length)
+        acc.push(data)
+      return acc
+    }, [])
+    console.log('additional', additional.length)
+    await fs.writeFile(path.join(DATA_PATH, '_withAdditional.json'), JSON.stringify(additional))
+  }
+
+  const pool = new pg.Pool(loadConfig().pg)
+  const storedCategories = await saveTransactionTypes(pool, mapping, categories)
+
+  let batch = []
+  const BATCH_LIMIT = 100
+
+  async function storeBatch () {
+    if (!batch || argv.skipStore) {
+      return
+    }
+    console.log('Saving batch', batch.length)
+
+    let values = []
+    const v = batch
+      // eslint-disable-next-line
+      .map(({ date, description, amount, type_id, note, card_id, currency_code, user_id }, idx) => {
+        // eslint-disable-next-line
+        values = values.concat([date, description, amount, type_id, note, card_id, currency_code, user_id])
+        return `($${(8 * idx) + 1}, $${(8 * idx) + 2}, $${(8 * idx) + 3}, $${(8 * idx) + 4}, $${(8 * idx) + 5}, $${(8 * idx) +
+        6}, $${(8 * idx) + 7}, $${(8 * idx) + 8})`
+      })
+    const query = `INSERT INTO transaction(date, description, amount, type_id, note, card_id, currency_code, user_id) 
+VALUES ${v.join(',')};`
+    return pool.query(query, values)
+  }
+
+  for (const row of data) {
+    if (batch.length > BATCH_LIMIT) {
+      await storeBatch()
+      batch = []
+    }
+
+    const defaultCurrencyCode = 'UAH'
+    let currencyCode
+    let cardCurrency
+    const CURRENCIES = { USD: 1, UAH: 1, EUR: 1, GBP: 1 }
+    let cardId = mapping.cards[defaultCurrencyCode]
+    let isCash = false
+
+    if (row.additional.length) {
+      for (const additionalElement of row.additional) {
+        if (additionalElement.toLowerCase() === 'cash') {
+          isCash = true
+        }
+        if (!currencyCode && CURRENCIES[additionalElement.toUpperCase()]) {
+          currencyCode = additionalElement.toUpperCase()
+        }
+        if (currencyCode && CURRENCIES[additionalElement.toUpperCase()]) {
+          cardCurrency = additionalElement.toUpperCase()
+          cardId = mapping.cards[cardCurrency]
+        }
+      }
+      if (!isCash && !currencyCode && !cardCurrency) {
+        console.warn('could not parse curency in additional', row, isCash, currencyCode, cardCurrency)
+      }
+    }
+
+    const record = {
+      date: row.date,
+      description: row.description,
+      amount: row.amount,
+      note: row.note ?? '',
+      type_id: storedCategories[row.category],
+      card_id: isCash ? null : cardId,
+      currency_code: currencyCode ?? defaultCurrencyCode,
+      user_id: mapping.userId
+    }
+    batch.push(record)
+  }
+  await storeBatch()
+
+  await pool.end()
 }
 
 async function run () {

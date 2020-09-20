@@ -32,7 +32,7 @@ async function loadMigration (db, count) {
   if (!count) {
     return []
   }
-  const { rows } = db.query(`SELECT name
+  const { rows } = await db.query(`SELECT name
                              FROM migrations`)
 
   return rows.map(({ name }) => name)

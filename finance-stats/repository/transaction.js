@@ -23,11 +23,7 @@ class TransactionRepository extends BaseRepository {
       transaction.user_id
     ]
 
-    console.log('transaction.js::create::24 >>>', '\nquery: ', query, '\nparams: ', params, '\nEND')
-
     const { rows } = await pg.query(query, params)
-
-    console.log('transaction.js::create::25 >>>', rows)
 
     return { ...transaction, ...rows[0] }
   }

@@ -10,12 +10,23 @@ async function run () {
   const title = process.argv[2]
 
   const data = JSON.parse(await fs.readFile(path.join(DATA_PATH, `${title}.json`), 'utf8'))
-  const titles = data.shift()
 
-  const categories = _.uniqBy(data, row => row[3]).map(row => row[3])
+  const categories = _.uniqBy(data, row => row.category).map(row => row.category)
 
-  console.log('Titles: ', titles)
   console.log('categories: ', categories)
+  // console.log('categories: ', categories.reduce((acc, c) => {
+  //   acc[c] = c;
+  //   return acc;
+  // }, {}))
+  console.log('total:', data.reduce((acc, { amount }) => acc + amount, 0))
+  //
+  // const additional = data.reduce((acc, data) => {
+  //   if (data.additional.length)
+  //     acc.push(data)
+  //   return acc
+  // }, [])
+  // console.log('additional', additional.length)
+  // await fs.writeFile(path.join(DATA_PATH, '_withAdditional.json'), JSON.stringify(additional))
 
   console.log('Done', new Date())
 }

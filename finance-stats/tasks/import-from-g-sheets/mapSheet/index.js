@@ -1,7 +1,7 @@
 const fs = require('fs').promises
 const path = require('path')
 
-const skipFiles = { '.gitignore': 1, 'index.js': 1 }
+const skipFiles = { '.gitignore': 1, 'index.js': 1, 'base.js': 1 }
 
 async function loadMapping () {
   const mapping = {
