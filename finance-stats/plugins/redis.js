@@ -14,4 +14,7 @@ async function fastifyRedis (fastify, opts) {
   fastify.addHook('onClose', (_, done) => emitter.close(done))
 }
 
-module.exports = fp(fastifyRedis)
+module.exports = fp(fastifyRedis, {
+  fastify: '3.x',
+  name: 'fastifyRedis'
+})

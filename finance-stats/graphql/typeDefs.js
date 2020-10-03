@@ -96,9 +96,15 @@ module.exports = `
     blockedAmount: Float!
     fixedAmount: Float
   }
+  
+  input TransactionTypeCreate {
+    name: String!
+    description: String
+  }
 
   type Mutation {
     addTransaction(transaction: TransactionCreate): Transaction
+    addTransactionType(type: TransactionTypeCreate): TransactionType
     updateTransaction(transaction: TransactionUpdate): Transaction
   }
 

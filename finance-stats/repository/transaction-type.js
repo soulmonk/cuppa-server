@@ -11,7 +11,7 @@ class TransactionTypeRepository extends BaseRepository {
     const params = [
       data.name,
       data.description,
-      data.user_id
+      data.userId
     ]
 
     const { rows } = await pg.query(query, params)
