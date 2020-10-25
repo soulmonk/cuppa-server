@@ -51,13 +51,13 @@ async function createAndAuthorizeUser (username = 'test') {
   if (res.status !== 201) {
     return
   }
-  const { token } = await fetch('http://127.0.0.1:3030/token', {
+  const { token } = await (await fetch('http://127.0.0.1:3030/token', {
     headers: {
       'Content-Type': 'application/json'
     },
     method: 'POST',
     body: JSON.stringify({ username, password: '1234567890' })
-  }).then(res => res.json())
+  })).json()
 
   return token
 }
