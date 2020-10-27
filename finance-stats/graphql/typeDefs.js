@@ -52,7 +52,7 @@ module.exports = `
   
   type Stats {
     type: TransactionType
-    amount: Int
+    amount: Float
   }
 
   type Filter {
@@ -67,7 +67,7 @@ module.exports = `
     transactionTypes: [TransactionType]
     cards: [Card]
     banks: [Bank]
-    total(dateFrom: String, dateTo: String): [Stats]
+    total(dateFrom: Date, dateTo: Date): [Stats]
   }
   
   input TransactionCreate {

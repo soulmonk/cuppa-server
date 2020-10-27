@@ -10,6 +10,9 @@ const wait = promisify(setTimeout)
 
 const fetch = require('node-fetch')
 
+const loadConfig = require('../config')
+const pg = require('pg')
+
 const Fastify = require('fastify')
 const fp = require('fastify-plugin')
 const App = require('../app')
@@ -62,8 +65,21 @@ async function createAndAuthorizeUser (username = 'test') {
   return token
 }
 
+function getUserIdFrom (token) {
+  const jsonStr = Buffer.from(token.split('.')[1], 'base64').toString()
+  return JSON.parse(jsonStr).id
+}
+
+const getDb = (t) => {
+  const db = new pg.Pool(loadConfig().pg)
+  t.tearDown(db.end.bind(db))
+  return db
+}
+
 module.exports = {
   createAndAuthorizeUser,
+  getUserIdFrom,
+  getDb,
   config,
   build
 }

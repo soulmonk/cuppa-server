@@ -17,7 +17,7 @@ async function qlRequest (app, gqlQuery, token) {
 }
 
 test('transaction mutation', async t => {
-  t.plan(5) //
+  // t.plan(5) //
   const app = await build(t)
   const token = await createAndAuthorizeUser()
   const date = new Date()

@@ -1,5 +1,5 @@
 'use strict'
-
+// const moment = require('moment')
 const BaseRepository = require('./base')
 
 // TODO rewrite from static
@@ -51,6 +51,37 @@ class TransactionRepository extends BaseRepository {
       params,
       where
     }
+  }
+
+  static async total (pg, userId, options = {}) {
+    // { dateFrom: moment().subtract(7, 'days').toDate(), dateTo: Date.now() }
+    let query = 'SELECT type_id, sum(amount) as amount FROM "transaction" WHERE user_id = $1'
+    const params = [userId]
+
+    /*
+    * if (options.dateFrom && options.dateTo) {
+      params.push(options.dateFrom, options.dateTo)
+      query += ' and date beetwen'
+    } else if (options.dateFrom) {
+      params.push(options.dateFrom)
+      query += ' and date >= $2'
+    } else {
+      params.push(options.dateTo)
+      query += ' and date <= $2
+    }
+    * */
+
+    if (options.dateFrom) {
+      params.push(options.dateFrom)
+      query += ' and date >= $2'
+    }
+    if (options.dateTo) {
+      params.push(options.dateTo)
+      query += ' and date <= $' + params.length
+    }
+    query += ' group by 1'
+    const { rows } = await pg.query(query, params)
+    return rows
   }
 }
 
