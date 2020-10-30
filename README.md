@@ -6,3 +6,4 @@
 - `docker-compose -p cuppa-base -f docker-compose.yml up --remove-orphans`
 
 test
+-S = signed
