@@ -10,6 +10,7 @@
     "pretest": "standard",
     "fix": "standard --fix",
     "cover": "tap --cov --coverage-report=lcov",
+    "db:migration": "node migration.js",
     "test": "node test/load-db.js && tap",
     "start": "fastify start -l info app.js",
     "dev": "fastify start -l info -P app.js"
@@ -54,5 +55,8 @@
       "dist",
       "temp"
     ]
+  },
+  "tap": {
+    "test-regex": ".*\\.test\\.js"
   }
 }

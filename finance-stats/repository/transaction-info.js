@@ -49,16 +49,12 @@ class TransactionInfoRepository extends BaseRepository {
     const query = 'INSERT INTO "transaction_info" ("blocked_amount", "fixed_amount", "transaction_id") VALUES ($1, $2, $3) RETURNING id'
 
     const params = [
-      info.blocked_amount,
-      info.fixed_amount,
-      info.transaction_id
+      info.blockedAmount,
+      info.fixedAmount,
+      info.transactionId
     ]
 
-    console.log('transaction.js::create::24 >>>', '\nquery: ', query, '\nparams: ', params, '\nEND')
-
     const { rows } = await pg.query(query, params)
-
-    console.log('transaction.js::create::25 >>>', rows)
 
     return rows[0].id
     // RETURNING id

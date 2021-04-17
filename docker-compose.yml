@@ -4,14 +4,13 @@ services:
   postgres:
     image: postgres
     container_name: cuppa-local-postgresql
-    restart: always
+#    restart: always
     expose:
       - 5432
     ports:
       - 5432:5432
     env_file:
       - posgress-server.env
-      - global.env
     networks:
       - cuppa-network
     volumes:
@@ -39,13 +38,14 @@ services:
     ports:
       - 6379:6379
 
-  adminer:
-    image: adminer
-    container_name: cuppa-local-adminer
-    networks:
-      - cuppa-network
-    ports:
-      - 18080:8080
+#  adminer:
+#    image: adminer
+#    container_name: cuppa-local-adminer
+#    restart: always
+#    networks:
+#      - cuppa-network
+#    ports:
+#      - 18080:8080
 
 networks:
   cuppa-network:

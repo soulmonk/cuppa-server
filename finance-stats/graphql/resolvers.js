@@ -13,29 +13,28 @@ const config = {
   currencyCode: 'UAH'
 }
 
-// todo per user (app.req.user.id)
 const Query = {
-  transaction: async (obj, { id }, args) => {
-    const { app } = args
-    return transactionRepository.byId(app.pg, id)
+  transaction: async (obj, { id }, { app, user }) => {
+    return transactionRepository.byId(app.pg, user.id, id)
       .then(transactionRepository.toJson.bind(transactionRepository))
   },
   transactions: async (obj, inputs, { app, user }) => {
     return transactionRepository.all(app.pg, user.id, inputs)
       .then(res => res.map(transactionRepository.toJson.bind(transactionRepository)))
   },
-  transactionTypes: async (obj, args, { app }) => {
-    return transactionTypeRepository.all(app.pg)
+  transactionTypes: async (obj, args, { app, user }) => {
+    return transactionTypeRepository.all(app.pg, user.id)
   },
-  cards: async (obj, args, { app }) => {
-    return cardRepository.all(app.pg)
+  cards: async (obj, args, { app, user }) => {
+    return cardRepository.all(app.pg, user.id)
       .then(res => res.map(cardRepository.toJson.bind(cardRepository)))
   },
-  banks: async (obj, args, { app }) => {
-    return bankRepository.all(app.pg)
+  banks: async (obj, args, { app, user }) => {
+    return bankRepository.all(app.pg, user.id)
   },
-  total: async (obj, args, ctx) => {
-    return []
+  total: async (obj, inputs, { app, user }) => {
+    const res = await transactionRepository.total(app.pg, user.id, inputs)
+    return res.map(transactionRepository.toJson.bind(transactionRepository))
   }
 }
 
@@ -47,9 +46,10 @@ const Mutation = {
 
     // db transaction
 
+    // todo load user default currencyCode
     const currencyCode = typeof transaction.currencyCode === 'string' && transaction.currencyCode.length === 3
-      ? config.currencyCode
-      : transaction.currencyCode
+      ? transaction.currencyCode
+      : config.currencyCode
 
     // todo insert or update on table \"transaction\" violates foreign key constraint
     const cardId = transaction.card && !isNaN(Number(transaction.card)) && Number(transaction.card) > 0 ? transaction.card : null
@@ -72,7 +72,7 @@ const Mutation = {
     if (transaction.info) {
       const infoData = {
         blockedAmount: transaction.info.blockedAmount,
-        fixedAmount: transaction.info.fixedAmount === undefined ? 0 : transaction.info.fixedAmount,
+        fixedAmount: transaction.info.fixedAmount ?? 0,
         transactionId: result.id
       }
       await transactionInfoRepository.create(app.pg, infoData)
@@ -92,6 +92,10 @@ const Mutation = {
   },
   updateTransaction: async (obj, { transaction }, { app, pubsub, user }) => {
     throw new Error('Not implemented')
+  },
+  addTransactionType: async (obj, { type }, { app, pubsub, user }) => {
+    const result = await transactionTypeRepository.create(app.pg, { ...type, userId: user.id })
+    return transactionTypeRepository.toJson(result)
   }
 }
 

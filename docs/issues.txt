@@ -8,6 +8,8 @@ Finance stats:
   - search/insert all with user ID
   - from redis to rabbitMq ?
   - rewrite repositories as instance inside plugin
+  - label system - second type (sub category)
+  - procced 0 amount
 
 Auth:
   - [done] JWT sessionStorage and localStorage Security

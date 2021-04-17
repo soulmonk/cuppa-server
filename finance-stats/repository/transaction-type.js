@@ -11,12 +11,10 @@ class TransactionTypeRepository extends BaseRepository {
     const params = [
       data.name,
       data.description,
-      data.user_id
+      data.userId
     ]
-    console.log('transaction-type.js::create::16 >>>', '\nquery: ', query, '\nparams: ', params, '\nEND')
 
     const { rows } = await pg.query(query, params)
-    console.log('transaction-type.js::create::20 >>>', rows)
 
     return { ...data, id: rows[0].id }
   }

@@ -8,7 +8,7 @@ async function repositories (fastify, opts) {
   fastify.decorate('repositories', {
     user: new UserRepository(fastify.pg, fastify.jwt, {
       expiresIn: fastify.config.JWT_EXPIRES_IN
-    })
+    },  opts.user) // TODO FIND ME
   })
 }
 

@@ -1,13 +1,19 @@
 'use strict'
 
 const { test } = require('tap')
-const { build } = require('../helper')
+const { build, createAndAuthorizeUser } = require('../helper')
 
 test('200 response', async t => {
   const app = await build(t)
+  // todo for now
+  const token = await createAndAuthorizeUser()
+
   const response = await app.inject({
     method: 'GET',
-    url: '/status'
+    url: '/status',
+    headers: {
+      Authorization: 'Bearer ' + token
+    }
   })
 
   t.equal(response.statusCode, 200)
