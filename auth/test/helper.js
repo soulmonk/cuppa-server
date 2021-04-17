@@ -30,7 +30,7 @@ async function build (t) {
   app.register(fp(App), config())
 
   // tear down our app after we are done
-  t.tearDown(app.close.bind(app))
+  t.teardown(app.close.bind(app))
 
   await app.ready()
 

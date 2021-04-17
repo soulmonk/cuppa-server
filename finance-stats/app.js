@@ -4,7 +4,8 @@ const path = require('path')
 const AutoLoad = require('fastify-autoload')
 
 const S = require('fluent-schema')
-const loadConfig = require('./config')
+// const loadConfig = require('./config')
+const fastifyEnv = require('fastify-env')
 
 // todo move to global package
 function statusService (fastify, opts) {
@@ -25,7 +26,9 @@ function statusService (fastify, opts) {
 }
 
 async function setup (fastify, opts) {
-  opts = { ...opts, ...loadConfig() }
+  // opts = { ...opts, ...loadConfig() }
+  fastify
+    .register(fastifyEnv, opts)
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins

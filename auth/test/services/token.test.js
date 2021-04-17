@@ -14,7 +14,7 @@ test('token login', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
+  t.equal(response.statusCode, 200)
 
   const payload = JSON.parse(response.payload)
 
@@ -43,7 +43,7 @@ test('update token via refresh token', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
+  t.equal(response.statusCode, 200)
 
   let payload = JSON.parse(response.payload)
 
@@ -61,7 +61,7 @@ test('update token via refresh token', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
+  t.equal(response.statusCode, 200)
 
   payload = JSON.parse(response.payload)
   t.equal(payload.expiresIn, 100)

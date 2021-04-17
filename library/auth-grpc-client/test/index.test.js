@@ -26,7 +26,7 @@ test('login successful', async t => {
 
   const result = await client.login('admin', 'q1w2e3r4')
 
-  t.deepEqual(result, { api: 'v1', token: 'some_generated_token' })
+  t.same(result, { api: 'v1', token: 'some_generated_token' })
   sinon.assert.calledOnce(stub)
   sinon.assert.calledWith(stub, { api: 'v1', username: 'admin', password: 'q1w2e3r4' })
 
@@ -58,7 +58,7 @@ test('validate successful', async t => {
 
   const result = await client.validate('some_generated_token')
 
-  t.deepEqual(result, { api: 'v1', id: 999 })
+  t.same(result, { api: 'v1', id: 999 })
   sinon.assert.calledOnce(stub)
   sinon.assert.calledWith(stub, { api: 'v1', token: 'some_generated_token' })
 

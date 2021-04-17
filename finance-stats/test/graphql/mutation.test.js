@@ -47,8 +47,8 @@ test('add transaction', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), {
+  t.equal(response.statusCode, 200)
+  t.same(JSON.parse(response.payload), {
     data: {
       addTransaction: {
         id: '1',
@@ -104,8 +104,8 @@ test('add transaction with date', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), {
+  t.equal(response.statusCode, 200)
+  t.same(JSON.parse(response.payload), {
     data: {
       addTransaction: {
         id: '1',
@@ -114,7 +114,7 @@ test('add transaction with date', async t => {
     }
   })
 
-  t.deepEqual(transactionCreateStub.getCall(0).args[1], {
+  t.same(transactionCreateStub.getCall(0).args[1], {
     date: 'now()',
     description: `transaction ${date.toISOString()}`,
     amount: 10.5,

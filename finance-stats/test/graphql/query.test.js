@@ -33,9 +33,9 @@ test('get all transactions', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
+  t.equal(response.statusCode, 200)
   const payload = JSON.parse(response.payload)
-  t.deepEqual(payload.data.transactions, [{ id: 1 }])
+  t.same(payload.data.transactions, [{ id: 1 }])
 
   allStub.restore()
 })
@@ -154,9 +154,9 @@ test('get all transactions full', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
+  t.equal(response.statusCode, 200)
   const payload = JSON.parse(response.payload)
-  t.deepEqual(payload.data.transactions, [
+  t.same(payload.data.transactions, [
     {
       id: '1',
       date: 1500000000000,
@@ -225,10 +225,10 @@ test('get transaction types', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
+  t.equal(response.statusCode, 200)
   const payload = JSON.parse(response.payload)
 
-  t.deepEqual(payload.data.transactionTypes, [{ id: '1', name: 'Other', description: null }])
+  t.same(payload.data.transactionTypes, [{ id: '1', name: 'Other', description: null }])
   allStub.restore()
 })
 
@@ -255,10 +255,10 @@ test('get transaction types', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
+  t.equal(response.statusCode, 200)
   const payload = JSON.parse(response.payload)
 
-  t.deepEqual(payload.data.transactionTypes, [{ id: '1', name: 'Other', description: null }])
+  t.same(payload.data.transactionTypes, [{ id: '1', name: 'Other', description: null }])
   allStub.restore()
 })
 
@@ -313,10 +313,10 @@ test('get transaction types', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
+  t.equal(response.statusCode, 200)
   const payload = JSON.parse(response.payload)
 
-  t.deepEqual(payload.data.cards, [
+  t.same(payload.data.cards, [
     {
       id: '1',
       name: 'USD',

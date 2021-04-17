@@ -4,11 +4,14 @@ const fp = require('fastify-plugin')
 const jwt = require('fastify-jwt')
 
 // todo as repository ?, copied because docker could not copy out of context
-async function fastifyJWT (fastify, opts) {
-  fastify.decorateRequest('user', null)
+async function fastifyJWT (fastify) {
+  const {
+    JWT_SECRET: jwtSecret,
+    JWT_ADD_HOOK: addHook = false
+  } = fastify.config
 
   fastify.register(jwt, {
-    secret: opts.jwt.secret
+    secret: jwtSecret
   })
 
   async function authenticate (request, reply) {
@@ -33,7 +36,7 @@ async function fastifyJWT (fastify, opts) {
 
   fastify.decorate('authenticate', authenticate)
 
-  if (opts.jwt.addHook) {
+  if (addHook) {
     fastify.addHook('onRequest', authenticate)
   }
 }

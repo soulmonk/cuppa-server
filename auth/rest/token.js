@@ -1,8 +1,9 @@
 'use strict'
 
-const S = require('fluent-schema')
+const S = require('fluent-json-schema')
 
 async function tokenService (fastify, opts) {
+  const refreshCookie = fastify.config.JWT_REFRESH_COOKIE
   const responseSchema = {
     200: S.object()
       .prop('token', S.string())
@@ -56,7 +57,7 @@ async function tokenService (fastify, opts) {
       return error()
     }
 
-    reply.setCookie(opts.jwt.refreshCookie, refreshToken, {
+    reply.setCookie(refreshCookie, refreshToken, {
       httpOnly: true,
       sameSite: 'strict'
       // signed ?
@@ -95,7 +96,7 @@ async function tokenService (fastify, opts) {
       message: 'could not verify'
     })
 
-    const refreshToken = req.cookies[opts.jwt.refreshCookie]
+    const refreshToken = req.cookies[refreshCookie]
 
     const user = await userRepository.getUserByRefreshToken(refreshToken)
 

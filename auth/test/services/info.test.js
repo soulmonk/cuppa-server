@@ -20,8 +20,8 @@ test('get user info', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), {
+  t.equal(response.statusCode, 200)
+  t.same(JSON.parse(response.payload), {
     username: 'admin'
   })
 })
@@ -36,5 +36,5 @@ test('401 access deny to get user info', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 401)
+  t.equal(response.statusCode, 401)
 })

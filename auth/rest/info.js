@@ -1,8 +1,8 @@
 'use strict'
 
-const S = require('fluent-schema')
+const S = require('fluent-json-schema')
 
-async function meService (fastify, opts) {
+async function meService (fastify) {
   fastify.route({
     method: 'GET',
     path: '/info',
@@ -16,7 +16,7 @@ async function meService (fastify, opts) {
     }
   })
 
-  async function onInfo (req, reply) {
+  async function onInfo (req) {
     const user = await this.repositories.user.getUserById(req.user.id)
     return {
       username: user.name
