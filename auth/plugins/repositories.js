@@ -4,11 +4,13 @@ const fp = require('fastify-plugin')
 
 const UserRepository = require('./../repository/user')
 
-async function repositories (fastify, opts) {
+async function repositories (fastify) {
   fastify.decorate('repositories', {
     user: new UserRepository(fastify.pg, fastify.jwt, {
       expiresIn: fastify.config.JWT_EXPIRES_IN
-    },  opts.user) // TODO FIND ME
+    },  {
+      rounds: fastify.config.USER_ROUNDS
+    })
   })
 }
 

@@ -4,8 +4,8 @@ services:
   cuppa-auth:
     image: cuppa-auth:latest
     container_name: fin-cuppa-auth
-    env_file:
-      - global.env
+#    env_file:
+#      - global.env
     environment:
       - FASTIFY_PORT=3030
       - POSTGRESQL_CONNECTION_STRING=postgres://cuppa:toor@postgres/cuppa-authentication
@@ -23,8 +23,8 @@ services:
     command: ["npm", "run", "dev"]
     networks:
       - cuppa-network
-    env_file:
-      - global.env
+#    env_file:
+#      - global.env
     environment:
       - FASTIFY_PORT=3031
       - POSTGRESQL_CONNECTION_STRING=postgres://cuppa:toor@postgresql/cuppa-finance-stats
