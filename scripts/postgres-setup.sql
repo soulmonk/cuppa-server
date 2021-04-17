@@ -10,5 +10,6 @@ ALTER DATABASE "cuppa-finance-stats" OWNER TO cuppa;
 ALTER DATABASE "cuppa-finance-stats-test" OWNER TO cuppa;
 ALTER DATABASE "cuppa-authentication" OWNER TO cuppa;
 
+-- with root per each database
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO cuppa;
 ALTER SCHEMA public OWNER TO cuppa;

@@ -11,7 +11,8 @@
     "test": "tap test/**/*.test.js",
     "start": "fastify start -l info app.js",
     "dev": "fastify start -l info -P app.js",
-    "lint": "standard --fix"
+    "lint": "standard --fix",
+    "docker-image": "docker build -t cuppa-auth ."
   },
   "keywords": [],
   "author": "Vitalii Melnykov <fsoulmonk@gmail.com>",

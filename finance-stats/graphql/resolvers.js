@@ -32,8 +32,9 @@ const Query = {
   banks: async (obj, args, { app, user }) => {
     return bankRepository.all(app.pg, user.id)
   },
-  total: async (obj, args, ctx) => {
-    return []
+  total: async (obj, inputs, { app, user }) => {
+    const res = await transactionRepository.total(app.pg, user.id, inputs)
+    return res.map(transactionRepository.toJson.bind(transactionRepository))
   }
 }
 

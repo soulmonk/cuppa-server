@@ -10,6 +10,9 @@ const wait = promisify(setTimeout)
 
 const fetch = require('node-fetch')
 
+const loadConfig = require('../config')
+const pg = require('pg')
+
 const Fastify = require('fastify')
 const fp = require('fastify-plugin')
 const App = require('../app')
@@ -51,19 +54,32 @@ async function createAndAuthorizeUser (username = 'test') {
   if (res.status !== 201) {
     return
   }
-  const { token } = await fetch('http://127.0.0.1:3030/token', {
+  const { token } = await (await fetch('http://127.0.0.1:3030/token', {
     headers: {
       'Content-Type': 'application/json'
     },
     method: 'POST',
     body: JSON.stringify({ username, password: '1234567890' })
-  }).then(res => res.json())
+  })).json()
 
   return token
 }
 
+function getUserIdFrom (token) {
+  const jsonStr = Buffer.from(token.split('.')[1], 'base64').toString()
+  return JSON.parse(jsonStr).id
+}
+
+const getDb = (t) => {
+  const db = new pg.Pool(loadConfig().pg)
+  t.tearDown(db.end.bind(db))
+  return db
+}
+
 module.exports = {
   createAndAuthorizeUser,
+  getUserIdFrom,
+  getDb,
   config,
   build
 }

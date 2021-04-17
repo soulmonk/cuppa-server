@@ -4,7 +4,7 @@ const { test } = require('tap')
 const { build, createAndAuthorizeUser } = require('../helper')
 
 async function qlRequest (app, gqlQuery, token) {
-  const response = await app.inject({
+  return app.inject({
     method: 'POST',
     url: '/graphql',
     payload: {
@@ -14,11 +14,10 @@ async function qlRequest (app, gqlQuery, token) {
       Authorization: 'Bearer ' + token
     }
   })
-  return response
 }
 
 test('transaction mutation', async t => {
-  // t.plan(5)/
+  // t.plan(5) //
   const app = await build(t)
   const token = await createAndAuthorizeUser()
   const date = new Date()
@@ -43,7 +42,6 @@ test('transaction mutation', async t => {
     }
   })
   const type = payload?.data?.addTransactionType
-  console.log('mutation.test.js::::46 >>>', type)
 
   t.spawn('add transaction', async t => {
     const date = new Date()

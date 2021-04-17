@@ -6,6 +6,7 @@ services:
     container_name: fin-cuppa-auth
     environment:
       - FASTIFY_PORT=3030
+      - POSTGRESQL_CONNECTION_STRING=postgres://cuppa:toor@postgres/cuppa-authentication
     networks:
       - cuppa-network
     expose:

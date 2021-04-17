@@ -4,7 +4,7 @@ const { test } = require('tap')
 const { build, createAndAuthorizeUser } = require('../helper')
 
 async function qlRequest (app, gqlQuery, token) {
-  const response = await app.inject({
+  return app.inject({
     method: 'POST',
     url: '/graphql',
     payload: {
@@ -14,7 +14,6 @@ async function qlRequest (app, gqlQuery, token) {
       Authorization: 'Bearer ' + token
     }
   })
-  return response
 }
 
 test('add transaction', async t => {
