@@ -3,7 +3,7 @@ const AuthGrpcClient = require('../src/index')
 async function run () {
   console.log('Start', new Date())
 
-  const client = new AuthGrpcClient(process.env.PROTO_PATH, 'localhost:9090', { apiVersion: 'v1' })
+  const client = new AuthGrpcClient(process.env.PROTO_PATH,  process.env.GRPC_HOST || 'localhost:9090', { apiVersion: 'v1' })
 
   const [, , username, email, password] = process.argv
 

@@ -6,7 +6,7 @@ const protoLoader = require('@grpc/proto-loader')
 // TODO security - connection
 
 // TODO PROTOT PATH as dependency ???
-// /cuppa/cuppa-workers/authentication/api/proto/v1/authenctication-service.proto
+// curl -o authenctication-service.proto https://raw.githubusercontent.com/soulmonk/cuppa-workers-authentication/master/api/proto/v1/authenctication-service.proto
 class AuthGrpcClient {
   constructor (protoPath, grpcServerUri, options = {}) {
     if (!protoPath || !grpcServerUri || !options.apiVersion) {

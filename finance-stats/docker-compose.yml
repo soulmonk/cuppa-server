@@ -22,7 +22,7 @@ services:
       - cuppa-network
     environment:
       - FASTIFY_PORT=3031
-      - POSTGRESQL_CONNECTION_STRING=postgres://cuppa@toor:postgresql/cuppa-finance-stats
+      - POSTGRESQL_CONNECTION_STRING=postgres://cuppa:toor@postgresql/cuppa-finance-stats
       - REDIS_HOST=redis
     expose:
       - 3031
