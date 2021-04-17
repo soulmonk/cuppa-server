@@ -5,8 +5,6 @@ const jwt = require('fastify-jwt')
 
 // todo as repository ?, copied because docker could not copy out of context
 async function fastifyJWT (fastify, opts) {
-  fastify.decorateRequest('user', null)
-
   fastify.register(jwt, {
     secret: opts.jwt.secret
   })

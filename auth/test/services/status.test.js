@@ -10,6 +10,6 @@ test('200 response', async t => {
     url: '/status'
   })
 
-  t.strictEqual(response.statusCode, 200)
-  t.deepEqual(JSON.parse(response.payload), { status: 'ok' })
+  t.equal(response.statusCode, 200)
+  t.same(JSON.parse(response.payload), { status: 'ok' })
 })

@@ -1,8 +1,8 @@
 'use strict'
 
-const S = require('fluent-schema')
+const S = require('fluent-json-schema')
 
-async function logoutService (fastify, opts) {
+async function logoutService (fastify) {
   fastify.route({
     method: 'POST',
     path: '/logout',
@@ -22,7 +22,7 @@ async function logoutService (fastify, opts) {
 
   async function onLogout (req, reply) {
     await userRepository.storeRefreshToken(req.user.id, null)
-    reply.clearCookie(opts.jwt.refreshCookie)
+    reply.clearCookie(fastify.config.JWT_REFRESH_COOKIE)
     return { status: 'ok' }
   }
 }

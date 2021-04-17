@@ -37,7 +37,7 @@ test('find by transaction ids', async t => {
   const ids = [1, 2]
 
   const result = await transactionInfoRepository.byTransactionIds(pg, ids)
-  t.deepEqual(result, [{ id: 1 }])
+  t.same(result, [{ id: 1 }])
 
   t.ok(pg.connect.calledOnce)
 

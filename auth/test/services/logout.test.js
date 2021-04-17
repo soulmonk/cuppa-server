@@ -20,7 +20,7 @@ test('logout should clear cookie and refresh token', async t => {
     }
   })
 
-  t.strictEqual(response.statusCode, 200)
+  t.equal(response.statusCode, 200)
 
   t.ok(stubSetRefreshToken.calledOnce)
   t.ok(stubSetRefreshToken.calledWithExactly(2, null))

@@ -61,8 +61,8 @@ test('add transaction', async t => {
 }`
   response = await qlRequest(app, gqlQuery, token)
 
-  t.strictEqual(response.statusCode, 200)
-  t.match(JSON.parse(response.payload), {
+  t.equal(response.statusCode, 200)
+  t.same(JSON.parse(response.payload), {
     data: {
       addTransaction: {
         description,
@@ -118,8 +118,8 @@ test('add transaction with date', async t => {
 }`
   response = await qlRequest(app, gqlQuery, token)
 
-  t.strictEqual(response.statusCode, 200)
-  t.match(JSON.parse(response.payload), {
+  t.equal(response.statusCode, 200)
+  t.same(JSON.parse(response.payload), {
     data: {
       addTransaction: {
         description: `transaction ${date.toISOString()}`,

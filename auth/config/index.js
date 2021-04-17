@@ -1,12 +1,5 @@
 'use strict'
+// TODO Default config?
+module.exports = {
 
-function loadConfig () {
-  return {
-    jwt: require('./jwt'),
-    user: require('./user'),
-    pg: require('./pg'),
-    cookie: require('./cookie')
-  }
 }
-
-module.exports = loadConfig

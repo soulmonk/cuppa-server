@@ -2,15 +2,13 @@
 
 const path = require('path')
 const AutoLoad = require('fastify-autoload')
-const loadConfig = require('./config')
+const fastifyEnv = require('fastify-env')
+const configSchema = require('./config/schema')
 
 async function setup (fastify, opts) {
-  // TODO error handler
-  // TODO error handler
-  // TODO error handler
-
-  // TODO how to override without override
-  opts = { ...loadConfig(), ...opts }
+  fastify.register(fastifyEnv, {
+    schema: configSchema
+  })
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
@@ -36,7 +34,7 @@ if (require.main === module) {
     }
   })
   setup(fastify)
-    .then(() => fastify.listen(process.env.FASTIFY_PORT || 3000))
+    .then(() => fastify.listen(fastify.config.PORT))
     .then(() => console.log(`Server listening at http://localhost:${fastify.server.address().port}`))
     .catch(err => {
       console.error(err)

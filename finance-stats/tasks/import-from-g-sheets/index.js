@@ -4,7 +4,7 @@ const pg = require('pg')
 const loadConfig = require('../../config')
 const readline = require('readline')
 const { google } = require('googleapis')
-const _ = require('lodash')
+const { uniqBy, sortBy, uniq } = require('lodash')
 
 const argv = require('minimist')(process.argv.slice(2))
 
@@ -168,7 +168,7 @@ async function convert () {
 
     console.log(`Converting "${title}"`)
     rawData[title].shift() // skip title row
-    categories = _.uniq(rawData[title].map(row => row[3]).concat(categories))
+    categories = uniq(rawData[title].map(row => row[3]).concat(categories))
 
     let idx = 0
     for (const rawRow of rawData[title]) {
@@ -208,11 +208,11 @@ async function saveTransactionTypes (pool, mapping, categories) {
 
 async function store (data) {
   const mapping = require(MAPPING)
-  const categories = _.uniqBy(data, row => row.category).map(row => row.category)
+  const categories = uniqBy(data, row => row.category).map(row => row.category)
 
   if (argv.dumpTemp) {
     console.log('categories:', categories)
-    await fs.writeFile(path.join(DATA_PATH, '_convertedData.json'), JSON.stringify(_.sortBy(data, 'date')))
+    await fs.writeFile(path.join(DATA_PATH, '_convertedData.json'), JSON.stringify(sortBy(data, 'date')))
     const additional = data.reduce((acc, data) => {
       if (data.additional.length) acc.push(data)
       return acc

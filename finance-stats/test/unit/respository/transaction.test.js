@@ -42,7 +42,7 @@ test('find all transaction', async t => {
   }
 
   const result = await transactionRepository.all(pg)
-  t.deepEqual(result, [{ id: 1 }])
+  t.same(result, [{ id: 1 }])
 
   t.ok(pg.connect.calledOnce)
 })
@@ -66,7 +66,7 @@ test('find all transaction with filters', async t => {
   }
 
   const result = await transactionRepository.all(pg, 1, options)
-  t.deepEqual(result, [{ id: 1 }])
+  t.same(result, [{ id: 1 }])
 
   t.ok(pg.connect.calledOnce)
 
@@ -87,7 +87,7 @@ test('find by ids', async t => {
   const ids = [1, 2]
 
   const result = await transactionRepository.byIds(pg, 1, ids)
-  t.deepEqual(result, [{ id: 1 }])
+  t.same(result, [{ id: 1 }])
 
   t.ok(pg.connect.calledOnce)
 
@@ -106,7 +106,7 @@ test('find by id', async t => {
   }
 
   const result = await transactionRepository.byId(pg, 1, 1)
-  t.deepEqual(result, { id: 1 })
+  t.same(result, { id: 1 })
 
   t.ok(pg.connect.calledOnce)
 
@@ -122,26 +122,26 @@ test('build where', async t => {
   test('all params', async t => {
     const { params, where } = transactionRepository.buildWhere({ dateFrom: dateFrom, dateTo: dateTo }, [], [])
 
-    t.deepEqual(params, [dateFrom, dateTo])
-    t.deepEqual(where, ['date > $1', 'date < $2'])
+    t.same(params, [dateFrom, dateTo])
+    t.same(where, ['date > $1', 'date < $2'])
   })
   test('date to', async t => {
     const { params, where } = transactionRepository.buildWhere({ dateTo: dateTo }, [], [])
 
-    t.deepEqual(params, [dateTo])
-    t.deepEqual(where, ['date < $1'])
+    t.same(params, [dateTo])
+    t.same(where, ['date < $1'])
   })
   test('date from', async t => {
     const { params, where } = transactionRepository.buildWhere({ dateFrom: dateFrom }, [], [])
 
-    t.deepEqual(params, [dateFrom])
-    t.deepEqual(where, ['date > $1'])
+    t.same(params, [dateFrom])
+    t.same(where, ['date > $1'])
   })
 
   test('no params', async t => {
     const { params, where } = transactionRepository.buildWhere()
 
-    t.deepEqual(params, [])
-    t.deepEqual(where, [])
+    t.same(params, [])
+    t.same(where, [])
   })
 })
