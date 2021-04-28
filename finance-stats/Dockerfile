@@ -3,6 +3,9 @@ FROM node:14
 # Create app directory
 WORKDIR /usr/src/app
 
+# latest npm )
+RUN npm i -g npm
+
 # Install app dependencies
 COPY package*.json ./
 RUN npm install --production
@@ -11,5 +14,4 @@ RUN npm install --production
 COPY . .
 
 EXPOSE 3031
-ENV FASTIFY_PORT=3031
-CMD [ "npm", "run", "dev" ]
+CMD [ "npm", "start" ]

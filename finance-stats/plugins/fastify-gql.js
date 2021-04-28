@@ -42,7 +42,6 @@ async function fastifyGql (fastify/*, opts */) {
 
   function verifyClient (info, next) {
     // console.log(info)
-    console.log('fastify-gql.js::verifyClient::30 >>>', info.req.headers)
     // todo fastify connection validation
     //
     // if (info.req.headers['x-fastify-header'] !== 'fastify is awesome !') {

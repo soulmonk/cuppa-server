@@ -3,9 +3,9 @@
 const path = require('path')
 const AutoLoad = require('fastify-autoload')
 
-const S = require('fluent-schema')
-const loadConfig = require('./config')
-// const fastifyEnv = require('fastify-env')
+const S = require('fluent-json-schema')
+const fastifyEnv = require('fastify-env')
+const configSchema = require('./config/schema')
 
 // todo move to global package
 function statusService (fastify, opts) {
@@ -13,6 +13,7 @@ function statusService (fastify, opts) {
     method: 'GET',
     path: '/status',
     handler: onStatus,
+    onRequest: async () => {},
     schema: {
       response: {
         200: S.object().prop('status', S.string())
@@ -26,7 +27,9 @@ function statusService (fastify, opts) {
 }
 
 async function setup (fastify, opts) {
-  opts = { ...opts, ...loadConfig() }
+  fastify.register(fastifyEnv, {
+    schema: configSchema
+  })
   // fastify
   //   .register(fastifyEnv, opts)
   // Do not touch the following lines
@@ -45,11 +48,12 @@ async function setup (fastify, opts) {
 if (require.main === module) {
   const fastify = require('fastify')({
     logger: {
-      level: 'info'
+      level: process.env.LOG_LEVEL ?? 'info'
     }
   })
   setup(fastify)
-    .then(() => fastify.listen(process.env.FASTIFY_PORT || 3000))
+    .then(() => fastify.ready())
+    .then(() => fastify.listen(fastify.config.PORT))
     .then(() => {
       console.log(`Server listening at http://localhost:${fastify.server.address().port}`)
     })
