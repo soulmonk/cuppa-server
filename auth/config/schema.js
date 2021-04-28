@@ -6,6 +6,10 @@ module.exports = {
       type: 'string',
       default: 3000
     },
+    LOG_LEVEL: {
+      type: 'string',
+      default: 'info'
+    },
     JWT_SECRET: {
       type: 'string',
       default: 'secret'

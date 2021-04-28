@@ -2,16 +2,8 @@
 
 const fp = require('fastify-plugin')
 
-const redis = require('mqemitter-redis')
-
-async function fastifyRedis (fastify, opts) {
-// TODO move to fastify plugin
-  const emitter = redis(opts.redis)
-  fastify.decorate('redis', {})
-
-  fastify.redis = emitter
-
-  fastify.addHook('onClose', (_, done) => emitter.close(done))
+async function fastifyRedis (fastify) {
+  fastify.register(require('fastify-redis'), { url: fastify.config.REDIS_CONNECTION_STRING })
 }
 
 module.exports = fp(fastifyRedis, {

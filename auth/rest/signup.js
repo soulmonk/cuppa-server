@@ -1,6 +1,6 @@
 'use strict'
 
-const S = require('fluent-schema')
+const S = require('fluent-json-schema')
 
 async function signupService (fastify) {
   const responseSchema = {
