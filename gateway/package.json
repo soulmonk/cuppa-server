@@ -4,15 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "fastify start -l info app.js",
-    "dev": "fastify start -l info -P app.js"
+    "start": "node index.js",
+    "dev": "fastify start -l info -P index.js"
   },
   "keywords": [],
   "author": "Vitalii Melnykov <fsoulmonk@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "fastify": "^3.0.3",
-    "fastify-cors": "^4.0.0",
-    "fastify-http-proxy": "^4.0.2"
+    "fastify": "^3.14.2",
+    "fastify-cli": "^2.9.1",
+    "fastify-cors": "^5.2.0",
+    "fastify-http-proxy": "^5.0.0"
   }
 }
