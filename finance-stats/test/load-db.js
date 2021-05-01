@@ -2,7 +2,6 @@
 
 process.env.POSTGRESQL_CONNECTION_STRING = process.env.POSTGRESQL_CONNECTION_STRING || 'postgres://cuppa:toor@localhost/cuppa-finance-stats-test'
 
-const loadConfig = require('../config')
 const pg = require('pg')
 const { migration } = require('../db/migration')
 
@@ -12,7 +11,7 @@ const path = require('path')
 async function run () {
   console.log('Start', new Date())
 
-  const pool = new pg.Pool(loadConfig().pg)
+  const pool = new pg.Pool({ connectionString: process.env.POSTGRESQL_CONNECTION_STRING })
 
   // must be owner of schema public
   await pool.query('DROP SCHEMA public CASCADE;')

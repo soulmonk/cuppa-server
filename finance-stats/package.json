@@ -13,7 +13,8 @@
     "db:migration": "node migration.js",
     "test": "node test/load-db.js && tap",
     "start": "fastify start -l info app.js",
-    "dev": "fastify start -l info -P app.js"
+    "dev": "fastify start -l info -P app.js",
+    "schema": "apollo service:download --endpoint=\"http://localhost:3031/graphql\" --header=\"Authorization: Bearer ${TOKEN}\""
   },
   "keywords": [
     "api",
@@ -44,6 +45,7 @@
     "pg": "^8.6.0"
   },
   "devDependencies": {
+    "apollo": "^2.32.11",
     "babel-eslint": "^10.1.0",
     "sinon": "^10.0.0",
     "standard": "*",

@@ -18,7 +18,7 @@ function uniqueIds (arr, key) {
 
 // TODO tbd
 function buildLoader (repository, field) {
-  return async (parent, { app, user }) => {
+  return async (parent, { app, req: { user } }) => {
     const ids = uniqueIds(parent, field)
     if (!ids || !ids.length) {
       return []
@@ -62,7 +62,7 @@ function buildLoaderMany (repository, findMethod, field, onField) {
 */
 
 function buildLoaderBelongsTo (repository, findMethod, field, onField) {
-  return async (parent, { app }) => {
+  return async (parent, { app, req: { user } }) => {
     const ids = uniqueIds(parent, field)
     if (!ids || !ids.length) {
       return []

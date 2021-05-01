@@ -24,7 +24,7 @@ class BaseRepository {
     }
 
     // TODO add logger
-    console.log('query: ', query, '\nparams: ', params)
+    // console.log('query: ', query, '\nparams: ', params)
 
     return client.query(query, params)
   }
@@ -106,8 +106,8 @@ class BaseRepository {
       query += ' OFFSET $' + params.length
     }
 
-    console.log('query: ', query)
-    console.log('params: ', params)
+    // console.log('query: ', query)
+    // console.log('params: ', params)
 
     // tod optimise query
     const { rows } = await client.query(query, params)

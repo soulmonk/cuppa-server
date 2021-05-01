@@ -49,14 +49,14 @@ services:
 
 networks:
   cuppa-network:
-    external:
-      name: "cuppa-network"
+    external: true
+    name: "cuppa-network"
 
 volumes:
   postgres-data:
-    external:
-      name: "postgres-data"
+    external: true
+    name: "cuppa-postgres-data"
   mongo-data:
-    external:
-      name: "mongo-data"
+    external: true
+    name: "cuppa-mongo-data"
 
