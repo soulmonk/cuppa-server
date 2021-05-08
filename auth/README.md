@@ -2,4 +2,4 @@
 
 ## Docker
 
-- `docker build -t cuppa-auth .`
+- `docker build -t cuppa/auth .`

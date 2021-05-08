@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  namespace: cuppa
+  labels:
+    app: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: localhost:5000/cuppa/auth:1.0.1
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 3030
+          envFrom:
+            - configMapRef:
+                name: auth-config
+          env:
+            - name: POSTGRESQL_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: POSTGRESQL_CONNECTION_STRING
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+  namespace: cuppa
+spec:
+  selector:
+    app: auth
+  ports:
+    - protocol: TCP
+      port: 3030
+      targetPort: 3030
+      nodePort: 30030
+#  type: NodePort
+  type: LoadBalancer
