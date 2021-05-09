@@ -14,7 +14,7 @@ async function run () {
     connectionString: process.env.POSTGRESQL_CONNECTION_STRING
   })
 
-  // todo error: must be owner of schema public
+  // possible error: must be owner of schema public
   await pool.query('DROP SCHEMA public CASCADE;')
   await pool.query('CREATE SCHEMA public;')
 

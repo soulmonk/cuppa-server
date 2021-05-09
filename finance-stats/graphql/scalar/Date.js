@@ -7,7 +7,7 @@ module.exports = new GraphQLScalarType({
   name: 'Date',
   description: 'Date custom scalar type',
   parseValue (value) {
-    return new Date(value) // value from the createClient
+    return new Date(parseInt(value, 10)) // value from the createClient
   },
   serialize (value) {
     return value.getTime() // value sent to the createClient
