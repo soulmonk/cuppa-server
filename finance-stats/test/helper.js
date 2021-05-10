@@ -8,9 +8,9 @@ process.env.POSTGRESQL_CONNECTION_STRING = process.env.POSTGRESQL_CONNECTION_STR
 const { promisify } = require('util')
 const wait = promisify(setTimeout)
 
+// todo replace with got
 const fetch = require('node-fetch')
 
-const loadConfig = require('../config')
 const pg = require('pg')
 
 const Fastify = require('fastify')
@@ -71,7 +71,7 @@ function getUserIdFrom (token) {
 }
 
 const getDb = (t) => {
-  const db = new pg.Pool(loadConfig().pg)
+  const db = new pg.Pool({ connectionString: process.env.POSTGRESQL_CONNECTION_STRING })
   t.tearDown(db.end.bind(db))
   return db
 }
