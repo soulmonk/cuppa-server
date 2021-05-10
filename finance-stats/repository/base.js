@@ -82,6 +82,7 @@ class BaseRepository {
    * @param {Object} [options={}]
    * @param {Number} [options.limit]
    * @param {Number} [options.offset]
+   * @param {Object} [options.order]
    * @returns {Promise<*>}
    */
   static async all (pg, userId, options = {}) {
@@ -94,6 +95,10 @@ class BaseRepository {
 
     if (where.length) {
       query += ' WHERE ' + where.join(' and ')
+    }
+
+    if (options.order) {
+      query += ' ORDER BY ' + Object.keys(options.order).map(key => `${key} ${options.order[key]}`).join(',')
     }
 
     if (options.limit) {

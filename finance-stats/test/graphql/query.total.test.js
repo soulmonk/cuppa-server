@@ -107,7 +107,7 @@ test('query total', async t => {
   const gqlCreateTransactionQuery = `mutation createTransaction {
   addTransaction(transaction: {
     description: "General 5"
-    date: ${date.getTime()}
+    date: "${date.toISOString()}"
     amount: 10.5
     type: ${types.General}
   }) {
@@ -124,7 +124,7 @@ test('query total', async t => {
     data: {
       addTransaction: {
         description: 'General 5',
-        date: date.getTime(),
+        date: date.toISOString(),
         amount: 10.5
       }
     }
@@ -174,7 +174,7 @@ test('query total filter by dates', async t => {
 
   // const date = new Date()
   const gqlQueryTotal = `query total {
-  total(dateFrom: ${dateFrom.getTime()}, dateTo: ${dateTo.getTime()}) {
+  total(dateFrom: ${dateFrom.toISOString()}, dateTo: ${dateTo.toISOString()}) {
     type {
       id
       name

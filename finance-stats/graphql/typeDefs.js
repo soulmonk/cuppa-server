@@ -1,11 +1,11 @@
 'use strict'
 
 module.exports = `
-  scalar Date
+  scalar DateTime
 
   type Transaction {
     id: ID!
-    date: Date
+    date: DateTime
     description: String
     amount: Float
     type: TransactionType
@@ -25,8 +25,8 @@ module.exports = `
   type Card {
     id: ID!
     name: String
-    validFrom: Date
-    validTo: Date
+    validFrom: DateTime
+    validTo: DateTime
     currencyCode: String
     bank: Bank
     description: String
@@ -56,22 +56,22 @@ module.exports = `
   }
 
   type Filter {
-    dateFrom: Date
-    dateTo: Date
+    dateFrom: DateTime
+    dateTo: DateTime
     limits: Int
   }
 
   type Query {
-    transactions(dateFrom: Date, dateTo: Date, limit: Int = 20, offset: Int): [Transaction]
+    transactions(dateFrom: DateTime, dateTo: DateTime, limit: Int = 20, offset: Int): [Transaction]
     transaction(id: Int): Transaction
     transactionTypes: [TransactionType]
     cards: [Card]
     banks: [Bank]
-    total(dateFrom: Date, dateTo: Date): [Stats]
+    total(dateFrom: DateTime, dateTo: DateTime): [Stats]
   }
   
   input TransactionCreate {
-    date: Date
+    date: DateTime
     description: String!
     amount: Float!
     type: ID!
@@ -82,14 +82,14 @@ module.exports = `
   }
   
   input TransactionUpdate {
-    date: Date
+    id: ID!
+    date: DateTime
     description: String
     amount: Float
     type: ID
     note: String
     currencyCode: String
     card: ID
-    info: TransactionInfoCreate
   }
   
   input TransactionInfoCreate {

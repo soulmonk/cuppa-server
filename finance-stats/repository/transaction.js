@@ -28,6 +28,35 @@ class TransactionRepository extends BaseRepository {
     return { ...transaction, ...rows[0] }
   }
 
+  static async update (pg, userId, transactionId, data) {
+    const inDb = await this.byId(pg, userId, transactionId)
+    if (!inDb) {
+      throw new Error('Not found')
+    }
+
+    const params = [
+      transactionId
+    ]
+
+    const set = []
+    Object.keys(data).reduce((acc, field) => {
+      if (data[field] !== null && data[field] !== undefined && data[field] !== inDb[field]) {
+        params.push(data[field])
+        acc.push(`${field} = $${params.length}`)
+      }
+      return acc
+    }, set)
+
+    if (!set.length) {
+      // throw new Error('nothing to update?')
+      return
+    }
+    const query = `UPDATE "transaction"
+                   SET ${set.join(',')}
+                   WHERE id = $1`
+    await pg.query(query, params)
+  }
+
   /**
    *
    * @param {Object} [options={}]

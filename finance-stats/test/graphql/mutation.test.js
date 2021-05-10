@@ -37,6 +37,7 @@ test('add transaction', async t => {
   t.match(payload, {
     data: {
       addTransactionType: {
+        id: /\d+/,
         name: `type ${date.toISOString()}`
       }
     }
@@ -48,7 +49,7 @@ test('add transaction', async t => {
   gqlQuery = `mutation createTransaction {
   addTransaction(transaction: {
     description: "${description}"
-    date: ${date.getTime()}
+    date: "${date.toISOString()}"
     amount: 10.5
     type: ${+type.id}
     info: {blockedAmount: 0.1}
@@ -62,11 +63,12 @@ test('add transaction', async t => {
   response = await qlRequest(app, gqlQuery, token)
 
   t.equal(response.statusCode, 200)
-  t.same(JSON.parse(response.payload), {
+  t.match(JSON.parse(response.payload), {
     data: {
       addTransaction: {
+        id: /\d+/,
         description,
-        date: date.getTime(),
+        date: date.toISOString(),
         amount: 10.5
       }
     }
@@ -91,7 +93,7 @@ test('add transaction with date', async t => {
   t.strictEqual(response.statusCode, 200)
 
   const payload = JSON.parse(response.payload)
-  t.match(payload, {
+  t.has(payload, {
     data: {
       addTransactionType: {
         name: `type ${date.toISOString()}`
@@ -119,7 +121,7 @@ test('add transaction with date', async t => {
   response = await qlRequest(app, gqlQuery, token)
 
   t.equal(response.statusCode, 200)
-  t.same(JSON.parse(response.payload), {
+  t.has(JSON.parse(response.payload), {
     data: {
       addTransaction: {
         description: `transaction ${date.toISOString()}`,
