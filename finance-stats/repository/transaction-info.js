@@ -11,13 +11,6 @@ class TransactionInfoRepository extends BaseRepository {
     currency_exchange: 'currencyExchange'
   }
 
-  static buildWhere () {
-    return {
-      where: [],
-      params: []
-    }
-  }
-
   static async byTransactionIds (pg, ids) {
     const client = await pg.connect()
 

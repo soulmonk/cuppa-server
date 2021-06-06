@@ -30,10 +30,11 @@ module.exports = {
         throw new Error('unknown card')
       }
     }
+    // todo create new transaction Type ?
     if (transaction.type) {
       const type = await transactionTypeRepository.byId(app.pg, user.id, transaction.type)
       if (!type) {
-        throw new Error('unknown type')
+        throw new Error('unknown transactionType')
       }
     }
 

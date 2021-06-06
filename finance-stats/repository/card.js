@@ -10,13 +10,6 @@ class CardRepository extends BaseRepository {
     valid_to: 'validTo',
     currency_code: 'currencyCode'
   };
-
-  static buildWhere () {
-    return {
-      where: [],
-      params: []
-    }
-  }
 }
 
 CardRepository.toJson.bind(CardRepository)

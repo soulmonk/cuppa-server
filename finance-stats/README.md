@@ -1,8 +1,13 @@
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 
+# DEVELOPMENT
+
+## DOCKER
+
+- `docker build -t cuppa-finance-stats  . `
+
 ## TODO
 
-- move to koa ?
 - check appolo server, what is it
 - testing web sockets
 

@@ -18,13 +18,6 @@ class TransactionTypeRepository extends BaseRepository {
 
     return { ...data, id: rows[0].id }
   }
-
-  static buildWhere () {
-    return {
-      where: [],
-      params: []
-    }
-  }
 }
 
 module.exports = TransactionTypeRepository

@@ -71,8 +71,11 @@ class BaseRepository {
     return res
   }
 
-  static buildWhere (options, params = [], where = []) {
-    throw new Error('Not implemented')
+  static buildWhere (options = {}, params = [], where = []) {
+    return {
+      where,
+      params
+    }
   }
 
   /**
