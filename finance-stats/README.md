@@ -1,8 +1,19 @@
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 
+# DEVELOPMENT
+
+## DOCKER
+
+- `docker build -t cuppa/finance-stats:v1  .`
+
+### for raspberry pi
+
+- `docker build -t cuppa/finance-stats:v2 --platform linux/arm64 .`
+- `docker tag cuppa/finance-stats:v1 rpisoulv1.kube:31320/cuppa/finance-stats:latest`
+- `docker push rpisoulv1.kube:31320/cuppa/finance-stats:latest`
+
 ## TODO
 
-- move to koa ?
 - check appolo server, what is it
 - testing web sockets
 
