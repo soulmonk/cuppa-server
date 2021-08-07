@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: private-repository-k3s
+  name: private-repository-k3s
+spec:
+  ports:
+    - port: 5000
+      nodePort: 31320
+      protocol: TCP
+      targetPort: 5000
+  selector:
+    app: private-repository-k3s
+  type: NodePort
