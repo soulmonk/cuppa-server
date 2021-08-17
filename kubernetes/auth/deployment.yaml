@@ -20,9 +20,20 @@ spec:
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 3030
+              name: web
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              port: web
+              path: /status
           envFrom:
             - configMapRef:
                 name: cuppa-auth-config
+          resources:
+            limits:
+              memory: "512Mi"
+            requests:
+              memory: "128Mi"
 ---
 apiVersion: v1
 kind: Service
