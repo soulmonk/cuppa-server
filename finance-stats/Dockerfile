@@ -1,17 +1,19 @@
-FROM node:14
+FROM node:14-alpine AS BUILD_IMAGE
+
+RUN apk update && apk add bash python g++ make && rm -rf /var/cache/apk/*
 
 # Create app directory
 WORKDIR /usr/src/app
 
-# latest npm )
-RUN npm i -g npm
-
-# Install app dependencies
-COPY package*.json ./
-RUN npm install --production
-
 # Bundle app source
 COPY . .
+
+RUN npm install --production
+
+FROM node:14-alpine
+WORKDIR /usr/src/app
+
+COPY --from=BUILD_IMAGE /usr/src/app/ ./
 
 EXPOSE 3031
 CMD [ "npm", "start" ]

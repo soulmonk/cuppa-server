@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: private-repository-k3s
+  labels:
+    app: private-repository-k3s
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: private-repository-k3s
+  template:
+    metadata:
+      labels:
+        app: private-repository-k3s
+    spec:
+      volumes:
+        - name: registry-vol
+          hostPath:
+            path: /opt/registry
+            type: Directory
+
+      containers:
+        - image: registry:2
+          name: private-repository-k3s
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: registry-vol
+              mountPath: /var/lib/registry

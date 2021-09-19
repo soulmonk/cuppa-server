@@ -10,9 +10,9 @@ test('should create transaction info', async t => {
   }
 
   const data = {
-    blocked_amount: 0.01,
-    fixed_amount: 0.02,
-    transaction_id: 1
+    blockedAmount: 0.01,
+    fixedAmount: 0.02,
+    transactionId: 1
   }
 
   const result = await transactionInfoRepository.create(pg, data)
