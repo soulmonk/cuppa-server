@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cuppa-ingress
+  namespace: cuppa
+spec:
+  rules:
+    - host: auth.cuppa.com
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: auth
+              port:
+                number: 3030
+
+    - host: finance-stats.cuppa.com
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: finance-stats
+              port:
+                number: 3031
