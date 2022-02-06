@@ -1,0 +1,24 @@
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install postgresql bitnami/postgresql
+helm install redis bitnami/redis
+---------------------------------------
+kubectl scale deployment auth --replicas=1 -n cuppa
+
+-----------------------
+https://minikube.sigs.k8s.io/docs/handbook/registry/
+
+------------------------
+
+https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
+https://logz.io/blog/amazon-eks-cluster/
+https://github.com/kubernetes/examples/blob/master/guestbook-go/main.go
+https://cloudplex.io/tutorial/postgres-on-kubernetes-using-aws-ebs-as-a-volume-for-data-persistence-part-i/
+https://cloudplex.io/tutorial/postgres-on-kubernetes-using-aws-ebs-as-a-volume-for-data-persistence-part-ii/
+https://severalnines.com/database-blog/using-kubernetes-deploy-postgresql
+
+https://docs.aws.amazon.com/eks/latest/userguide/create-public-private-vpc.html vpc configuration
+
+
+// next
+
+https://medium.com/bb-tutorials-and-thoughts/aws-deploying-react-app-with-nodejs-backend-on-eks-e5663cb5017f

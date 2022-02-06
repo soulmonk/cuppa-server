@@ -28,4 +28,5 @@ WORKDIR /usr/src/app
 COPY --from=BUILD_IMAGE /usr/src/app/ ./
 
 EXPOSE 3030
+# npm to dirrect node command
 CMD [ "npm", "start" ]
