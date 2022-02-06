@@ -10,6 +10,10 @@ module.exports = {
       type: 'string',
       default: '0.0.0.0'
     },
+    CORS: {
+      type: 'string',
+      default: 'http://0.0.0.0:3500'
+    },
     LOG_LEVEL: {
       type: 'string',
       default: 'info'
