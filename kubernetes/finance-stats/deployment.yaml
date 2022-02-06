@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cuppa-finance-stats
-          image: cuppa/finance-stats
+          image: cuppa/finance-stats:v4
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 3031

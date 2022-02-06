@@ -34,10 +34,9 @@ if (require.main === module) {
     }
   })
   setup(fastify)
-    // todo do we need this, and is it okay to use `fastify start`
     .then(() => fastify.ready())
-    .then( () => fastify.listen(fastify.config.PORT))
-    .then(() => console.log(`Server listening at http://localhost:${fastify.server.address().port}`))
+    .then( () => fastify.listen(fastify.config.PORT, fastify.config.FASTIFY_ADDRESS))
+    .then(() => console.log(`Server listening at http://${fastify.server.address().address}:${fastify.server.address().port}`))
     .catch(err => {
       console.error(err)
     })

@@ -53,9 +53,9 @@ if (require.main === module) {
   })
   setup(fastify)
     .then(() => fastify.ready())
-    .then(() => fastify.listen(fastify.config.PORT))
+    .then(() => fastify.listen(fastify.config.PORT, fastify.config.FASTIFY_ADDRESS))
     .then(() => {
-      console.log(`Server listening at http://localhost:${fastify.server.address().port}`)
+      console.log(`Server listening at http://${fastify.server.address().address}:${fastify.server.address().port}`)
     })
 }
 

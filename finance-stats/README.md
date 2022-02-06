@@ -1,16 +1,5 @@
 [![JavaScript Style Guide](https://cdn.rawgit.com/standard/standard/master/badge.svg)](https://github.com/standard/standard)
 
-# DEVELOPMENT
-
-## DOCKER
-
-- `docker build -t cuppa/finance-stats:v1  .`
-
-### for raspberry pi
-
-- `docker build -t cuppa/finance-stats:v2 --platform linux/arm64 .`
-- `docker tag cuppa/finance-stats:v1 rpisoulv1.kube:31320/cuppa/finance-stats:latest`
-- `docker push rpisoulv1.kube:31320/cuppa/finance-stats:latest`
 
 ## TODO
 
@@ -24,9 +13,9 @@
     - decimal vs float
     - jsonb vs json
     - replace multiple ids `id in ($1)` "TODO posgresql task1"
-    
+
 - camelCase in gql vs lower_case in db
-- mark1: object keys vs for in 
+- mark1: object keys vs for in
 
 ## TODO v2
 
@@ -39,7 +28,7 @@
     - type enum
     - optional
     - PROBLEM with parameter and type `Filter`` in `transactions(filter: Filter): [Transaction]`
-    
+
 
 ## Definition:
 
@@ -55,7 +44,7 @@
         - blocked amount
         - fixed amount
         - currency exchange at date of transaction
-        
+
 - cards
    - alias
    - valid from

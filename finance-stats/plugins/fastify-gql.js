@@ -3,17 +3,20 @@
 const fp = require('fastify-plugin')
 
 // Import external dependancies
-const gql = require('fastify-gql')
+const mercurius = require('mercurius')
 
 // Import GraphQL Schema
 const { typeDefs, resolvers, loaders } = require('../graphql')
-const { makeExecutableSchema } = require('graphql-tools')
+const { makeExecutableSchema } = require('@graphql-tools/schema')
 
 async function fastifyGql (fastify/*, opts */) {
   // Register Fastify GraphQL
   // TODO security, if authorized
-  fastify.register(gql, {
-    schema: makeExecutableSchema({ typeDefs, resolvers }),
+  fastify.register(mercurius, {
+    schema: makeExecutableSchema({
+      typeDefs,
+      resolvers
+    }),
     graphiql: false,
     routes: true,
     errorHandler,
