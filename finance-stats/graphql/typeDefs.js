@@ -43,6 +43,7 @@ module.exports = `
     name: String
     url: String
   }
+  
   """ Category """
   type TransactionType {
     id: ID!

@@ -6,6 +6,10 @@ module.exports = {
       type: 'string',
       default: 3000
     },
+    FASTIFY_ADDRESS: {
+      type: 'string',
+      default: '0.0.0.0'
+    },
     LOG_LEVEL: {
       type: 'string',
       default: 'info'
