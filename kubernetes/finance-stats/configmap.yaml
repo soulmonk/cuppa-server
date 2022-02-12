@@ -7,5 +7,7 @@ metadata:
 data:
   PORT: "3031"
   FASTIFY_ADDRESS: "0.0.0.0"
+  CORS: "http://0.0.0.0:3500,http://localhost:3500,https://app.fallensoulmonk.org,http://localhost:4541"
+
   POSTGRESQL_CONNECTION_STRING: "postgres://cuppa:password@postgres/cuppa-finance-stats"
   REDIS_CONNECTION_STRING: "redis://redis:6379"
