@@ -4,7 +4,7 @@ module.exports = {
   properties: {
     PORT: {
       type: 'string',
-      default: 3000
+      default: 3030
     },
     FASTIFY_ADDRESS: {
       type: 'string',

@@ -23,6 +23,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: cuppa-finance-stats-config
+            - secretRef:
+                name: finance-stats-secret
 ---
 apiVersion: v1
 kind: Service
