@@ -1,28 +1,41 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cuppa-ingress
-  namespace: cuppa
+  name: cuppa
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+
 spec:
   rules:
-    - host: auth.cuppa.com
+    - host: auth.fallensoulmonk.org
       http:
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: auth
-              port:
-                number: 3030
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cuppa-auth
+                port:
+                  number: 3030
 
-    - host: finance-stats.cuppa.com
+    - host: finance.fallensoulmonk.org
       http:
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: finance-stats
-              port:
-                number: 3031
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: finance-stats
+                port:
+                  number: 3031
+
+    - host: app.fallensoulmonk.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cuppa-web
+                port:
+                  number: 3500
