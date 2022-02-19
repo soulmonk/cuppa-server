@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cuppa-web
-          image: cuppa/web:v1
+          image: cuppa/web:v4
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 3500

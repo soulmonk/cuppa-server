@@ -7,4 +7,4 @@ metadata:
 data:
   PORT: "3030"
   FASTIFY_ADDRESS: "0.0.0.0"
-  POSTGRESQL_CONNECTION_STRING: "postgres://cuppa:password@postgres/cuppa-authentication"
+  CORS: "http://localhost:3500,https://app.fallensoulmonk.org,http://localhost:4541"

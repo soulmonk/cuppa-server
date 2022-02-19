@@ -4,7 +4,7 @@ module.exports = {
   properties: {
     PORT: {
       type: 'string',
-      default: 3000
+      default: 3031
     },
     FASTIFY_ADDRESS: {
       type: 'string',
@@ -12,7 +12,7 @@ module.exports = {
     },
     CORS: {
       type: 'string',
-      default: 'http://0.0.0.0:3500'
+      default: 'http://localhost:3500,http://localhost:4541'
     },
     JWT_SECRET: {
       type: 'string',

@@ -16,13 +16,15 @@ spec:
     spec:
       containers:
         - name: cuppa-finance-stats
-          image: cuppa/finance-stats:v4
+          image: cuppa/finance-stats:v6
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 3031
           envFrom:
             - configMapRef:
                 name: cuppa-finance-stats-config
+            - secretRef:
+                name: finance-stats-secret
 ---
 apiVersion: v1
 kind: Service

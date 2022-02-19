@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: finance-stats-config
-  namespace: cuppa
-  labels:
-    app: finance-stats
-data:
-  PORT: "3031"

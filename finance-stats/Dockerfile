@@ -5,6 +5,8 @@ RUN apk update && apk add bash python3 g++ make
 # Create app directory
 WORKDIR /usr/src/app
 
+RUN npm i -g npm
+
 # Bundle app source
 COPY . .
 

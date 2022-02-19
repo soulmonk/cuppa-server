@@ -11,9 +11,12 @@ environment:
 
 ## DOCKER
 
+### Helper
+ - `export $(cat .env | xargs)`
+
 ### local
 - `docker build -t cuppa-${SERVICE_NAME} .` - for local
-- `docker run -d cuppa-${SERVICE_NAME} cuppa-${SERVICE_NAME}` - for local
+- `docker run -d cuppa-${SERVICE_NAME} -p ${PORT} cuppa-${SERVICE_NAME}` - for local
 
 ### for raspberry pi
 

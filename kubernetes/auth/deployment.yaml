@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cuppa-auth
-          image: cuppa/auth:v4
+          image: cuppa/auth:v5
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 3030
@@ -29,6 +29,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: cuppa-auth-config
+            - secretRef:
+                name: cuppa-auth-secret
           resources:
             limits:
               memory: "512Mi"
