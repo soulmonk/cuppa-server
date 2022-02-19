@@ -12,7 +12,7 @@ module.exports = {
     },
     CORS: {
       type: 'string',
-      default: 'http://0.0.0.0:3500'
+      default: 'http://localhost:3500,http://localhost:4541'
     },
     LOG_LEVEL: {
       type: 'string',
