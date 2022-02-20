@@ -138,7 +138,7 @@ module.exports = {
       validTo: card.validTo,
       currencyCode: card.currencyCode,
       description: card.description,
-      bankId,
+      bank_id: bankId,
       userId: user.id,
     }
 

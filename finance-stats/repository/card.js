@@ -19,7 +19,7 @@ class CardRepository extends BaseRepository {
       data.validFrom,
       data.validTo,
       data.currencyCode,
-      data.bankId,
+      data.bank_id,
       data.description,
       data.userId
     ]
