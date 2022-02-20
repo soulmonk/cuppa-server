@@ -53,6 +53,7 @@ module.exports = `
   
   type Stats {
     type: TransactionType
+    currencyCode: String
     amount: Float
   }
 
@@ -82,6 +83,20 @@ module.exports = `
     info: TransactionInfoCreate
   }
   
+  input BankCreate {
+    name: String!
+    url: String
+  }
+
+  input CardCreate {
+    name: String!
+    validFrom: DateTime!
+    validTo: DateTime!
+    currencyCode: String!
+    bank: ID!
+    description: String
+  }
+  
   input TransactionUpdate {
     id: ID!
     date: DateTime
@@ -105,6 +120,8 @@ module.exports = `
 
   type Mutation {
     addTransaction(transaction: TransactionCreate): Transaction
+    addBank(bank: BankCreate): Bank
+    addCard(card: CardCreate): Card
     addTransactionType(type: TransactionTypeCreate): TransactionType
     updateTransaction(transaction: TransactionUpdate): Transaction
   }

@@ -84,7 +84,7 @@ class TransactionRepository extends BaseRepository {
 
   static async total (pg, userId, options = {}) {
     // { dateFrom: moment().subtract(7, 'days').toDate(), dateTo: Date.now() }
-    let query = 'SELECT type_id, sum(amount) as amount FROM "transaction" WHERE user_id = $1'
+    let query = 'SELECT type_id, currency_code, sum(amount) as amount FROM "transaction" WHERE user_id = $1'
     const params = [userId]
 
     /*
@@ -108,7 +108,7 @@ class TransactionRepository extends BaseRepository {
       params.push(options.dateTo)
       query += ' and date <= $' + params.length
     }
-    query += ' group by 1'
+    query += ' group by 1,2'
     const { rows } = await pg.query(query, params)
     return rows
   }

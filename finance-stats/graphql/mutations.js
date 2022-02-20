@@ -2,10 +2,11 @@ const transactionRepository = require('../repository/transaction')
 const transactionTypeRepository = require('../repository/transaction-type')
 const transactionInfoRepository = require('../repository/transaction-info')
 const cardRepository = require('../repository/card')
+const bankRepository = require('../repository/bank')
 
 //
 const config = {
-  currencyCode: 'UAH'
+  currencyCode: 'UAH',
 }
 
 module.exports = {
@@ -45,7 +46,7 @@ module.exports = {
       note: typeof transaction.note !== 'string' ? '' : transaction.note,
       currency_code: currencyCode,
       card_id: cardId,
-      user_id: user.id
+      user_id: user.id,
     }
 
     let result = await transactionRepository.create(app.pg, data)
@@ -56,7 +57,7 @@ module.exports = {
       const infoData = {
         blockedAmount: transaction.info.blockedAmount,
         fixedAmount: transaction.info.fixedAmount ?? 0,
-        transactionId: result.id
+        transactionId: result.id,
       }
       await transactionInfoRepository.create(app.pg, infoData)
     }
@@ -67,9 +68,9 @@ module.exports = {
       {
         topic: 'transactionAdded',
         payload: {
-          transaction: result
-        }
-      }
+          transaction: result,
+        },
+      },
     )
     return result
   },
@@ -98,7 +99,7 @@ module.exports = {
       type_id: transaction.type, // todo rename? ###++++### insert or update on table \"transaction\" violates foreign key constraint
       note: typeof transaction.note !== 'string' ? '' : transaction.note,
       currency_code: currencyCode,
-      card_id: transaction.card
+      card_id: transaction.card,
     }
 
     await transactionRepository.update(app.pg, user.id, transaction.id, data)
@@ -107,14 +108,41 @@ module.exports = {
       {
         topic: 'transactionUpdated',
         payload: {
-          transaction: result
-        }
-      }
+          transaction: result,
+        },
+      },
     )
     return transactionRepository.toJson(result)
   },
   addTransactionType: async (obj, { type }, { app, pubsub, user }) => {
     const result = await transactionTypeRepository.create(app.pg, { ...type, userId: user.id })
     return transactionTypeRepository.toJson(result)
-  }
+  },
+  addBank: async (obj, { bank }, { app, user }) => {
+    const result = await bankRepository.create(app.pg, { ...bank, userId: user.id })
+    return bankRepository.toJson(result)
+  },
+  addCard: async (obj, { card }, { app, user }) => {
+    const bankId = card.bank && !isNaN(Number(card.bank)) && Number(card.bank) > 0 ? card.bank : null
+    // todo how to validate with graphql
+    if (bankId) {
+      const bank = await bankRepository.byId(app.pg, user.id, bankId)
+      if (!bank) {
+        throw new Error('unknown bank')
+      }
+    }
+
+    const data = {
+      name: card.name,
+      validFrom: card.validFrom,
+      validTo: card.validTo,
+      currencyCode: card.currencyCode,
+      description: card.description,
+      bankId,
+      userId: user.id,
+    }
+
+    const result = await cardRepository.create(app.pg, data)
+    return cardRepository.toJson(result)
+  },
 }

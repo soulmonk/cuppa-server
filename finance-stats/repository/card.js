@@ -11,6 +11,24 @@ class CardRepository extends BaseRepository {
     currency_code: 'currencyCode'
   };
 
+  static async create (pg, data) {
+    const query = `INSERT INTO "${this.tableName}" ("name", "valid_from", "valid_to", "currency_code", "bank_id", "description", "user_id") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`
+
+    const params = [
+      data.name,
+      data.validFrom,
+      data.validTo,
+      data.currencyCode,
+      data.bankId,
+      data.description,
+      data.userId
+    ]
+
+    const { rows } = await pg.query(query, params)
+
+    return { ...data, id: rows[0].id }
+  }
+
   static buildWhere () {
     return {
       where: [],
