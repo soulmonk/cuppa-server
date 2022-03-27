@@ -14,12 +14,12 @@
   "author": "Vitalii Melnykov <fsoulmonk@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "sinon": "^9.0.2",
-    "standard": "^14.3.4",
-    "tap": "^14.10.7"
+    "sinon": "13.0.1",
+    "standard": "16.0.4",
+    "tap": "16.0.1"
   },
   "dependencies": {
-    "@grpc/proto-loader": "^0.5.5",
-    "grpc": "^1.24.9"
+    "@grpc/proto-loader": "0.6.9",
+    "grpc": "1.24.9"
   }
 }
