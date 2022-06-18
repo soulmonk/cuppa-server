@@ -25,6 +25,7 @@ COPY . .
 RUN npm install
 
 FROM node:16-alpine
+USER node
 WORKDIR /usr/src/app
 
 COPY --from=BUILD_IMAGE /usr/src/app/ ./
