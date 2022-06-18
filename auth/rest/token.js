@@ -4,6 +4,7 @@ const S = require('fluent-json-schema')
 
 async function tokenService (fastify, opts) {
   const refreshCookie = fastify.config.JWT_REFRESH_COOKIE
+  const refreshExpires = fastify.config.JWT_REFRESH_EXPIRES_IN
   const responseSchema = {
     200: S.object()
       .prop('token', S.string())
@@ -62,7 +63,8 @@ async function tokenService (fastify, opts) {
 
     reply.setCookie(refreshCookie, refreshToken, {
       httpOnly: true,
-      sameSite: 'strict'
+      sameSite: 'strict',
+      maxAge: refreshExpires,
       // signed ?
     })
 
