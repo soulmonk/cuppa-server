@@ -1,9 +1,9 @@
 'use strict'
 
 const fastify = require('fastify')({ logger: true })
-const proxy = require('fastify-http-proxy')
+const proxy = require('@fastify/http-proxy')
 
-fastify.register(require('fastify-cors'), {
+fastify.register(require('@fastify/cors'), {
   origin: [
     'http://localhost:4541', // ng serve - dev
     'http://localhost:3500', // dev separated

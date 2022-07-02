@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-
+      "@cuppa-server/jwt-plugin": ["libs/jwt-plugin/src/index.js"],
+      "@cuppa-server/status-handler": ["libs/status-handler/src/index.js"]
     }
   },
   "exclude": ["node_modules", "tmp"]

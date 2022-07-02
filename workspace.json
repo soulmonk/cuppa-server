@@ -2,9 +2,11 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "auth-grpc-client": "libs/auth-grpc-client",
     "auth": "apps/auth",
+    "auth-grpc-client": "libs/auth-grpc-client",
     "finance-stats": "apps/finance-stats",
-    "gateway": "apps/gateway"
+    "gateway": "apps/gateway",
+    "jwt-plugin": "libs/jwt-plugin",
+    "status-handler": "libs/status-handler"
   }
 }

@@ -5,10 +5,15 @@ const AutoLoad = require('@fastify/autoload')
 const fastifyEnv = require('@fastify/env')
 const configSchema = require('./config/schema')
 
+const statusService = require('@cuppa-server/status-handler')
+const jwtPlugin = require('@cuppa-server/jwt-plugin')
+
 async function setup (fastify, opts) {
   fastify.register(fastifyEnv, {
     schema: configSchema,
   })
+
+  fastify.register(jwtPlugin, {})
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
@@ -18,6 +23,8 @@ async function setup (fastify, opts) {
     dir: path.join(__dirname, 'plugins'),
     options: Object.assign({}, opts),
   })
+
+  statusService(fastify)
 
   // This loads all plugins defined in rest
   // define your routes in one of these

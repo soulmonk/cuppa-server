@@ -3,13 +3,16 @@
 const fp = require('fastify-plugin')
 const jwt = require('@fastify/jwt')
 
-// todo as repository ?, copied because docker could not copy out of context
-async function fastifyJWT (fastify) {
+async function fastifyJWT (fastify, opts) {
+  const skipOnRoute = opts.ignoreRoutes ? (route) => opts.ignoreRoutes[route] : () => false;
   fastify.register(jwt, {
     secret: fastify.config.JWT_SECRET
   })
 
   async function authenticate (request, reply) {
+    if (skipOnRoute(request.url)) {
+      return true;
+    }
     const error = (err) => {
       reply.log.error(err)
       reply.code(401).send({ message: 'Could not authenticate' })
@@ -31,10 +34,12 @@ async function fastifyJWT (fastify) {
 
   fastify.decorate('authenticate', authenticate)
 
-  fastify.addHook('onRequest', authenticate)
+  if (opts.addOnRequest) {
+    fastify.addHook('onRequest', authenticate)
+  }
 }
 
 module.exports = fp(fastifyJWT, {
-  fastify: '4.x',
+  fastify: '>=4',
   name: 'fastifyJWT'
 })

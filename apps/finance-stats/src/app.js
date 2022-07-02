@@ -3,36 +3,21 @@
 const path = require('path')
 const AutoLoad = require('@fastify/autoload')
 
-const S = require('fluent-json-schema')
+const statusService = require('@cuppa-server/status-handler')
 const fastifyEnv = require('@fastify/env')
 const configSchema = require('./config/schema')
-
-// todo move to global package
-function statusService (fastify, opts) {
-  fastify.route({
-    method: 'GET',
-    path: '/status',
-    handler: onStatus,
-    onRequest: async () => {},
-    schema: {
-      response: {
-        200: S.object().prop('status', S.string())
-      }
-    }
-  })
-
-  async function onStatus (req, reply) {
-    return { status: 'ok' }
-  }
-}
+const jwtPlugin = require('@cuppa-server/jwt-plugin')
 
 async function setup (fastify, opts) {
   fastify.register(fastifyEnv, {
     schema: configSchema
   })
-  // fastify
-  //   .register(fastifyEnv, opts)
   // Do not touch the following lines
+  fastify.register(jwtPlugin, {
+    addOnRequest: true,
+    ignoreRoutes: {'/status': 1},
+  })
+  statusService(fastify)
 
   // This loads all plugins defined in plugins
   // those should be support plugins that are reused
@@ -42,7 +27,6 @@ async function setup (fastify, opts) {
     options: Object.assign({}, opts)
   })
 
-  statusService(fastify, opts)
 }
 
 if (require.main === module) {

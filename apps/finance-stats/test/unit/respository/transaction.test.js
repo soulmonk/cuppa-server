@@ -115,7 +115,7 @@ test('find by id', async t => {
   t.ok(client.query.calledWithExactly(query, params))
 })
 
-test('build where', async t => {
+test('build where', async () => {
   const dateFrom = new Date()
   const dateTo = new Date(Date.now() + 1000 * 60)
 

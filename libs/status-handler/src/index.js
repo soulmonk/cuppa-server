@@ -1,8 +1,6 @@
-'use strict'
-
 const S = require('fluent-json-schema')
 
-async function statusService (fastify, opts) {
+function statusService (fastify) {
   fastify.route({
     method: 'GET',
     path: '/status',
@@ -14,7 +12,7 @@ async function statusService (fastify, opts) {
     }
   })
 
-  async function onStatus (req, reply) {
+  async function onStatus () {
     return { status: 'ok' }
   }
 }
