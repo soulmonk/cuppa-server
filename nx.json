@@ -1,25 +1,36 @@
 {
-  "extends": "nx/presets/npm.json",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "npmScope": "cuppa-server",
   "tasksRunnerOptions": {
-    "default": {
+    "cloud": {
       "runner": "@nrwl/nx-cloud",
       "options": {
         "cacheableOperations": [
-          "pretest",
-          "test",
-          "dev",
-          "lint",
-          "docker-image",
-          "fix",
-          "cover",
-          "db:migration",
-          "schema"
+          "build",
+          "test"
         ],
         "accessToken": "${NX_CLOUD_ACCESS_TOKEN}"
       }
+    },
+    "default":{
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "test"]
+      }
     }
   },
-  "targetDefaults": {},
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    ".eslintrc.json": "*"
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    }
+  },
   "affected": {
     "defaultBase": "master"
   }

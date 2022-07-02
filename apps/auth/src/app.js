@@ -1,8 +1,8 @@
 'use strict'
 
 const path = require('path')
-const AutoLoad = require('fastify-autoload')
-const fastifyEnv = require('fastify-env')
+const AutoLoad = require('@fastify/autoload')
+const fastifyEnv = require('@fastify/env')
 const configSchema = require('./config/schema')
 
 async function setup (fastify, opts) {

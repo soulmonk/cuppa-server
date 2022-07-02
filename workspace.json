@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "auth-grpc-client": "libs/auth-grpc-client",
+    "auth": "apps/auth",
+    "finance-stats": "apps/finance-stats",
+    "gateway": "apps/gateway"
+  }
+}
