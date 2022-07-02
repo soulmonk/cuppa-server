@@ -1,10 +1,10 @@
 'use strict'
 
 const path = require('path')
-const AutoLoad = require('fastify-autoload')
+const AutoLoad = require('@fastify/autoload')
 
 const S = require('fluent-json-schema')
-const fastifyEnv = require('fastify-env')
+const fastifyEnv = require('@fastify/env')
 const configSchema = require('./config/schema')
 
 // todo move to global package
@@ -53,7 +53,7 @@ if (require.main === module) {
   })
   setup(fastify)
     .then(() => fastify.ready())
-    .then(() => fastify.listen(fastify.config.PORT, fastify.config.FASTIFY_ADDRESS))
+    .then(() => fastify.listen({ port: fastify.config.PORT, host: fastify.config.FASTIFY_ADDRESS }))
     .then(() => {
       console.log(`Server listening at http://${fastify.server.address().address}:${fastify.server.address().port}`)
     })

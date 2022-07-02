@@ -55,6 +55,6 @@ async function fastifyGql (fastify/*, opts */) {
 }
 
 module.exports = fp(fastifyGql, {
-  fastify: '>=3.x',
+  fastify: '>=4.x',
   dependencies: ['fastifyPostgres', 'fastifyRedis', 'fastifyJWT']
 })

@@ -8,7 +8,7 @@ async function fastifyCookie (fastify, opts) {
     parseOptions: {}, // todo env ??? or hardcoded
     ...opts.cookie // todo or not )
   }
-  fastify.register(require('fastify-cookie'), options)
+  fastify.register(require('@fastify/cookie'), options)
 }
 
 module.exports = fp(fastifyCookie)

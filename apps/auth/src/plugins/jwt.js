@@ -1,7 +1,7 @@
 'use strict'
 
 const fp = require('fastify-plugin')
-const jwt = require('fastify-jwt')
+const jwt = require('@fastify/jwt')
 
 // todo as repository ?, copied because docker could not copy out of context
 async function fastifyJWT (fastify) {
@@ -33,6 +33,6 @@ async function fastifyJWT (fastify) {
 }
 
 module.exports = fp(fastifyJWT, {
-  fastify: '>=3',
+  fastify: '>=4',
   name: 'fastifyJWT'
 })
