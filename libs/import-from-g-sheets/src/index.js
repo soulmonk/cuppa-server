@@ -1,7 +1,6 @@
 const fs = require('fs').promises
 const path = require('path')
 const pg = require('pg')
-const loadConfig = require('../../config')
 const readline = require('readline')
 const { google } = require('googleapis')
 const { uniqBy, sortBy, uniq } = require('lodash')
@@ -9,7 +8,6 @@ const { uniqBy, sortBy, uniq } = require('lodash')
 const argv = require('minimist')(process.argv.slice(2))
 
 const loadMapping = require('./mapSheet')
-const { baseParse } = require('./mapSheet/base')
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -158,8 +156,12 @@ async function loadRawData () {
 }
 
 async function convert () {
-  const mapping = await loadMapping()
+  const mapping = await loadMapping(process.env.MAPPING_FOLDER)
   const rawData = await loadRawData()
+
+  const baseParse = (rawRow, title, idx) => {
+    return rawRow;
+  }
 
   const data = []
   let categories = []
@@ -240,7 +242,7 @@ async function store (data) {
         return `($${(8 * idx) + 1}, $${(8 * idx) + 2}, $${(8 * idx) + 3}, $${(8 * idx) + 4}, $${(8 * idx) + 5}, $${(8 * idx) +
         6}, $${(8 * idx) + 7}, $${(8 * idx) + 8})`
       })
-    const query = `INSERT INTO transaction(date, description, amount, type_id, note, card_id, currency_code, user_id) 
+    const query = `INSERT INTO transaction(date, description, amount, type_id, note, card_id, currency_code, user_id)
 VALUES ${v.join(',')};`
     return pool.query(query, values)
   }
