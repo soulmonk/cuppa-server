@@ -1,0 +1,48 @@
+### auth status
+GET {{auth_host}}/status
+
+
+### Signup by token, part 1. Retrieve and save token.
+POST {{auth_host}}/signup
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}",
+  "email": "{{email}}"
+}
+
+### Authorization by token, part 1. Retrieve and save token.
+POST {{auth_host}}/token
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+### Authorization by refresh
+POST {{auth_host}}/refresh-token
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+> {% client.global.set("auth_token", response.body.token); %}
+
+
+### fin stats status
+GET {{fin_stats_host}}/status
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+### fin stats status
+POST {{fin_stats_host}}/grapql
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+

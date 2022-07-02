@@ -1,0 +1,8 @@
+*
+!config
+!plugins
+!repository
+!rest
+!app.js
+!package.json
+!package-lock.json
