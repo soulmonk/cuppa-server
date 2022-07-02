@@ -20,8 +20,9 @@
   },
   "homepage": "https://github.com/soulmonk/cuppa-server#readme",
   "workspaces": [
-    "auth",
-    "finance-stats"
+    "apps/auth",
+    "apps/finance-stats",
+    "apps/finance-stats"
   ],
   "devDependencies": {
     "nx": "14.4.0",
