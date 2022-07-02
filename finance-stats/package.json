@@ -61,5 +61,13 @@
   },
   "tap": {
     "test-regex": ".*\\.test\\.js"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soulmonk/cuppa-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/soulmonk/cuppa-server/issues"
+  },
+  "homepage": "https://github.com/soulmonk/cuppa-server#readme"
 }

@@ -1,0 +1,26 @@
+{
+  "extends": "nx/presets/npm.json",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": [
+          "pretest",
+          "test",
+          "dev",
+          "lint",
+          "docker-image",
+          "fix",
+          "cover",
+          "db:migration",
+          "schema"
+        ],
+        "accessToken": "${NX_CLOUD_ACCESS_TOKEN}"
+      }
+    }
+  },
+  "targetDefaults": {},
+  "affected": {
+    "defaultBase": "master"
+  }
+}

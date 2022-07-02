@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "test": "echo \"no tests\"",
     "dev": "fastify start -l info -P index.js"
   },
   "keywords": [],
