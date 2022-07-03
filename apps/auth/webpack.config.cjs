@@ -1,11 +1,14 @@
-// import nodeExternals from 'webpack-node-externals'
+const nodeExternals = require('webpack-node-externals')
 
-export default (config, context) => {
+// save it here "cwd": "apps/fastify-app",
+// "cwd": "apps/fastify-app",
+module.exports = (config, context) => {
   return {
     ...config,
     externalsPresets: {
       node: true,
     },
+    plugins: [],
     output: {
       ...config.output,
       module: true,
@@ -21,8 +24,8 @@ export default (config, context) => {
     experiments: {
       outputModule: true,
     },
-    // externals: nodeExternals({
-    //   importType: 'module',
-    // }),
+    externals: nodeExternals({
+      importType: 'module',
+    }),
   }
 }

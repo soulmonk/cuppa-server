@@ -14,6 +14,44 @@
         "parallel": false
       }
     },
+    "ts-build-2": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "build"
+        }
+      ],
+      "options": {
+        "updateBuildableProjectDepsInPackageJson": true,
+        "outputPath": "dist/apps/auth",
+        "main": "apps/auth/src/app.js",
+        "tsConfig": "apps/auth/tsconfig.app.json",
+        "buildableProjectDepsInPackageJsonType": "dependencies"
+      }
+    },
+    "build-fastify": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "tsc -p apps/auth/tsconfig.app.json",
+          "tsc -p apps/auth/tsconfig.app.json"
+        ],
+        "parallel": false
+      }
+    },
+    "serve-fastify": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "tsc -p apps/auth/tsconfig.app.json -w",
+          "tsc-alias -p apps/auth/tsconfig.app.json -w",
+          "fastify start dist/auth/apps/auth/src/app.js -P -l debug -w"
+        ],
+        "parallel": true
+      }
+    },
     "build2": {
       "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
@@ -21,16 +59,18 @@
         "outputPath": "dist/apps/auth",
         "main": "apps/auth/src/app.js",
         "tsConfig": "apps/auth/tsconfig.app.json",
-        "webpackConfig": "apps/auth/webpack.config.js",
+        "webpackConfig": "apps/auth/webpack.config.cjs",
         "assets": [],
+        "sourceMap": false,
+        "optimization": false,
+        "inspect": false,
+        "minimize": false,
         "generatePackageJson": true
       },
       "configurations": {
         "production": {
           "optimization": true,
-          "extractLicenses": true,
-          "inspect": false,
-          "minimize": false
+          "extractLicenses": true
         }
       }
     },
