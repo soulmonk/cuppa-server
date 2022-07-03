@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cuppa-auth
-          image: cuppa/auth:v8
+          image: cuppa/auth:v9
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 3030

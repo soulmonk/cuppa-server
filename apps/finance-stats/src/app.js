@@ -10,30 +10,36 @@ const jwtPlugin = require('@cuppa-server/jwt-plugin')
 
 async function setup (fastify, opts) {
   fastify.register(fastifyEnv, {
-    schema: configSchema
+    schema: configSchema,
   })
+  fastify.register(require('@fastify/cors'), {
+    origin: process.env.CORS.split(','),
+    credentials: true,
+  })
+
   // Do not touch the following lines
+  // TODO should be in plugins folder to work both with cors
   fastify.register(jwtPlugin, {
     addOnRequest: true,
-    ignoreRoutes: {'/status': 1},
+    ignoreRoutes: { '/status': 1 },
   })
-  statusService(fastify)
 
   // This loads all plugins defined in plugins
   // those should be support plugins that are reused
   // through your application
   fastify.register(AutoLoad, {
     dir: path.join(__dirname, 'plugins'),
-    options: Object.assign({}, opts)
+    options: Object.assign({}, opts),
   })
 
+  statusService(fastify)
 }
 
 if (require.main === module) {
   const fastify = require('fastify')({
     logger: {
-      level: process.env.LOG_LEVEL ?? 'info'
-    }
+      level: process.env.LOG_LEVEL ?? 'info',
+    },
   })
   setup(fastify)
     .then(() => fastify.ready())
