@@ -12,7 +12,10 @@ async function setup (fastify, opts) {
   fastify.register(fastifyEnv, {
     schema: configSchema,
   })
-
+  fastify.register(require('@fastify/cors'), {
+    origin: process.env.CORS.split(','),
+    credentials: true
+  })
   fastify.register(jwtPlugin, {})
   // Do not touch the following lines
 
