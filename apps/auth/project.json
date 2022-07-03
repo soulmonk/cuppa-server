@@ -3,6 +3,36 @@
   "sourceRoot": "apps/auth/src",
   "projectType": "application",
   "targets": {
+    "ts-build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "tsc -p apps/auth/tsconfig.app.json",
+          "tsc-alias -p apps/auth/tsconfig.app.json"
+        ],
+        "parallel": false
+      }
+    },
+    "build2": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/auth",
+        "main": "apps/auth/src/app.js",
+        "tsConfig": "apps/auth/tsconfig.app.json",
+        "webpackConfig": "apps/auth/webpack2.config.js",
+        "assets": [],
+        "generatePackageJson": true
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "minimize": false
+        }
+      }
+    },
     "build": {
       "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],

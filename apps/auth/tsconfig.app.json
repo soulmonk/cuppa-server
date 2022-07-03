@@ -1,11 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "module": "commonjs",
+    "outDir": "../../dist",
+    "target": "es2022",
+    "module": "NodeNext",
     "types": ["node"]
   },
   "exclude": [
+    "test",
+    "*.config.js",
     "jest.config.ts",
     "**/*.spec.ts",
     "**/*.test.ts",

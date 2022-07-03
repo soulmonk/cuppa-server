@@ -6,17 +6,12 @@ const fastifyEnv = require('@fastify/env')
 const configSchema = require('./config/schema')
 
 const statusService = require('@cuppa-server/status-handler')
-const jwtPlugin = require('@cuppa-server/jwt-plugin')
 
 async function setup (fastify, opts) {
   fastify.register(fastifyEnv, {
     schema: configSchema,
   })
-  fastify.register(require('@fastify/cors'), {
-    origin: process.env.CORS.split(','),
-    credentials: true
-  })
-  fastify.register(jwtPlugin, {})
+
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
