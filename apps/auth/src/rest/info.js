@@ -1,8 +1,8 @@
 'use strict'
 
-const S = require('fluent-json-schema')
+import S from 'fluent-json-schema'
 
-async function meService (fastify) {
+export default async function meService (fastify) {
   fastify.route({
     method: 'GET',
     path: '/info',
@@ -17,11 +17,9 @@ async function meService (fastify) {
   })
 
   async function onInfo (req) {
-    const user = await this.repositories.user.getUserById(req.user.id)
+    const user = await fastify.repositories.user.getUserById(req.user.id)
     return {
       username: user.name
     }
   }
 }
-
-module.exports = meService

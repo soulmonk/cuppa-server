@@ -7,6 +7,7 @@
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [
+          "rm -rf dist/auth",
           "tsc -p apps/auth/tsconfig.app.json",
           "tsc-alias -p apps/auth/tsconfig.app.json"
         ],
@@ -20,7 +21,7 @@
         "outputPath": "dist/apps/auth",
         "main": "apps/auth/src/app.js",
         "tsConfig": "apps/auth/tsconfig.app.json",
-        "webpackConfig": "apps/auth/webpack2.config.js",
+        "webpackConfig": "apps/auth/webpack.config.js",
         "assets": [],
         "generatePackageJson": true
       },

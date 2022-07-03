@@ -1,19 +1,18 @@
 'use strict'
 
-const fp = require('fastify-plugin')
-
-const UserRepository = require('./../repository/user')
+import fp from 'fastify-plugin'
+import UserRepository from './../repository/user.js'
 
 async function repositories (fastify) {
   fastify.decorate('repositories', {
     user: new UserRepository(fastify.pg, fastify.jwt, {
-      expiresIn: fastify.config.JWT_EXPIRES_IN
+      expiresIn: fastify.config.JWT_EXPIRES_IN,
     }, {
-      rounds: fastify.config.USER_ROUNDS
-    })
+      rounds: fastify.config.USER_ROUNDS,
+    }),
   })
 }
 
-module.exports = fp(repositories, {
-  dependencies: ['fastifyPostgres', 'fastifyJWT']
+export default fp(repositories, {
+  dependencies: ['fastifyPostgres', 'fastifyJWT'],
 })

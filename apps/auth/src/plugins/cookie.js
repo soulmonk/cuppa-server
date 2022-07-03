@@ -1,5 +1,5 @@
 'use strict'
-const fp = require('fastify-plugin')
+import fp from 'fastify-plugin'
 
 async function fastifyCookie (fastify, opts) {
   const options = {
@@ -7,7 +7,7 @@ async function fastifyCookie (fastify, opts) {
     parseOptions: {}, // todo env ??? or hardcoded
     ...opts.cookie // todo or not )
   }
-  fastify.register(require('@fastify/cookie'), options)
+  fastify.register(import('@fastify/cookie'), options)
 }
 
-module.exports = fp(fastifyCookie)
+export default fp(fastifyCookie)

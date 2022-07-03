@@ -1,8 +1,8 @@
 'use strict'
 
-const { test } = require('tap')
-const { build } = require('../helper')
-const sinon = require('sinon')
+import {} from 'tap'
+import { build } from '../helper'
+import sinon from 'sinon'
 
 test('get user info', async t => {
   const app = await build(t)

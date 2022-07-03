@@ -1,19 +1,10 @@
 {
+  "extends": "@tsconfig/node18-strictest-esm/tsconfig.json",
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
     "baseUrl": ".",
+    "noImplicitAny": false,
     "paths": {
       "@cuppa-server/jwt-plugin": ["libs/jwt-plugin/src/index.js"],
       "@cuppa-server/status-handler": ["libs/status-handler/src/index.js"]

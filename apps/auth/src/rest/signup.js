@@ -1,8 +1,8 @@
 'use strict'
 
-const S = require('fluent-json-schema')
+import S from 'fluent-json-schema'
 
-async function signupService (fastify) {
+export default async function signupService (fastify) {
   const responseSchema = {
     201: S.null(),
     400: S.object()
@@ -36,9 +36,6 @@ async function signupService (fastify) {
     schema: signupSchema
   })
 
-  /**
-   * @type {UserRepository}
-   */
   const { user: userRepository } = fastify.repositories
 
   async function onSignup (req, reply) {
@@ -60,5 +57,3 @@ async function signupService (fastify) {
     reply.code(201).send()
   }
 }
-
-module.exports = signupService

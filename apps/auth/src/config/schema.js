@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   type: 'object',
   required: ['PORT', 'POSTGRESQL_CONNECTION_STRING', 'JWT_SECRET'],
   properties: {

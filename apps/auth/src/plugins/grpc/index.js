@@ -1,10 +1,10 @@
 'use strict'
 
-const fp = require('fastify-plugin')
+import fp from 'fastify-plugin'
 
 async function fastifyGRPC (/* fastify, opts */) {
   // TODO 'Not implemented'
 }
-module.exports = fp(fastifyGRPC, {
+export default fp(fastifyGRPC, {
   dependencies: []
 })

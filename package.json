@@ -2,6 +2,7 @@
   "name": "cuppa-server",
   "version": "0.0.0",
   "description": "",
+  "type": "module",
   "directories": {
     "doc": "docs"
   },
@@ -59,11 +60,11 @@
     "@nrwl/node": "^14.4.0",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/workspace": "14.4.0",
+    "@tsconfig/node18-strictest-esm": "^1.0.0",
     "@types/jest": "28.1.4",
     "@types/node": "18.0.0",
     "@typescript-eslint/eslint-plugin": "5.30.3",
     "@typescript-eslint/parser": "^5.29.0",
-    "apollo": "2.34.0",
     "eslint": "~8.19.0",
     "eslint-config-prettier": "8.5.0",
     "fastify-cli": "4.2.0",

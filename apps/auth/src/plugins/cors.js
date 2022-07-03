@@ -1,12 +1,12 @@
 'use strict'
 
-const fp = require('fastify-plugin')
+import fp from 'fastify-plugin'
 
-async function fastifyCookie (fastify) {
-  fastify.register(require('@fastify/cors'), {
+async function fastifyCors (fastify) {
+  fastify.register(import('@fastify/cors'), {
     origin: fastify.config.CORS.split(','),
     credentials: true
   })
 }
 
-module.exports = fp(fastifyCookie)
+export default fp(fastifyCors)

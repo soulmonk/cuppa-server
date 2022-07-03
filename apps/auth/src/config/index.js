@@ -1,5 +1,4 @@
 'use strict'
-// TODO Default config?
-module.exports = {
+export default {
 
 }

@@ -1,1 +1,1 @@
-module.exports = require('@cuppa-server/jwt-plugin');
+export { default } from '@cuppa-server/jwt-plugin'

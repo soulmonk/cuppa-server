@@ -1,5 +1,6 @@
 build:
 	@echo Build sourcecode
+	rm -rf dist
 	npx nx run ${name}:build --configuration=production
 	@echo Start building $(name):v$(version)
 	docker build -t cuppa/${name}:v${version} --platform linux/arm64 -f ./tools/deployment/$(name)/Dockerfile .

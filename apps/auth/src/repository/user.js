@@ -1,7 +1,7 @@
 'use strict'
 
-const bcrypt = require('bcrypt')
-const hyperid = require('hyperid')
+import bcrypt from 'bcrypt'
+import hyperid from 'hyperid'
 
 class UserRepository {
   constructor (pg, jwt, jwtOpts, userOpts) {
@@ -80,6 +80,7 @@ class UserRepository {
     const userModel = await this.getUserByName(username)
     if (userModel) {
       const error = new Error(`user "${username}" exists`)
+      // @ts-ignore
       error.code = 'duplicate'
       throw error
     }
@@ -116,4 +117,4 @@ class UserRepository {
   }
 }
 
-module.exports = UserRepository
+export default UserRepository

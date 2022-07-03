@@ -1,8 +1,8 @@
 'use strict'
 
-const S = require('fluent-json-schema')
+import S from 'fluent-json-schema'
 
-async function logoutService (fastify) {
+export default async function logoutService (fastify) {
   fastify.route({
     method: 'POST',
     path: '/logout',
@@ -15,9 +15,7 @@ async function logoutService (fastify) {
       }
     }
   })
-  /**
-   * @type {UserRepository}
-   */
+
   const { user: userRepository } = fastify.repositories
 
   async function onLogout (req, reply) {
@@ -26,5 +24,3 @@ async function logoutService (fastify) {
     return { status: 'ok' }
   }
 }
-
-module.exports = logoutService

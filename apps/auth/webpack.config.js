@@ -1,5 +1,6 @@
-const nodeExternals = require('webpack-node-externals')
-module.exports = (config, context) => {
+// import nodeExternals from 'webpack-node-externals'
+
+export default (config, context) => {
   return {
     ...config,
     externalsPresets: {
@@ -20,8 +21,8 @@ module.exports = (config, context) => {
     experiments: {
       outputModule: true,
     },
-    externals: nodeExternals({
-      importType: 'commonjs',
-    }),
+    // externals: nodeExternals({
+    //   importType: 'module',
+    // }),
   }
 }

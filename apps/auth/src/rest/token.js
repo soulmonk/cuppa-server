@@ -1,8 +1,8 @@
 'use strict'
 
-const S = require('fluent-json-schema')
+import S from 'fluent-json-schema'
 
-async function tokenService (fastify, opts) {
+export default async function tokenService (fastify) {
   const refreshCookie = fastify.config.JWT_REFRESH_COOKIE
   const refreshExpires = fastify.config.JWT_REFRESH_EXPIRES_IN
   const responseSchema = {
@@ -11,7 +11,7 @@ async function tokenService (fastify, opts) {
       .prop('expiresIn', S.number()),
     400: S.object()
       .prop('type', S.string())
-      .prop('message', S.string())
+      .prop('message', S.string()),
   }
 
   const tokenSchema = {
@@ -19,14 +19,14 @@ async function tokenService (fastify, opts) {
       .prop('username', S.string()
         .minLength(4)
         .maxLength(128)
-        .required()
+        .required(),
       )
       .prop('password', S.string()
         .minLength(8)
         .maxLength(128)
-        .required()
+        .required(),
       ),
-    response: responseSchema
+    response: responseSchema,
   }
 
   // route configuration
@@ -34,11 +34,11 @@ async function tokenService (fastify, opts) {
     method: 'POST',
     path: '/token',
     handler: onGetToken,
-    schema: tokenSchema
+    schema: tokenSchema,
   })
 
   const refreshTokenSchema = {
-    response: responseSchema
+    response: responseSchema,
   }
 
   // route configuration
@@ -46,12 +46,9 @@ async function tokenService (fastify, opts) {
     method: 'POST',
     path: '/refresh-token',
     handler: onRefreshToken,
-    schema: refreshTokenSchema
+    schema: refreshTokenSchema,
   })
 
-  /**
-   * @type {UserRepository}
-   */
   const { user: userRepository } = fastify.repositories
 
   async function generateTokenAndMakeResponse (reply, user, error) {
@@ -64,7 +61,7 @@ async function tokenService (fastify, opts) {
     reply.setCookie(refreshCookie, refreshToken, {
       httpOnly: true,
       sameSite: 'strict',
-      maxAge: refreshExpires
+      maxAge: refreshExpires,
       // signed ?
     })
 
@@ -78,7 +75,7 @@ async function tokenService (fastify, opts) {
 
     const error = () => reply.code(400).send({
       type: 'error',
-      message: 'wrong username or password'
+      message: 'wrong username or password',
     })
 
     const user = await userRepository.getUserByName(username)
@@ -99,7 +96,7 @@ async function tokenService (fastify, opts) {
 
     const error = () => reply.code(400).send({
       type: 'error',
-      message: 'could not verify'
+      message: 'could not verify',
     })
 
     const refreshToken = req.cookies[refreshCookie]
@@ -114,5 +111,3 @@ async function tokenService (fastify, opts) {
     }
   }
 }
-
-module.exports = tokenService

@@ -1,6 +1,6 @@
-const S = require('fluent-json-schema')
+import S from 'fluent-json-schema'
 
-function statusService (fastify) {
+export default function statusService (fastify) {
   fastify.route({
     method: 'GET',
     path: '/status',
@@ -16,5 +16,3 @@ function statusService (fastify) {
     return { status: 'ok' }
   }
 }
-
-module.exports = statusService

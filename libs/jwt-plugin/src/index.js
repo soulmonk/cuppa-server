@@ -1,7 +1,7 @@
 'use strict'
 
-const fp = require('fastify-plugin')
-const jwt = require('@fastify/jwt')
+import fp from 'fastify-plugin'
+import jwt from '@fastify/jwt'
 
 async function fastifyJWT (fastify, opts) {
   const skipOnRoute = opts.ignoreRoutes ? (route) => opts.ignoreRoutes[route] : () => false;
@@ -39,7 +39,7 @@ async function fastifyJWT (fastify, opts) {
   }
 }
 
-module.exports = fp(fastifyJWT, {
+export default fp(fastifyJWT, {
   fastify: '>=4',
   name: 'fastifyJWT'
 })
