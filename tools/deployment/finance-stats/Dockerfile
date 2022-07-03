@@ -1,21 +1,21 @@
-FROM node:16-alpine AS BUILD_IMAGE
+FROM node:18-alpine AS BUILD_IMAGE
 
 RUN apk update && apk add bash python3 g++ make
 
 # Create app directory
-WORKDIR /usr/src/app
-
-RUN npm i -g npm
+WORKDIR /app
 
 # Bundle app source
-COPY . .
+COPY dist/apps/auth/package.json package.json
+COPY package-lock.json package-lock.json
 
-RUN npm install --production
+RUN npm install --omit=dev
 
 FROM node:16-alpine
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY --from=BUILD_IMAGE /usr/src/app/ ./
+COPY --from=BUILD_IMAGE /app/node_modules ./node_modules
+COPY dist/apps/auth .
 
 EXPOSE 3031
-CMD [ "node", "app.js" ]
+CMD [ "node", "main.js" ]
