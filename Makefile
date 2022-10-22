@@ -13,6 +13,12 @@ build:
 apply-kube:
 	kubectl --kubeconfig  ~/.kube/config.cuppa-cluster-1 apply -f tools/kubernetes/${name}/deployment.yaml
 
+build-local:
+	@-$(MAKE) build-app build-docker-local
+
+build-app:
+	npm run build ${name}
+
 build-docker-local:
 	docker build -t cuppa-${name} -f ./tools/deployment/$(name)/Dockerfile .
 

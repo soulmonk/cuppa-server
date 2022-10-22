@@ -11,10 +11,10 @@ class TransactionInfoRepository extends BaseRepository {
     currency_exchange: 'currencyExchange'
   }
 
-  static buildWhere () {
+  static buildWhere (options, params = [], where = []) {
     return {
-      where: [],
-      params: []
+      where,
+      params
     }
   }
 

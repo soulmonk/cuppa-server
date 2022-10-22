@@ -1,5 +1,5 @@
 const pg = require('pg')
-const { migration } = require('./db/migration')
+const { migration } = require('./migration/index')
 
 process.env.POSTGRESQL_CONNECTION_STRING = process.env.POSTGRESQL_CONNECTION_STRING || 'postgres://cuppa:toor@localhost/cuppa-finance-stats'
 

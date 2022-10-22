@@ -2,7 +2,7 @@
 
 const fp = require('fastify-plugin')
 
-// Import external dependancies
+// Import external dependencies
 const mercurius = require('mercurius')
 
 // Import GraphQL Schema

@@ -24,3 +24,30 @@ environment:
 - `docker tag cuppa/${SERVICE_NAME}:v${VERSION} rpisoulv1.kube:31320/cuppa/${SERVICE_NAME}:v${VERSION}`
 - `docker push rpisoulv1.kube:31320/cuppa/${SERVICE_NAME}:v${VERSION}`
 
+
+## Migration
+
+```shell
+export POSTGRESQL_CONNECTION_STRING="postgresql://postgres:postgres@localhost:5432/postgres"
+node tools/db/migration.js
+```
+
+## Make
+
+
+### build
+
+```
+make build name=auth version=999
+```
+
+### local
+```
+make build-local name=auth
+make build-docker-local name=auth
+make build-docker-local name=auth port=3030
+
+make build-local name=finance-stats
+make build-docker-local name=finance-stats
+make build-docker-local name=finance-stats port=3030
+```
