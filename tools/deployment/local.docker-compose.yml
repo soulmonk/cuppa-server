@@ -3,9 +3,8 @@ version: '3.2'
 services:
   cuppa-auth:
     image: cuppa-auth:latest
-    container_name: fin-cuppa-auth
-#    env_file:
-#      - global.env
+    env_file:
+      - local.env
     environment:
       - PORT=3030
       - FASTIFY_PORT=3030
@@ -21,15 +20,14 @@ services:
 #    build: .
 #    image: dev-finance-stats
     image: cuppa-finance-stats:latest
-    container_name: finance-stats
     networks:
       - cuppa-network
-#    env_file:
-#      - global.env
+    env_file:
+      - local.env
     environment:
       - PORT=3031
       - FASTIFY_PORT=3031
-      - POSTGRESQL_CONNECTION_STRING=postgres://cuppa:toor@postgresql/cuppa-finance-stats
+      - POSTGRESQL_CONNECTION_STRING=postgres://cuppa:toor@postgres/cuppa-finance-stats
       - REDIS_CONNECTION_STRING=redis://redis:6379
     expose:
       - 3031

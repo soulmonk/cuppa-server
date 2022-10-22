@@ -205,4 +205,62 @@ test('query total filter by dates', async t => {
   })
 })
 
+test('different users', async t => {
+  const app = await build(t)
+  const token1 = await createAndAuthorizeUser()
+  const token2 = await createAndAuthorizeUser()
+
+  const userId1 = getUserIdFrom(token1)
+  const userId2 = getUserIdFrom(token2)
+  const db = getDb(t)
+  const { types: types1 } = await baseUserMockData(userId1, db)
+  const { types: types2 } = await baseUserMockData(userId2, db)
+
+  const addTransactionsQuery = `INSERT INTO "transaction" ("date", "description", "amount", "type_id", "note", "currency_code", "card_id", "user_id")
+      VALUES ('2020-10-01T00:00:00.0000', 'General 1', 25, ${types.General}, '', 'USD', null, $1),
+      ('2020-09-01T00:00:00.0000', 'General 1', 25, ${types.General}, '', 'USD', null, $1),
+      ('2020-10-24T00:00:00.0000', 'General 3', 20, ${types.General}, '', 'USD', null, $1),
+      ('2020-10-05T00:00:00.0000', 'General 4', 30, ${types.General}, '', 'USD', null, $1),
+      ('2020-09-01T00:00:00.0000', 'Other 1', 25, ${types.Other}, '', 'USD', null, $1),
+      ('2020-10-05T00:00:00.0000', 'Other 2', 22, ${types.Other}, '', 'USD', null, $1),
+      ('2020-10-20T00:00:00.0000', 'Other 3', 25, ${types.Other}, '', 'USD', null, $1);`
+
+  const dateFrom = new Date('2020-10-01T00:00:00.0000')
+  const dateTo = new Date('2020-10-10T00:00:00.0000')
+
+  await db.query(addTransactionsQuery, [userId])
+
+  // const date = new Date()
+  const gqlQueryTotal = `query total {
+  total(dateFrom: ${dateFrom.toISOString()}, dateTo: ${dateTo.toISOString()}) {
+    type {
+      id
+      name
+    }
+    amount
+  }
+}`
+
+  const response = await qlRequest(app, gqlQueryTotal, token)
+  t.strictEqual(response.statusCode, 200)
+
+  const payload = JSON.parse(response.payload)
+  t.match(payload, {
+    data: {
+      total: [
+        {
+          type: {
+            name: 'General'
+          },
+          amount: 55
+        }, {
+          type: {
+            name: 'Other'
+          },
+          amount: 22
+        }]
+    }
+  })
+})
+
 // Buffer.from('eyJpZCI6MSwiaWF0IjoxNjAzNjEzMjQ0LCJleHAiOjE2MDM2MTQxNDR9', 'base64').toString()

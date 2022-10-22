@@ -13,7 +13,7 @@ async function setup (fastify, opts) {
     schema: configSchema,
   })
   fastify.register(require('@fastify/cors'), {
-    origin: process.env.CORS.split(','),
+    origin: (process.env.CORS ?? '').split(','),
     credentials: true,
   })
 

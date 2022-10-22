@@ -29,10 +29,10 @@ class CardRepository extends BaseRepository {
     return { ...data, id: rows[0].id }
   }
 
-  static buildWhere () {
+  static buildWhere (options, params = [], where = []) {
     return {
-      where: [],
-      params: []
+      where,
+      params
     }
   }
 }
