@@ -13,10 +13,10 @@ spec:
     metadata:
       labels:
         app: web
-    spec: us
+    spec:
       containers:
         - name: cuppa-web
-          image: cuppa/web:v5
+          image: cuppa/web:v1.3.1
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 3500

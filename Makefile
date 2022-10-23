@@ -6,9 +6,9 @@ build:
 	docker tag cuppa/${name}:v${version} rpisoulv1.kube:31320/cuppa/${name}:v${version}
 	docker push rpisoulv1.kube:31320/cuppa/${name}:v${version}
 	@echo "docker pushed"
-	@echo "updating deployment, TODO"
-	@echo "for now please update manually version and run command: tools/kubernetes/${name}/deployment.yaml"
-	@echo "kubectl --kubeconfig  ~/.kube/config.cuppa-cluster-1 apply -f tools/kubernetes/${name}/deployment.yaml"
+	@echo "updating deployment"
+	yq e -i '(select(documentIndex == 0) | .spec.template.spec.containers.0.image) = "cuppa/${name}:v${version}"' tools/kubernetes/${name}/deployment.yaml
+	kubectl --kubeconfig  ~/.kube/config.cuppa-cluster-1 apply -f tools/kubernetes/${name}/deployment.yaml
 
 apply-kube:
 	kubectl --kubeconfig  ~/.kube/config.cuppa-cluster-1 apply -f tools/kubernetes/${name}/deployment.yaml
