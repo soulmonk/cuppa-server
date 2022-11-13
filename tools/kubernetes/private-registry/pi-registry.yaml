@@ -1,4 +1,0 @@
-mirrors:
-  docker.io:
-    endpoint:
-      - "http://private-repository-k3:5000"
