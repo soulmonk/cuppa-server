@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('tap')
+const { test } = require('node:test')
 const { build } = require('../helper')
 const sinon = require('sinon')
 
