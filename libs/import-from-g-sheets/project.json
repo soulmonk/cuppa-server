@@ -1,4 +1,5 @@
 {
+  "name": "import-from-g-sheets",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/import-from-g-sheets/src",
   "projectType": "library",

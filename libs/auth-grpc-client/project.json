@@ -1,4 +1,5 @@
 {
+  "name": "auth-grpc-client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/auth-grpc-client/src",
   "projectType": "library",

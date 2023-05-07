@@ -1,4 +1,5 @@
 {
+  "name": "status-handler",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/status-handler/src",
   "projectType": "library",
