@@ -56,7 +56,7 @@
     "@nrwl/jest": "16.10.0",
     "@nrwl/js": "16.10.0",
     "@nrwl/linter": "16.10.0",
-    "@nrwl/node": "16.10.0",
+    "@nrwl/node": "17.2.7",
     "@nrwl/nx-cloud": "16.0.5",
     "@nrwl/workspace": "16.10.0",
     "@types/jest": "29.5.1",
