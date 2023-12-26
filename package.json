@@ -33,7 +33,7 @@
     "@fastify/postgres": "5.2.0",
     "@fastify/redis": "6.1.1",
     "@fastify/sensible": "5.5.0",
-    "@graphql-tools/schema": "9.0.19",
+    "@graphql-tools/schema": "10.0.2",
     "@graphql-tools/utils": "9.2.1",
     "@grpc/proto-loader": "0.7.7",
     "bcrypt": "5.1.0",
