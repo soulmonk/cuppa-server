@@ -54,7 +54,7 @@
     "@nrwl/cli": "15.9.3",
     "@nrwl/eslint-plugin-nx": "17.2.7",
     "@nrwl/jest": "16.10.0",
-    "@nrwl/js": "16.10.0",
+    "@nrwl/js": "17.2.7",
     "@nrwl/linter": "16.10.0",
     "@nrwl/node": "17.2.7",
     "@nrwl/nx-cloud": "16.0.5",
