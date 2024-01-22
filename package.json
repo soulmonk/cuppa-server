@@ -43,10 +43,10 @@
     "googleapis": "118.0.0",
     "graphql": "16.8.1",
     "graphql-scalars": "1.22.4",
-    "@grpc/grpc-js": "1.9.13",
-    "hyperid": "3.1.1",
+    "@grpc/grpc-js": "1.9.14",
+    "hyperid": "3.2.0",
     "lodash": "4.17.21",
-    "mercurius": "13.3.2",
+    "mercurius": "13.3.3",
     "minimist": "^1.2.8",
     "pg": "8.11.3"
   },
