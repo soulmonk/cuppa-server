@@ -72,9 +72,9 @@
     "sinon": "15.0.4",
     "standard": "*",
     "tap": "18.6.1",
-    "ts-jest": "29.1.5",
+    "ts-jest": "29.2.3",
     "ts-node": "~10.9.2",
-    "typescript": "~5.4.5"
+    "typescript": "~5.5.4"
   },
   "engines": {
     "node": ">=20.0.0",
