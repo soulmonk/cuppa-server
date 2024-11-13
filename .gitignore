@@ -44,3 +44,6 @@ authenctication-service.proto
 # dotenv environment variables file
 .env
 *.env
+
+.nx/cache
+.nx/workspace-data
